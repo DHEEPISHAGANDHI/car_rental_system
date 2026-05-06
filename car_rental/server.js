@@ -14,19 +14,21 @@ app.use(express.json());
 app.use(cors());
 
 // Serve static files from frontend directory
-app.use(express.static('../frontend'));
+app.use(express.static(path.join(__dirname, 'frontend')));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
+});
 
 // Serve reset password page
 app.get('/reset-password', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/reset-password.html'));
+    res.sendFile(path.join(__dirname, 'frontend', 'reset-password.html'));
 });
 
 // MongoDB connection
 const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/car_rental';
 
 mongoose.connect(mongoUri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
 });
 
 // ====== User Schema ======
