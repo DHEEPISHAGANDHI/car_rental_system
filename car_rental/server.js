@@ -7,6 +7,8 @@ const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const path = require('path');
 
+require('dotenv').config();
+
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -20,7 +22,9 @@ app.get('/reset-password', (req, res) => {
 });
 
 // MongoDB connection
-mongoose.connect('mongodb://localhost:27017/car_rental', {
+const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/car_rental';
+
+mongoose.connect(mongoUri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
@@ -527,3 +531,5 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 // // Start server
 // const PORT = process.env.PORT || 5000;
 // app.listen(PORT, () => console.log(Server running on port ${PORT}));
+
+//pNTXE1kNYxU0q1iq
