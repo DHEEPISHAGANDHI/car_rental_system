@@ -1,0 +1,4705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Rentals - Premium Luxury Car Rental</title>
+    <meta name="description" content="Elite Rentals - Premium luxury car rental service with high-end vehicles and exceptional customer experience">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #111;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #FFD700;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FFC107;
+        }
+
+        /* Main Header */
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+        }
+
+        .header-brand {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .brand-text {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #FFD700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            line-height: 1;
+        }
+
+        .brand-sub {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: 2px;
+            margin-top: -2px;
+        }
+
+        /* Navigation */
+        .main-nav {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-list {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-link:hover::before {
+            left: 100%;
+        }
+
+        .nav-link:hover {
+            color: #FFD700;
+            background: rgba(255, 215, 0, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
+        }
+
+        .nav-link.active {
+            color: #FFD700;
+            background: rgba(255, 215, 0, 0.15);
+        }
+
+        .nav-icon {
+            width: 1.2rem;
+            height: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover .nav-icon {
+            transform: scale(1.1);
+        }
+
+        /* Authentication Buttons */
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .auth-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-icon {
+            width: 1.1rem;
+            height: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn {
+            background: transparent;
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .login-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #FFD700;
+            color: #FFD700;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
+        }
+
+        .signup-btn {
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            color: #000000;
+            border: 1px solid transparent;
+        }
+
+        .signup-btn:hover {
+            background: linear-gradient(135deg, #FFC107, #FFB300);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        .auth-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .auth-btn:hover::before {
+            left: 100%;
+        }
+
+        .auth-btn:hover .auth-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* User Profile Section */
+        .header-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-profile-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-welcome {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .welcome-text {
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        .user-name {
+            color: #FFD700;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .dashboard-btn {
+            background: linear-gradient(135deg, #FFD700, #FFF700);
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 2px solid #FFD700;
+            color: #FFD700;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #FFD700;
+            color: #000;
+        }
+
+
+
+        /* Live Tracking Notification */
+        .tracking-notification {
+            margin-right: 1rem;
+            animation: slideInFromRight 0.5s ease-out;
+        }
+
+        .track-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.25rem;
+            background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: pulse-notification 2s infinite;
+        }
+
+        .track-btn:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #FF5252, #FF7043);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        .track-icon {
+            position: relative;
+            width: 24px;
+            height: 24px;
+        }
+
+        .track-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .live-dot {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+            animation: blink 1.5s infinite;
+        }
+
+        .track-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            line-height: 1.2;
+        }
+
+        .track-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .track-eta {
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+
+        @keyframes pulse-notification {
+            0%, 100% {
+                box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+            }
+            50% {
+                box-shadow: 0 6px 25px rgba(255, 107, 107, 0.6);
+            }
+        }
+
+        @keyframes slideInFromRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Header scroll effect */
+        .main-header.scrolled {
+            background: rgba(0, 0, 0, 0.98);
+            border-bottom-color: rgba(255, 215, 0, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-top: 80px; /* Account for fixed header */
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.4);
+            z-index: -1;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 10;
+            max-width: 800px;
+            padding: 0 2rem;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 8rem);
+            font-weight: 900;
+            line-height: 0.9;
+            margin-bottom: 2rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero .brand {
+            color: #FFD700;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .hero .tagline {
+            color: #ffffff;
+        }
+
+        .hero p {
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            margin-bottom: 3rem;
+            color: #cccccc;
+            font-weight: 300;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            color: #000000;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-radius: 0;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(255, 215, 0, 0.4);
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            transition: all 0.3s ease;
+        }
+
+        .chevron-down {
+            width: 2rem;
+            height: 2rem;
+            color: #FFD700;
+        }
+
+        /* Cars Section */
+        .cars-section {
+            padding: 8rem 0;
+            background: linear-gradient(180deg, #000000 0%, #0a0a0a 100%);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 8rem;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 1s ease-out 1s forwards;
+        }
+
+        .section-header h2 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .section-header .highlight {
+            color: #FFD700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .section-header p {
+            font-size: 1.3rem;
+            color: #888888;
+            font-weight: 300;
+        }
+
+        .car-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12rem;
+            min-height: 600px;
+            opacity: 0;
+            transition: all 1s ease;
+        }
+
+        .car-item.visible {
+            opacity: 1;
+        }
+
+        .car-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .car-image {
+            flex: 1;
+            position: relative;
+            transform: translateX(-100px);
+            transition: all 1s ease;
+        }
+
+        .car-item:nth-child(even) .car-image {
+            transform: translateX(100px);
+        }
+
+        .car-item.visible .car-image {
+            transform: translateX(0);
+        }
+
+        .car-image-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s ease;
+        }
+
+        .car-image-container:hover {
+            transform: scale(1.05);
+            box-shadow: 0 30px 80px rgba(255, 215, 0, 0.2);
+        }
+
+        .car-image img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+
+        .car-image-container:hover img {
+            transform: scale(1.1);
+            filter: brightness(1.1);
+        }
+
+        .car-category-badge {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            color: #000000;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .car-details {
+            flex: 1;
+            padding: 0 4rem;
+            transform: translateX(100px);
+            transition: all 1s ease 0.3s;
+        }
+
+        .car-item:nth-child(even) .car-details {
+            transform: translateX(-100px);
+        }
+
+        .car-item.visible .car-details {
+            transform: translateX(0);
+        }
+
+        .car-name {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+        }
+
+        .car-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stars {
+            display: flex;
+            gap: 0.2rem;
+        }
+
+        .star {
+            width: 1.2rem;
+            height: 1.2rem;
+            color: #FFD700;
+            fill: currentColor;
+        }
+
+        .rating-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #FFD700;
+            margin-left: 0.5rem;
+        }
+
+        .rating-label {
+            color: #888;
+            margin-left: 0.5rem;
+        }
+
+        .car-specs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 2rem 0;
+            padding: 2rem 0;
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+        }
+
+        .spec-item {
+            text-align: center;
+        }
+
+        .spec-icon {
+            width: 2rem;
+            height: 2rem;
+            color: #FFD700;
+            margin: 0 auto 0.5rem;
+        }
+
+        .spec-label {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 0.3rem;
+        }
+
+        .spec-value {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .car-features {
+            margin: 2rem 0;
+        }
+
+        .features-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #FFD700;
+            margin-bottom: 1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: #cccccc;
+        }
+
+        .feature-dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            background: #FFD700;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .car-pricing {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 3rem;
+        }
+
+        .price-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .price-label {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 0.3rem;
+        }
+
+        .price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #FFD700;
+        }
+
+        .price-period {
+            font-size: 1.2rem;
+            color: #888;
+        }
+
+        .book-button {
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            color: #000000;
+            padding: 1rem 2rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-button:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        .book-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .book-button:hover::before {
+            left: 100%;
+        }
+
+        /* Footer */
+        .footer {
+            background: #0a0a0a;
+            padding: 4rem 0 2rem;
+            border-top: 1px solid #333;
+        }
+
+        .footer-content {
+            text-align: center;
+        }
+
+        .footer-brand {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+
+        .footer-brand .highlight {
+            color: #FFD700;
+        }
+
+        .footer-tagline {
+            color: #888;
+            margin-bottom: 3rem;
+        }
+
+        .footer-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-feature {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer-icon {
+            width: 3rem;
+            height: 3rem;
+            color: #FFD700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-feature p {
+            color: #cccccc;
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            color: #666;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 53%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40%, 43% {
+                transform: translateX(-50%) translateY(-15px);
+            }
+            70% {
+                transform: translateX(-50%) translateY(-7px);
+            }
+            90% {
+                transform: translateX(-50%) translateY(-2px);
+            }
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            }
+            to {
+                text-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-nav {
+                display: none;
+            }
+
+            .auth-buttons {
+                gap: 0.5rem;
+            }
+
+            .auth-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .header-container {
+                padding: 0 1rem;
+            }
+
+            /* Responsive user profile styles */
+            .user-profile-section {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .user-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .dashboard-btn,
+            .logout-btn {
+                width: 100%;
+                text-align: center;
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+
+            .hero {
+                margin-top: 70px;
+            }
+
+            .car-item {
+                flex-direction: column !important;
+                text-align: center;
+                margin-bottom: 8rem;
+            }
+
+            .car-item:nth-child(even) {
+                flex-direction: column !important;
+            }
+
+            .car-details {
+                padding: 2rem 0;
+                transform: translateY(50px) !important;
+            }
+
+            .car-item:nth-child(even) .car-details {
+                transform: translateY(50px) !important;
+            }
+
+            .car-item.visible .car-details {
+                transform: translateY(0) !important;
+            }
+
+            .car-image {
+                transform: translateY(-50px) !important;
+            }
+
+            .car-item:nth-child(even) .car-image {
+                transform: translateY(-50px) !important;
+            }
+
+            .car-item.visible .car-image {
+                transform: translateY(0) !important;
+            }
+
+            .car-specs {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .car-pricing {
+                flex-direction: column;
+                gap: 2rem;
+                text-align: center;
+            }
+
+            .footer-features {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: #111;
+            border-radius: 20px;
+            border: 1px solid #FFD700;
+            max-width: 450px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: translateY(30px) scale(0.9);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-header {
+            padding: 2rem 2rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #FFD700;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-subtitle {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: transparent;
+            border: none;
+            color: #888;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: #FFD700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+/* Add this to your existing style section */
+
+/* Validation styles */
+.form-input:invalid {
+    border-color: #ff4444;
+    box-shadow: 0 0 0 3px rgba(255, 68, 68, 0.1);
+}
+
+.form-input:valid {
+    border-color: #28a745;
+}
+
+.form-input.error {
+    border-color: #ff4444;
+    background-color: rgba(255, 68, 68, 0.05);
+}
+
+.form-input.success {
+    border-color: #28a745;
+    background-color: rgba(40, 167, 69, 0.05);
+}
+
+/* Validation message styles */
+.validation-message {
+    font-size: 0.8rem;
+    margin-top: 0.3rem;
+    padding: 0.2rem 0;
+}
+
+.validation-message.error {
+    color: #ff4444;
+}
+
+.validation-message.success {
+    color: #28a745;
+}
+
+/* Enhanced focus states */
+.form-input:focus:invalid {
+    border-color: #ff4444;
+    box-shadow: 0 0 0 3px rgba(255, 68, 68, 0.1);
+}
+
+.form-input:focus:valid {
+    border-color: #FFD700;
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+}
+        .form-label {
+            display: block;
+            color: #FFD700;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: #222;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #FFD700;
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #666;
+        }
+
+        .modal-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn:hover {
+            background: linear-gradient(135deg, #FFC107, #FFB300);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        .modal-footer {
+            padding: 1rem 2rem 2rem;
+            text-align: center;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .modal-footer a {
+            color: #FFD700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .modal-footer a:hover {
+            color: #FFC107;
+            text-decoration: underline;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #222;
+            border-radius: 10px;
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            border-color: #FFD700;
+            background: rgba(255, 215, 0, 0.05);
+        }
+
+        .contact-icon {
+            width: 2rem;
+            height: 2rem;
+            color: #FFD700;
+        }
+
+        .contact-details h4 {
+            color: #FFD700;
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .contact-details p {
+            color: #ccc;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        /* Terms & Conditions Styling */
+        .terms-group {
+            margin: 1rem 0;
+            padding: 1rem;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background: rgba(255, 215, 0, 0.05);
+        }
+
+        .terms-agreement {
+            margin: 0;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            display: none;
+        }
+
+        .checkmark {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #333;
+            border-radius: 4px;
+            background: #222;
+            position: relative;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+            margin-top: 2px;
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 6px;
+            top: 2px;
+            width: 6px;
+            height: 10px;
+            border: solid #000;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .checkbox-container input:checked ~ .checkmark {
+            background: #FFD700;
+            border-color: #FFD700;
+        }
+
+        .checkbox-container input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .checkbox-container:hover .checkmark {
+            border-color: #FFD700;
+            box-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+        }
+
+        .checkbox-text {
+            color: #ccc;
+        }
+
+        .terms-link {
+            color: #FFD700;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .terms-link:hover {
+            color: #FFC107;
+            text-decoration: underline;
+        }
+
+        /* Forgot Password Link */
+        .forgot-password-link {
+            text-align: right;
+            margin-top: -0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .forgot-password-link a {
+            color: #FFD700;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .forgot-password-link a:hover {
+            color: #FFC107;
+            text-decoration: underline;
+        }
+
+        /* Message Box Styles */
+        .message-box {
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .message-box.success {
+            background-color: rgba(76, 175, 80, 0.1);
+            border: 1px solid #4CAF50;
+            color: #4CAF50;
+        }
+
+        .message-box.error {
+            background-color: rgba(244, 67, 54, 0.1);
+            border: 1px solid #f44336;
+            color: #f44336;
+        }
+
+        .message-box.info {
+            background-color: rgba(33, 150, 243, 0.1);
+            border: 1px solid #2196F3;
+            color: #2196F3;
+        }
+
+        /* Password Requirements */
+        .password-requirements {
+            margin-top: 0.5rem;
+        }
+
+        .password-requirements small {
+            color: #999;
+            font-size: 0.8rem;
+        }
+
+        /* Terms Modal Styling */
+        .terms-modal {
+            max-width: 700px;
+            max-height: 85vh;
+        }
+
+        .terms-content {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 1rem;
+        }
+
+        .terms-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .terms-section h3 {
+            color: #FFD700;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 0.5rem;
+        }
+
+        .terms-section p {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 0.75rem;
+        }
+
+        .terms-section ul {
+            color: #ccc;
+            padding-left: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .terms-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .terms-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .terms-content::-webkit-scrollbar-track {
+            background: #333;
+            border-radius: 3px;
+        }
+
+        .terms-content::-webkit-scrollbar-thumb {
+            background: #FFD700;
+            border-radius: 3px;
+        }
+
+        .terms-content::-webkit-scrollbar-thumb:hover {
+            background: #FFC107;
+        }
+
+        /* Enhanced T&C Validation States */
+        .terms-group.invalid {
+            border-color: #ff4444 !important;
+            background-color: rgba(255, 68, 68, 0.1) !important;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        .terms-group.valid {
+            border-color: #28a745 !important;
+            background-color: rgba(40, 167, 69, 0.1) !important;
+        }
+
+        .terms-group.warning {
+            border-color: #ffc107 !important;
+            background-color: rgba(255, 193, 7, 0.1) !important;
+        }
+
+        @keyframes shake {
+            0%, 20%, 40%, 60%, 80%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+        }
+
+        /* T&C Validation Message */
+        .terms-validation-message {
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .terms-validation-message.error {
+            color: #ff4444;
+            background-color: rgba(255, 68, 68, 0.1);
+            border: 1px solid rgba(255, 68, 68, 0.3);
+        }
+
+        .terms-validation-message.success {
+            color: #28a745;
+            background-color: rgba(40, 167, 69, 0.1);
+            border: 1px solid rgba(40, 167, 69, 0.3);
+        }
+
+        /* Selection */
+        ::selection {
+            background-color: #FFD700;
+            color: #000000;
+        }
+
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="header-brand">
+                <span class="brand-text">ELITE</span>
+                <span class="brand-sub">RENTALS</span>
+            </div>
+            
+            <nav class="main-nav">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#home" class="nav-link active">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                            </svg>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#fleet" class="nav-link">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9L18 10V6c0-2-2-2-2-2H8c0 0-2 0-2 2v4l-2.5 1.1c-.8.2-1.5 1-1.5 1.9v3c0 .6.4 1 1 1h2"></path>
+                                <circle cx="7" cy="17" r="2"></circle>
+                                <path d="M9 17h6"></path>
+                                <circle cx="17" cy="17" r="2"></circle>
+                            </svg>
+                            <span>Fleet</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#contact" class="nav-link" onclick="openContactModal()">
+                            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                            <span>Contact</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <!-- Live Tracking Notification (appears when user has active booking) -->
+            <div class="tracking-notification" id="trackingNotification" style="display: none;">
+                <button class="track-btn" onclick="openTrackingFromHeader()">
+                    <div class="track-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <div class="live-dot"></div>
+                    </div>
+                    <div class="track-text">
+                        <span class="track-label">Track Live</span>
+                        <span class="track-eta">ETA: 8 mins</span>
+                    </div>
+                </button>
+            </div>
+            
+            <!-- Authentication and User Profile Section -->
+            <div class="header-actions">
+                <!-- Default login/signup buttons (shown when not logged in) -->
+                <div class="auth-buttons" id="authButtons">
+                    <button class="auth-btn login-btn" onclick="openLoginModal()">
+                        <svg class="auth-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                            <polyline points="10,17 15,12 10,7"></polyline>
+                            <line x1="15" y1="12" x2="3" y2="12"></line>
+                        </svg>
+                        Login
+                    </button>
+                    <button class="auth-btn signup-btn" onclick="openSignupModal()">
+                        <svg class="auth-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="8.5" cy="7" r="4"></circle>
+                            <line x1="20" y1="8" x2="20" y2="14"></line>
+                            <line x1="23" y1="11" x2="17" y2="11"></line>
+                        </svg>
+                        Sign Up
+                    </button>
+                </div>
+                
+                <!-- User profile section (shown when logged in) -->
+                <div class="user-profile-section" id="userProfileSection" style="display: none;">
+                    <div class="user-welcome">
+                        <span class="welcome-text">Welcome, </span>
+                        <span class="user-name" id="headerUserName">User</span>
+                    </div>
+                    <div class="user-actions">
+                        <button class="dashboard-btn" id="dashboardBtn" onclick="goToDashboard()">Dashboard</button>
+                        <button class="logout-btn" onclick="logout()">Logout</button>
+                    </div>
+                </div>
+            </div>
+            
+
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <video class="hero-video" autoplay muted loop>
+            <source src="car2.mp4" type="video/mp4">
+        </video>
+        <div class="hero-content">
+            <h1>
+                <span class="brand">ELITE</span><br>
+                <span class="tagline">RENTALS</span>
+            </h1>
+            <p>Experience luxury with our premium fleet of high-end vehicles</p>
+            <button class="cta-button" onclick="document.querySelector('.cars-section').scrollIntoView()">
+                Explore Fleet
+            </button>
+        </div>
+        <div class="scroll-indicator">
+            <svg class="chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6,9 12,15 18,9"></polyline>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Cars Section -->
+    <section class="cars-section">
+        <div class="container">
+            <div class="section-header">
+                <h2><span class="highlight">PREMIUM</span> FLEET</h2>
+                <p>Handpicked luxury vehicles for the discerning driver</p>
+            </div>
+
+            <!-- Car 1: Mercedes-Benz S-Class -->
+            <div class="car-item" data-car="1">
+                <div class="car-image">
+                    <div class="car-image-container">
+                        <img src="https://images.pexels.com/photos/3802510/pexels-photo-3802510.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Mercedes-Benz S-Class">
+                        <div class="car-category-badge">Luxury Sedan</div>
+                    </div>
+                </div>
+                <div class="car-details">
+                    <h3 class="car-name">Mercedes-Benz S-Class</h3>
+                    <div class="car-rating">
+                        <div class="stars">
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                        </div>
+                        <span class="rating-text">4.9</span>
+                        <span class="rating-label">• Premium Rating</span>
+                    </div>
+                    
+                    <div class="car-specs">
+                        <div class="spec-item">
+                            <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            <div class="spec-label">Seats</div>
+                            <div class="spec-value">5</div>
+                        </div>
+                        <div class="spec-item">
+                            <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <circle cx="12" cy="5" r="2"></circle>
+                                <path d="M12 7v4"></path>
+                            </svg>
+                            <div class="spec-label">Fuel</div>
+                            <div class="spec-value">Petrol</div>
+                        </div>
+                        <div class="spec-item">
+                            <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12,6 12,12 16,14"></polyline>
+                            </svg>
+                            <div class="spec-label">Transmission</div>
+                            <div class="spec-value">Automatic</div>
+                        </div>
+                    </div>
+
+                    <div class="car-features">
+                        <div class="features-title">Premium Features</div>
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <div class="feature-dot"></div>
+                                <span>Premium Leather</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-dot"></div>
+                                <span>Panoramic Roof</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-dot"></div>
+                                <span>Massage Seats</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-dot"></div>
+                                <span>Advanced Safety</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="car-pricing">
+                        <div class="price-info">
+                            <div class="price-label">Starting from</div>
+                            <div class="price">$250<span class="price-period">/day</span></div>
+                        </div>
+                        <button class="book-button" onclick="bookCar('Mercedes-Benz S-Class')">Book Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Car 2: BMW X7 -->
+            <div class="car-item" data-car="2">
+                <div class="car-image">
+                    <div class="car-image-container">
+                        <img src="https://images.pexels.com/photos/3354648/pexels-photo-3354648.jpeg?auto=compress&cs=tinysrgb&w=800" alt="BMW X7">
+                        <div class="car-category-badge">Luxury SUV</div>
+                    </div>
+                </div>
+                <div class="car-details">
+                    <h3 class="car-name">BMW X7</h3>
+                    <div class="car-rating">
+                        <div class="stars">
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                        </div>
+                        <span class="rating-text">4.8</span>
+                        <span class="rating-label">• Premium Rating</span>
+                    </div>
+                    
+                    <div class="car-specs">
+                        <div class="spec-item">
+                            <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            <div class="spec-label">Seats</div>
+                            <div class="spec-value">7</div>
+                        </div>
+                        <div class="spec-item">
+                            <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <circle cx="12" cy="5" r="2"></circle>
+                                <path d="M12 7v4"></path>
+                            </svg>
+                            <div class="spec-label">Fuel</div>
+                            <div class="spec-value">Petrol</div>
+                        </div>
+                        <div class="spec-item">
+                            <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12,6 12,12 16,14"></polyline>
+                            </svg>
+                            <div class="spec-label">Transmission</div>
+                            <div class="spec-value">Automatic</div>
+                        </div>
+                    </div>
+
+                    <div class="car-features">
+                        <div class="features-title">Premium Features</div>
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <div class="feature-dot"></div>
+                                <span>All-Wheel Drive</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-dot"></div>
+                                <span>Third Row Seating</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-dot"></div>
+                                <span>Premium Audio</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-dot"></div>
+                                <span>Adaptive Cruise</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="car-pricing">
+                        <div class="price-info">
+                            <div class="price-label">Starting from</div>
+                            <div class="price">$320<span class="price-period">/day</span></div>
+                        </div>
+                        <button class="book-button" onclick="bookCar('BMW X7')">Book Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Car 3: Audi A8 -->
+            <div class="car-item" data-car="3">
+                <div class="car-image">
+                    <div class="car-image-container">
+                        <img src="https://images.pexels.com/photos/1719649/pexels-photo-1719649.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Audi A8">
+                        <div class="car-category-badge">Executive Sedan</div>
+                    </div>
+                </div>
+                <div class="car-details">
+                    <h3 class="car-name">Audi A8</h3>
+                    <div class="car-rating">
+                        <div class="stars">
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                        </div>
+                        <span class="rating-text">4.9</span>
+                        <span class="rating-label">• Premium Rating</span>
+                    </div>
+                    
+                    <div class="car-specs">
+                        <div class="spec-item">
+                            <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            <div class="spec-label">Seats</div>
+                            <div class="spec-value">5</div>
+                        </div>
+                        <div class="spec-item">
+                            <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <circle cx="12" cy="5" r="2"></circle>
+                                <path d="M12 7v4"></path>
+                            </svg>
+                            <div class="spec-label">Fuel</div>
+                            <div class="spec-value">Petrol</div>
+                        </div>
+                        <div class="spec-item">
+                            <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12,6 12,12 16,14"></polyline>
+                            </svg>
+                            <div class="spec-label">Transmission</div>
+                            <div class="spec-value">Automatic</div>
+                        </div>
+                    </div>
+
+                    <div class="car-features">
+                        <div class="features-title">Premium Features</div>
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <div class="feature-dot"></div>
+                                <span>Quattro AWD</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-dot"></div>
+                                <span>Matrix LED</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-dot"></div>
+                                <span>Air Suspension</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-dot"></div>
+                                <span>Premium Sound</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="car-pricing">
+                        <div class="price-info">
+                            <div class="price-label">Starting from</div>
+                            <div class="price">$280<span class="price-period">/day</span></div>
+                        </div>
+                        <button class="book-button" onclick="bookCar('Audi A8')">Book Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Car 4: Porsche Macan -->
+            <div class="car-item" data-car="4">
+                <div class="car-image">
+                    <div class="car-image-container">
+                        <img src="https://images.pexels.com/photos/6322546/pexels-photo-6322546.jpeg" alt="Porsche Macan">
+                        <div class="car-category-badge">Sports SUV</div>
+                    </div>
+                </div>  
+                <div class="car-details">
+                    <h3 class="car-name">Porsche Macan</h3>
+                    <div class="car-rating">
+                        <div class="stars">
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                        </div>
+                        <span class="rating-text">4.8</span>
+                        <span class="rating-label">• Premium Rating</span>
+                    </div>
+                    
+                    <div class="car-specs">
+                        <div class="spec-item">
+                            <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            <div class="spec-label">Seats</div>
+                            <div class="spec-value">5</div>
+                        </div>
+                        <div class="spec-item">
+                            <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <circle cx="12" cy="5" r="2"></circle>
+                                <path d="M12 7v4"></path>
+                            </svg>
+                            <div class="spec-label">Fuel</div>
+                            <div class="spec-value">Petrol</div>
+                        </div>
+                        <div class="spec-item">
+                            <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12,6 12,12 16,14"></polyline>
+                            </svg>
+                            <div class="spec-label">Transmission</div>
+                            <div class="spec-value">Automatic</div>
+                        </div>
+                    </div>
+
+                    <div class="car-features">
+                        <div class="features-title">Premium Features</div>
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <div class="feature-dot"></div>
+                                <span>Sport Suspension</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-dot"></div>
+                                <span>Premium Interior</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-dot"></div>
+                                <span>Performance Package</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-dot"></div>
+                                <span>Sport Exhaust</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="car-pricing">
+                        <div class="price-info">
+                            <div class="price-label">Starting from</div>
+                            <div class="price">$290<span class="price-period">/day</span></div>
+                        </div>
+                        <button class="book-button" onclick="bookCar('Porsche Macan')">Book Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Car 5: Range Rover Velar -->
+            <div class="car-item" data-car="5">
+                <div class="car-image">
+                    <div class="car-image-container">
+                        <img src="https://images.pexels.com/photos/2920064/pexels-photo-2920064.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Range Rover Velar">
+                        <div class="car-category-badge">Luxury SUV</div>
+                    </div>
+                </div>
+                <div class="car-details">
+                    <h3 class="car-name">Range Rover Velar</h3>
+                    <div class="car-rating">
+                        <div class="stars">
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                        </div>
+                        <span class="rating-text">4.7</span>
+                        <span class="rating-label">• Premium Rating</span>
+                    </div>
+                    
+                    <div class="car-specs">
+                        <div class="spec-item">
+                            <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            <div class="spec-label">Seats</div>
+                            <div class="spec-value">5</div>
+                        </div>
+                        <div class="spec-item">
+                            <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <circle cx="12" cy="5" r="2"></circle>
+                                <path d="M12 7v4"></path>
+                            </svg>
+                            <div class="spec-label">Fuel</div>
+                            <div class="spec-value">Petrol</div>
+                        </div>
+                        <div class="spec-item">
+                            <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12,6 12,12 16,14"></polyline>
+                            </svg>
+                            <div class="spec-label">Transmission</div>
+                            <div class="spec-value">Automatic</div>
+                        </div>
+                    </div>
+
+                    <div class="car-features">
+                        <div class="features-title">Premium Features</div>
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <div class="feature-dot"></div>
+                                <span>Terrain Response</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-dot"></div>
+                                <span>Meridian Audio</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-dot"></div>
+                                <span>Panoramic Roof</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-dot"></div>
+                                <span>Air Suspension</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="car-pricing">
+                        <div class="price-info">
+                            <div class="price-label">Starting from</div>
+                            <div class="price">$310<span class="price-period">/day</span></div>
+                        </div>
+                        <button class="book-button" onclick="bookCar('Range Rover Velar')">Book Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Car 6: Jaguar F-PACE -->
+            <div class="car-item" data-car="6">
+                <div class="car-image">
+                    <div class="car-image-container">
+                        <img src="https://images.pexels.com/photos/3311574/pexels-photo-3311574.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Jaguar F-PACE">
+                        <div class="car-category-badge">Performance SUV</div>
+                    </div>
+                </div>
+                <div class="car-details">
+                    <h3 class="car-name">Jaguar F-PACE</h3>
+                    <div class="car-rating">
+                        <div class="stars">
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                            <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                        </div>
+                        <span class="rating-text">4.6</span>
+                        <span class="rating-label">• Premium Rating</span>
+                    </div>
+                    
+                    <div class="car-specs">
+                        <div class="spec-item">
+                            <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            <div class="spec-label">Seats</div>
+                            <div class="spec-value">5</div>
+                        </div>
+                        <div class="spec-item">
+                            <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <circle cx="12" cy="5" r="2"></circle>
+                                <path d="M12 7v4"></path>
+                            </svg>
+                            <div class="spec-label">Fuel</div>
+                            <div class="spec-value">Petrol</div>
+                        </div>
+                        <div class="spec-item">
+                            <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12,6 12,12 16,14"></polyline>
+                            </svg>
+                            <div class="spec-label">Transmission</div>
+                            <div class="spec-value">Automatic</div>
+                        </div>
+                    </div>
+
+                    <div class="car-features">
+                        <div class="features-title">Premium Features</div>
+                        <div class="features-grid">
+                            <div class="feature-item">
+                                <div class="feature-dot"></div>
+                                <span>Performance AWD</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-dot"></div>
+                                <span>Sport Seats</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-dot"></div>
+                                <span>Premium Leather</span>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-dot"></div>
+                                <span>Digital Cockpit</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="car-pricing">
+                        <div class="price-info">
+                            <div class="price-label">Starting from</div>
+                            <div class="price">$270<span class="price-period">/day</span></div>
+                        </div>
+                        <button class="book-button" onclick="bookCar('Jaguar F-PACE')">Book Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="highlight">ELITE</span> RENTALS
+                </div>
+                <p class="footer-tagline">Premium car rental experience</p>
+                
+                <div class="footer-features">
+                    <div class="footer-feature">
+                        <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <p>Multiple Premium Locations</p>
+                    </div>
+                    <div class="footer-feature">
+                        <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12,6 12,12 16,14"></polyline>
+                        </svg>
+                        <p>24/7 Customer Support</p>
+                    </div>
+                    <div class="footer-feature">
+                        <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <circle cx="12" cy="5" r="2"></circle>
+                            <path d="M12 7v4"></path>
+                        </svg>
+                        <p>Fully Insured Fleet</p>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p>© 2025 Elite Rentals. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Welcome Back</h2>
+                <p class="modal-subtitle">Sign in to your Elite Rentals account</p>
+                <button class="modal-close" onclick="closeModal('loginModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label class="form-label">Select Your Role</label>
+                        <select class="form-input" id="loginRole" required>
+                            <option value="">Choose your role...</option>
+                            <option value="customer">🚗 Customer (Book Cars)</option>
+                            <option value="vendor">🏪 Vendor/Car Owner (Rent Your Cars)</option>
+                            <option value="rider">🚕 Rider (Handle Deliveries)</option>
+                            <option value="admin">🧑‍💼 Admin (Manage Platform)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" placeholder="Enter your email" autocomplete="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Please enter a valid email address" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-input" placeholder="Enter your password" required autocomplete="current-password">
+                    </div>
+                    <div class="forgot-password-link">
+                        <a href="#" onclick="openForgotPasswordModal()">Forgot your password?</a>
+                    </div>
+                    <button type="submit" class="modal-btn">Sign In</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                Don't have an account? <a href="#" onclick="closeModal('loginModal'); openSignupModal()">Sign up here</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="modal-overlay" id="signupModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Join Elite Rentals</h2>
+                <p class="modal-subtitle">Create your premium account today</p>
+                <button class="modal-close" onclick="closeModal('signupModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label class="form-label">Select Your Role</label>
+                        <select class="form-input" id="signupRole" required>
+                            <option value="">Choose your role...</option>
+                            <option value="customer">🚗 Customer (Book Cars)</option>
+                            <option value="vendor">🏪 Vendor/Car Owner (Rent Your Cars)</option>
+                            <option value="rider">🚕 Rider (Handle Deliveries)</option>
+                            <option value="admin">🧑‍💼 Admin (Manage Platform)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-input" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" placeholder="Enter your email"   autocomplete="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Please enter a valid email address" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-input" placeholder="Enter your phone number" autocomplete="tel" pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number" minlength="10" maxlength="10" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" id="signupPassword" class="form-input" placeholder="Create a strong password" autocomplete="new-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Confirm Password</label>
+                        <input type="password" id="confirmPassword" class="form-input" placeholder="Confirm your password" autocomplete="new-password" required>
+                        <div id="passwordMatchError" class="error-message" style="display: none; color: #ff4444; font-size: 0.9em; margin-top: 5px;"></div>
+                    </div>
+                    <!-- Terms & Conditions (for customers, riders, and vendors) -->
+                    <div class="form-group terms-group" id="termsGroup" style="display: none;">
+                        <div class="terms-agreement">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="termsCheckbox">
+                                <span class="checkmark"></span>
+                                <span class="checkbox-text">
+                                    I agree to the 
+                                    <a href="#" onclick="openTermsModal()" class="terms-link">Terms & Conditions</a> 
+                                    and 
+                                    <a href="#" onclick="openPrivacyModal()" class="terms-link">Privacy Policy</a>
+                                </span>
+                            </label>
+                            <div class="terms-validation-message" id="termsValidationMessage"></div>
+                            <div id="termsError" class="error-message" style="display: none; color: #ff4444; font-size: 0.9em; margin-top: 8px; padding: 8px; background: rgba(255, 68, 68, 0.1); border-radius: 4px; border-left: 3px solid #ff4444;"></div>
+                        </div>
+                    </div>
+                    <button type="submit" class="modal-btn">Create Account</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                Already have an account? <a href="#" onclick="closeModal('signupModal'); openLoginModal()">Sign in here</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div class="modal-overlay" id="contactModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Contact Elite Rentals</h2>
+                <p class="modal-subtitle">Get in touch with our premium support team</p>
+                <button class="modal-close" onclick="closeModal('contactModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                        </svg>
+                        <div class="contact-details">
+                            <h4>Phone</h4>
+                            <p>+1 (800) ELITE-01</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                        <div class="contact-details">
+                            <h4>Email</h4>
+                            <p>support@eliterentals.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <div class="contact-details">
+                            <h4>Address</h4>
+                            <p>123 Luxury Ave, Premium District</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12,6 12,12 16,14"></polyline>
+                        </svg>
+                        <div class="contact-details">
+                            <h4>Hours</h4>
+                            <p>24/7 Premium Support</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label class="form-label">Your Name</label>
+                        <input type="text" class="form-input" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" placeholder="Enter your email" autocomplete="email"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Please enter a valid email address (e.g., user@example.com)" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Subject</label>
+                        <input type="text" class="form-input" placeholder="How can we help you?" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Message</label>
+                        <textarea class="form-input" rows="4" placeholder="Tell us about your inquiry..." required></textarea>
+                    </div>
+                    <button type="submit" class="modal-btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms & Conditions Modal -->
+    <div class="modal-overlay" id="termsModal">
+        <div class="modal terms-modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Terms & Conditions</h2>
+                <p class="modal-subtitle">Elite Rentals Service Agreement</p>
+                <button class="modal-close" onclick="closeModal('termsModal')">&times;</button>
+            </div>
+            <div class="modal-body terms-content">
+                <div class="terms-section">
+                    <h3>1. Service Agreement</h3>
+                    <p>Welcome to Elite Rentals. By using our luxury car rental services, you agree to these terms and conditions. Our service provides premium vehicle rentals with exceptional customer experience.</p>
+                </div>
+
+                <div class="terms-section">
+                    <h3>2. Rental Requirements</h3>
+                    <ul>
+                        <li>Must be 21+ years old with valid driver's license</li>
+                        <li>Valid credit card for security deposit</li>
+                        <li>Clean driving record (no major violations in past 3 years)</li>
+                        <li>Proof of insurance or purchase our insurance package</li>
+                    </ul>
+                </div>
+
+                <div class="terms-section">
+                    <h3>3. Vehicle Usage</h3>
+                    <ul>
+                        <li>Vehicles must be returned in the same condition as received</li>
+                        <li>No smoking, pets, or illegal activities in vehicles</li>
+                        <li>Mileage restrictions may apply to certain premium vehicles</li>
+                        <li>Fuel must be returned at the same level as pickup</li>
+                    </ul>
+                </div>
+
+                <div class="terms-section">
+                    <h3>4. Pricing & Payment</h3>
+                    <ul>
+                        <li>Daily rates as displayed on booking confirmation</li>
+                        <li>Security deposit: $500-$2000 depending on vehicle</li>
+                        <li>Late return fees: $50/hour after grace period</li>
+                        <li>Damage assessment based on independent evaluation</li>
+                    </ul>
+                </div>
+
+                <div class="terms-section">
+                    <h3>5. Cancellation Policy</h3>
+                    <ul>
+                        <li>Free cancellation up to 24 hours before pickup</li>
+                        <li>50% refund for cancellation within 24 hours</li>
+                        <li>No refund for no-shows or same-day cancellations</li>
+                        <li>Weather-related cancellations handled case-by-case</li>
+                    </ul>
+                </div>
+
+                <div class="terms-section">
+                    <h3>6. Insurance & Liability</h3>
+                    <p>Renters are responsible for all damage, theft, or loss during rental period. Our comprehensive insurance packages are available at competitive rates.</p>
+                </div>
+
+                <div class="terms-section">
+                    <h3>7. Contact Information</h3>
+                    <p>For support: support@eliterentals.com | +1 (800) ELITE-01</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div class="modal-overlay" id="privacyModal">
+        <div class="modal terms-modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Privacy Policy</h2>
+                <p class="modal-subtitle">How we protect and use your information</p>
+                <button class="modal-close" onclick="closeModal('privacyModal')">&times;</button>
+            </div>
+            <div class="modal-body terms-content">
+                <div class="terms-section">
+                    <h3>1. Information We Collect</h3>
+                    <ul>
+                        <li>Personal identification (name, email, phone, address)</li>
+                        <li>Driver's license and insurance information</li>
+                        <li>Payment and billing information</li>
+                        <li>Vehicle usage and GPS tracking data</li>
+                        <li>Website usage analytics and preferences</li>
+                    </ul>
+                </div>
+
+                <div class="terms-section">
+                    <h3>2. How We Use Your Information</h3>
+                    <ul>
+                        <li>Process reservations and payments</li>
+                        <li>Verify identity and driving eligibility</li>
+                        <li>Provide customer support and service updates</li>
+                        <li>Improve our services and user experience</li>
+                        <li>Send promotional offers (with your consent)</li>
+                    </ul>
+                </div>
+
+                <div class="terms-section">
+                    <h3>3. Information Sharing</h3>
+                    <p>We do not sell your personal information. We may share information with:</p>
+                    <ul>
+                        <li>Insurance companies for coverage verification</li>
+                        <li>Payment processors for transaction handling</li>
+                        <li>Legal authorities when required by law</li>
+                        <li>Service providers under strict confidentiality agreements</li>
+                    </ul>
+                </div>
+
+                <div class="terms-section">
+                    <h3>4. Data Security</h3>
+                    <p>We implement industry-standard security measures including SSL encryption, secure data centers, and regular security audits to protect your information.</p>
+                </div>
+
+                <div class="terms-section">
+                    <h3>5. Your Rights</h3>
+                    <ul>
+                        <li>Access your personal information</li>
+                        <li>Request corrections or updates</li>
+                        <li>Delete your account and data</li>
+                        <li>Opt-out of marketing communications</li>
+                        <li>Request data portability</li>
+                    </ul>
+                </div>
+
+                <div class="terms-section">
+                    <h3>6. Cookies & Tracking</h3>
+                    <p>We use cookies to enhance your browsing experience, remember preferences, and analyze site usage. You can manage cookie settings in your browser.</p>
+                </div>
+
+                <div class="terms-section">
+                    <h3>7. Contact Us</h3>
+                    <p>Privacy questions: privacy@eliterentals.com | Data Protection Officer: dpo@eliterentals.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div class="modal-overlay" id="forgotPasswordModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Reset Password</h2>
+                <p class="modal-subtitle">Enter your email to receive a password reset link</p>
+                <button class="modal-close" onclick="closeModal('forgotPasswordModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="forgotPasswordForm">
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" id="forgotEmail" class="form-input" placeholder="Enter your registered email" autocomplete="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Please enter a valid email address" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Select Your Role</label>
+                        <select class="form-input" id="forgotRole" required>
+                            <option value="">Choose your role...</option>
+                            <option value="customer">🚗 Customer (Book Cars)</option>
+                            <option value="vendor">🏪 Vendor/Car Owner (Rent Your Cars)</option>
+                            <option value="rider">🚕 Rider (Handle Deliveries)</option>
+                            <option value="admin">🧑‍💼 Admin (Manage Platform)</option>
+                        </select>
+                    </div>
+                    <div id="forgotPasswordMessage" class="message-box" style="display: none;"></div>
+                    <button type="submit" class="modal-btn">Send Reset Link</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                Remember your password? <a href="#" onclick="closeModal('forgotPasswordModal'); openLoginModal()">Back to Login</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reset Password Modal -->
+    <div class="modal-overlay" id="resetPasswordModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Create New Password</h2>
+                <p class="modal-subtitle">Enter your new password below</p>
+                <button class="modal-close" onclick="closeModal('resetPasswordModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="resetPasswordForm">
+                    <input type="hidden" id="resetToken" name="token">
+                    <input type="hidden" id="resetEmail" name="email">
+                    <div class="form-group">
+                        <label class="form-label">New Password</label>
+                        <input type="password" id="newPassword" class="form-input" placeholder="Enter your new password" minlength="6" required>
+                        <div class="password-requirements">
+                            <small>Password must be at least 6 characters long</small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Confirm New Password</label>
+                        <input type="password" id="confirmNewPassword" class="form-input" placeholder="Confirm your new password" minlength="6" required>
+                        <div id="passwordMatchMessage" class="message-box" style="display: none;"></div>
+                    </div>
+                    <div id="resetPasswordMessage" class="message-box" style="display: none;"></div>
+                    <button type="submit" class="modal-btn">Update Password</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal Functions
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function openSignupModal() {
+            document.getElementById('signupModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function openContactModal() {
+            document.getElementById('contactModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function openTermsModal() {
+            document.getElementById('termsModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function openPrivacyModal() {
+            document.getElementById('privacyModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function openForgotPasswordModal() {
+            closeModal('loginModal');
+            document.getElementById('forgotPasswordModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function openResetPasswordModal() {
+            document.getElementById('resetPasswordModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Show/Hide Terms & Conditions based on role selection
+        function handleRoleChange() {
+            const roleSelect = document.getElementById('signupRole');
+            const termsGroup = document.getElementById('termsGroup');
+            const termsCheckbox = document.getElementById('termsCheckbox');
+            
+            if (roleSelect.value === 'customer' || roleSelect.value === 'rider' || roleSelect.value === 'vendor') {
+                termsGroup.style.display = 'block';
+                termsCheckbox.required = true;
+                
+                // Reset visual state when showing T&C
+                termsGroup.style.borderColor = '#333';
+                termsGroup.style.backgroundColor = 'rgba(255, 215, 0, 0.05)';
+                
+                // Validate immediately if checkbox is already checked
+                if (termsCheckbox.checked) {
+                    validateTermsAndConditions();
+                }
+            } else {
+                termsGroup.style.display = 'none';
+                termsCheckbox.required = false;
+                termsCheckbox.checked = false; // Uncheck when hidden
+                
+                // Reset visual state when hiding T&C
+                termsGroup.style.borderColor = '#333';
+                termsGroup.style.backgroundColor = 'rgba(255, 215, 0, 0.05)';
+            }
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal on background click
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal(this.id);
+                }
+            });
+        });
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const activeModal = document.querySelector('.modal-overlay.active');
+                if (activeModal) {
+                    closeModal(activeModal.id);
+                }
+            }
+        });
+
+        // Header scroll effect
+        function handleHeaderScroll() {
+            const header = document.querySelector('.main-header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        }
+
+        window.addEventListener('scroll', handleHeaderScroll);
+
+        // Note: Mobile menu functionality can be added here if needed in the future
+
+        // User Profile Management Functions
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const userName = localStorage.getItem('userName');
+            const userRole = localStorage.getItem('userRole');
+            
+            if (isLoggedIn === 'true' && userName) {
+                showUserProfile(userName, userRole);
+            } else {
+                showAuthButtons();
+            }
+        }
+
+        function showUserProfile(userName, userRole) {
+            document.getElementById('authButtons').style.display = 'none';
+            document.getElementById('userProfileSection').style.display = 'flex';
+            document.getElementById('headerUserName').textContent = userName;
+            
+            // Update dashboard button based on role
+            const dashboardBtn = document.getElementById('dashboardBtn');
+            if (userRole === 'rider') {
+                dashboardBtn.textContent = 'Rider Dashboard';
+            } else if (userRole === 'admin') {
+                dashboardBtn.textContent = 'Admin Dashboard';
+            } else {
+                dashboardBtn.textContent = 'Dashboard';
+            }
+        }
+
+        function showAuthButtons() {
+            document.getElementById('authButtons').style.display = 'flex';
+            document.getElementById('userProfileSection').style.display = 'none';
+        }
+
+        function goToDashboard() {
+            const userRole = localStorage.getItem('userRole');
+            
+            if (userRole === 'rider') {
+                window.location.href = 'rider_dashboard.html';
+            } else if (userRole === 'admin') {
+                window.location.href = 'admin_dashboard.html';
+            } else if (userRole === 'vendor') {
+                window.location.href = 'vendor_dashboard.html';
+            } else {
+                console.log('Unknown user role or customer dashboard not implemented');
+            }
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                // Clear all user data from localStorage
+                localStorage.removeItem('userRole');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userName');
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('hasActiveBooking');
+                localStorage.removeItem('bookingData');
+                
+                // Show auth buttons and hide user profile
+                showAuthButtons();
+                
+                console.log('Logged out successfully');
+            }
+        }
+
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const role = document.getElementById('loginRole').value;
+    const email = this.querySelector('input[type="email"]').value;
+    const password = this.querySelector('input[type="password"]').value;
+    const btn = this.querySelector('.modal-btn');
+    const originalText = btn.textContent;
+    btn.textContent = 'Signing In...';
+    btn.disabled = true;
+
+    fetch('http://localhost:5000/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password, role })
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log(data);
+        if (data.message === 'Login successful') {
+            // Store user session data including name
+            localStorage.setItem('userRole', data.user.role);
+            localStorage.setItem('userEmail', data.user.email);
+            localStorage.setItem('userName', data.user.name);
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('authToken', data.token);
+            
+            // Close modal and reset form
+            closeModal('loginModal');
+            this.reset();
+            
+            // Show user profile in header
+            showUserProfile(data.user.name, data.user.role);
+            
+            // Redirect based on role after a brief delay to show the profile update
+            if (data.user.role === 'rider') {
+                setTimeout(() => {
+                    window.location.href = 'rider_dashboard.html';
+                }, 1000);
+            } else if (data.user.role === 'admin') {
+                setTimeout(() => {
+                    window.location.href = 'admin_dashboard.html';
+                }, 1000);
+            } else if (data.user.role === 'vendor') {
+                setTimeout(() => {
+                    window.location.href = 'vendor_dashboard.html';
+                }, 1000);
+            }
+            
+            console.log(`Welcome ${data.user.name}! You are logged in as ${data.user.role}.`);
+        } else {
+            alert(data.message || 'Login failed. Please check your credentials.');
+        }
+    })
+    .catch(err => {
+        console.error('Login error:', err);
+    // Removed alert for login failed
+    })
+    .finally(() => {
+        btn.textContent = originalText;
+        btn.disabled = false;
+    });
+});
+
+document.getElementById('signupForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const role = document.getElementById('signupRole').value;
+    const name = this.querySelector('input[type="text"]').value;
+    const email = this.querySelector('input[type="email"]').value;
+    const phone = this.querySelector('input[type="tel"]').value;
+    const passwords = this.querySelectorAll('input[type="password"]');
+    const password = passwords[0].value;
+    const confirmPassword = passwords[1].value;
+
+    // Enhanced validation checks
+    if (!validateEmail(email)) {
+        alert('Please enter a valid email address (e.g., user@example.com)');
+        return;
+    }
+
+    if (!validatePhone(phone)) {
+        alert('Please enter a valid 10-digit phone number');
+        return;
+    }
+
+    // Password validation with enhanced messaging
+    if (!validatePassword()) {
+        // Focus on password field for user correction
+        document.getElementById('confirmPassword').focus();
+        return;
+    }
+
+    if (password.length < 8) {
+        alert('Password must be at least 8 characters long for security.');
+        return;
+    }
+
+    // Check password strength
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumbers = /\d/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    if (!hasUpperCase || !hasLowerCase || !hasNumbers) {
+        alert('Password should contain at least one uppercase letter, one lowercase letter, and one number.');
+        return;
+    }
+
+    // Enhanced Terms & Conditions validation (only for customers and riders)
+    if (!validateTermsWithMessage()) {
+        const termsGroup = document.getElementById('termsGroup');
+        
+        // Scroll to T&C section with animation
+        termsGroup.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Focus on checkbox for user correction
+        document.getElementById('termsCheckbox').focus();
+        
+        return;
+    }
+
+    const btn = this.querySelector('.modal-btn');
+    const originalText = btn.textContent;
+    btn.textContent = 'Creating Account...';
+    btn.disabled = true;
+
+    // Get T&C acceptance status
+    const termsCheckbox = document.getElementById('termsCheckbox');
+    const terms_accepted = (role === 'customer' || role === 'rider' || role === 'vendor') ? termsCheckbox.checked : null;
+
+    // Send signup request to backend
+    fetch('http://localhost:5000/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            name, 
+            email, 
+            phone, 
+            password, 
+            role, 
+            terms_accepted 
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log(data);
+        if (data.message === 'Signup successful') {
+            // Success notification
+            alert('🎉 Account created successfully! Redirecting to login...');
+            this.reset();
+            closeModal('signupModal');
+            
+            // Smooth transition to login modal with pre-filled email
+            setTimeout(() => {
+                openLoginModal();
+                // Pre-fill the email and role for convenience
+                document.getElementById('loginRole').value = role;
+                document.querySelector('#loginForm input[type="email"]').value = email;
+                document.querySelector('#loginForm input[type="email"]').focus();
+            }, 300);
+        } else {
+            alert('❌ ' + (data.message || 'Signup failed. Please try again.'));
+        }
+    })
+    .catch(err => {
+        console.error('Signup error:', err);
+        alert('🌐 Network error. Please check your internet connection and try again.');
+    })
+    .finally(() => {
+        btn.textContent = originalText;
+        btn.disabled = false;
+    });
+});
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simulate contact form submission
+            const btn = this.querySelector('.modal-btn');
+            const originalText = btn.textContent;
+            btn.textContent = 'Sending Message...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                console.log('Message sent successfully! We\'ll get back to you within 24 hours.');
+                closeModal('contactModal');
+                btn.textContent = originalText;
+                btn.disabled = false;
+                this.reset();
+            }, 2000);
+        });
+
+        // Forgot Password Form Handler
+        document.getElementById('forgotPasswordForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('forgotEmail').value;
+            const role = document.getElementById('forgotRole').value;
+            const messageBox = document.getElementById('forgotPasswordMessage');
+            const btn = this.querySelector('.modal-btn');
+            const originalText = btn.textContent;
+
+            // Show loading state
+            btn.textContent = 'Sending...';
+            btn.disabled = true;
+            messageBox.style.display = 'none';
+
+            try {
+                const response = await fetch('http://localhost:5000/auth/forgot-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, role })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    messageBox.className = 'message-box success';
+                    messageBox.textContent = 'Password reset link sent successfully! Please check your email.';
+                    messageBox.style.display = 'block';
+                    
+                    // Clear form and close modal after delay
+                    setTimeout(() => {
+                        closeModal('forgotPasswordModal');
+                        this.reset();
+                        messageBox.style.display = 'none';
+                    }, 3000);
+                } else {
+                    messageBox.className = 'message-box error';
+                    messageBox.textContent = data.message || 'Failed to send reset link. Please try again.';
+                    messageBox.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Forgot password error:', error);
+                messageBox.className = 'message-box error';
+                messageBox.textContent = 'Network error. Please check your connection and try again.';
+                messageBox.style.display = 'block';
+            } finally {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        });
+
+        // Reset Password Form Handler
+        document.getElementById('resetPasswordForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const token = document.getElementById('resetToken').value;
+            const email = document.getElementById('resetEmail').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmNewPassword').value;
+            const messageBox = document.getElementById('resetPasswordMessage');
+            const matchMessage = document.getElementById('passwordMatchMessage');
+            const btn = this.querySelector('.modal-btn');
+            const originalText = btn.textContent;
+
+            // Reset messages
+            messageBox.style.display = 'none';
+            matchMessage.style.display = 'none';
+
+            // Check password match
+            if (newPassword !== confirmPassword) {
+                matchMessage.className = 'message-box error';
+                matchMessage.textContent = 'Passwords do not match!';
+                matchMessage.style.display = 'block';
+                return;
+            }
+
+            // Check password strength
+            if (newPassword.length < 6) {
+                messageBox.className = 'message-box error';
+                messageBox.textContent = 'Password must be at least 6 characters long.';
+                messageBox.style.display = 'block';
+                return;
+            }
+
+            // Show loading state
+            btn.textContent = 'Updating...';
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('http://localhost:5000/auth/reset-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ token, email, newPassword })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    messageBox.className = 'message-box success';
+                    messageBox.textContent = 'Password updated successfully! You can now login with your new password.';
+                    messageBox.style.display = 'block';
+                    
+                    // Clear form and redirect to login after delay
+                    setTimeout(() => {
+                        closeModal('resetPasswordModal');
+                        openLoginModal();
+                        this.reset();
+                        messageBox.style.display = 'none';
+                    }, 3000);
+                } else {
+                    messageBox.className = 'message-box error';
+                    messageBox.textContent = data.message || 'Failed to update password. Please try again.';
+                    messageBox.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Reset password error:', error);
+                messageBox.className = 'message-box error';
+                messageBox.textContent = 'Network error. Please check your connection and try again.';
+                messageBox.style.display = 'block';
+            } finally {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        });
+
+        // Real-time password match validation
+        document.getElementById('confirmNewPassword').addEventListener('input', function() {
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = this.value;
+            const matchMessage = document.getElementById('passwordMatchMessage');
+            
+            if (confirmPassword.length > 0) {
+                if (newPassword === confirmPassword) {
+                    matchMessage.className = 'message-box success';
+                    matchMessage.textContent = 'Passwords match!';
+                    matchMessage.style.display = 'block';
+                } else {
+                    matchMessage.className = 'message-box error';
+                    matchMessage.textContent = 'Passwords do not match!';
+                    matchMessage.style.display = 'block';
+                }
+            } else {
+                matchMessage.style.display = 'none';
+            }
+        });
+
+        // Handle reset password from URL (when user clicks email link)
+        function handleResetPasswordFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+            const email = urlParams.get('email');
+            
+            if (token && email) {
+                document.getElementById('resetToken').value = token;
+                document.getElementById('resetEmail').value = email;
+                openResetPasswordModal();
+            }
+        }
+
+        // Check for reset password parameters on page load
+        window.addEventListener('load', handleResetPasswordFromURL);
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.getAttribute('href').startsWith('#')) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(targetId) || document.querySelector('.cars-section');
+                    
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Scroll-triggered animations
+        function handleScrollAnimations() {
+            const carItems = document.querySelectorAll('.car-item');
+            const windowHeight = window.innerHeight;
+            
+            carItems.forEach(item => {
+                const rect = item.getBoundingClientRect();
+                const isVisible = rect.top < windowHeight * 0.8;
+                
+                if (isVisible) {
+                    item.classList.add('visible');
+                }
+            });
+        }
+
+        // Enhanced scroll indicator animation
+        function enhanceScrollIndicator() {
+            const scrollIndicator = document.querySelector('.scroll-indicator');
+            
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                if (scrolled > 100) {
+                    scrollIndicator.style.opacity = '0';
+                    scrollIndicator.style.transform = 'translateX(-50%) translateY(20px)';
+                } else {
+                    scrollIndicator.style.opacity = '1';
+                    scrollIndicator.style.transform = 'translateX(-50%) translateY(0)';
+                }
+            });
+        }
+
+        // Initialize all effects and validation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize animations
+            handleScrollAnimations();
+            enhanceScrollIndicator();
+            checkLoginStatus();
+            
+            // Add scroll listener for animations
+            window.addEventListener('scroll', handleScrollAnimations);
+            
+            // Check for active bookings and show tracking notification
+            setTimeout(showTrackingNotification, 2000);
+            
+            // Initialize validation
+            initializeFormValidation();
+            
+            // Add role change listener for Terms & Conditions
+            const roleSelect = document.getElementById('signupRole');
+            if (roleSelect) {
+                roleSelect.addEventListener('change', handleRoleChange);
+            }
+        });
+
+        // Live Tracking Functions
+        function openTrackingFromHeader() {
+            // Simulate tracking data
+            const trackingInfo = {
+                vehicle: 'Mercedes-Benz S-Class',
+                riderName: 'John Doe',
+                pickupLocation: 'Downtown Elite Hub',
+                estimatedArrival: 8,
+                riderPhone: '+91 98765 43210'
+            };
+            
+            localStorage.setItem('currentTracking', JSON.stringify(trackingInfo));
+            window.open('live_tracking.html', '_blank');
+        }
+
+        function showTrackingNotification() {
+            // Simulate checking if user has active booking
+            const hasActiveBooking = localStorage.getItem('hasActiveBooking') === 'true' || 
+                                   localStorage.getItem('bookingData') !== null;
+            
+            if (hasActiveBooking) {
+                document.getElementById('trackingNotification').style.display = 'block';
+                
+                // Update ETA periodically
+                let eta = 8;
+                const etaInterval = setInterval(() => {
+                    eta--;
+                    if (eta <= 0) {
+                        document.querySelector('.track-eta').textContent = 'Arrived!';
+                        clearInterval(etaInterval);
+                        setTimeout(() => {
+                            document.getElementById('trackingNotification').style.display = 'none';
+                        }, 5000);
+                    } else {
+                        document.querySelector('.track-eta').textContent = `ETA: ${eta} mins`;
+                    }
+                }, 60000); // Update every minute
+            }
+        }
+
+        // Book car function is now defined in the booking type modal section
+
+        // CTA button functionality
+        document.querySelector('.cta-button').addEventListener('click', function() {
+            document.querySelector('.cars-section').scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+        // Add this validation code to your existing script section
+
+// Email validation function
+function validateEmail(email) {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+}
+
+// Phone validation function
+function validatePhone(phone) {
+    const phoneRegex = /^[0-9]{10}$/;
+    return phoneRegex.test(phone);
+}
+
+        // Enhanced Terms & Conditions validation function
+        function validateTermsAndConditions() {
+            const roleSelect = document.getElementById('signupRole');
+            const termsCheckbox = document.getElementById('termsCheckbox');
+            const termsGroup = document.getElementById('termsGroup');
+            const validationMessage = document.getElementById('termsValidationMessage');
+            
+            if (!roleSelect || !termsCheckbox || !termsGroup || !validationMessage) return true;
+            
+            const role = roleSelect.value;
+            const isVisible = (role === 'customer' || role === 'rider' || role === 'vendor');
+            
+            // Clear previous states
+            termsGroup.classList.remove('invalid', 'valid', 'warning');
+            validationMessage.classList.remove('error', 'success');
+            validationMessage.style.display = 'none';
+            
+            if (isVisible) {
+                if (termsCheckbox.checked) {
+                    // Valid state - T&C accepted
+                    termsGroup.classList.add('valid');
+                    validationMessage.textContent = '✓ Terms & Conditions accepted';
+                    validationMessage.classList.add('success');
+                    validationMessage.style.display = 'block';
+                    
+                    // Hide success message after 2 seconds
+                    setTimeout(() => {
+                        validationMessage.style.display = 'none';
+                    }, 2000);
+                    
+                    return true;
+                } else {
+                    // Invalid state - T&C not accepted
+                    termsGroup.classList.add('invalid');
+                    validationMessage.textContent = '⚠️ You must accept the Terms & Conditions and Privacy Policy';
+                    validationMessage.classList.add('error');
+                    validationMessage.style.display = 'block';
+                    return false;
+                }
+            } else {
+                // Reset to neutral state for admin or no role selected
+                termsGroup.style.borderColor = '#333';
+                termsGroup.style.backgroundColor = 'rgba(255, 215, 0, 0.05)';
+            }
+            
+            return true; // Not applicable for admin role
+        }
+
+        // Password validation function
+        function validatePassword() {
+            const password = document.getElementById('signupPassword');
+            const confirmPassword = document.getElementById('confirmPassword');
+            const errorDiv = document.getElementById('passwordMatchError');
+            
+            if (!password || !confirmPassword || !errorDiv) return true;
+            
+            // Clear previous error
+            errorDiv.style.display = 'none';
+            password.style.borderColor = '';
+            confirmPassword.style.borderColor = '';
+            
+            // Check if both fields have values
+            if (password.value === '' || confirmPassword.value === '') {
+                return true; // Don't show error for empty fields
+            }
+            
+            // Check if passwords match
+            if (password.value !== confirmPassword.value) {
+                errorDiv.textContent = '❌ Passwords do not match. Please check and try again.';
+                errorDiv.style.display = 'block';
+                password.style.borderColor = '#ff4444';
+                confirmPassword.style.borderColor = '#ff4444';
+                return false;
+            } else {
+                errorDiv.textContent = '✅ Passwords match!';
+                errorDiv.style.color = '#28a745';
+                errorDiv.style.display = 'block';
+                password.style.borderColor = '#28a745';
+                confirmPassword.style.borderColor = '#28a745';
+                
+                // Hide success message after 2 seconds
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                    errorDiv.style.color = '#ff4444'; // Reset color for next error
+                }, 2000);
+                
+                return true;
+            }
+        }
+        
+        // Enhanced Terms validation with better messaging
+        function validateTermsWithMessage() {
+            const roleSelect = document.getElementById('signupRole');
+            const termsCheckbox = document.getElementById('termsCheckbox');
+            const termsError = document.getElementById('termsError');
+            
+            if (!roleSelect || !termsCheckbox || !termsError) return true;
+            
+            const role = roleSelect.value;
+            
+            // Clear previous error
+            termsError.style.display = 'none';
+            
+            // Only validate for customers, riders, and vendors
+            if (role === 'customer' || role === 'rider' || role === 'vendor') {
+                if (!termsCheckbox.checked) {
+                    termsError.innerHTML = '📋 <strong>Please check this box</strong><br>You must agree to the Terms & Conditions to create your account.';
+                    termsError.style.display = 'block';
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        // Initialize real-time validation for all form inputs
+        function initializeFormValidation() {
+            const emailInputs = document.querySelectorAll('input[type="email"]');
+            const phoneInputs = document.querySelectorAll('input[type="tel"]');
+            
+            // Email validation
+            emailInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    const email = this.value;
+                    if (email && !validateEmail(email)) {
+                        this.setCustomValidity('Please enter a valid email address');
+                        this.style.borderColor = '#ff4444';
+                    } else {
+                        this.setCustomValidity('');
+                        this.style.borderColor = '';
+                    }
+                });
+                
+                input.addEventListener('blur', function() {
+                    if (this.value && !validateEmail(this.value)) {
+                        this.style.borderColor = '#ff4444';
+                    }
+                });
+                
+                input.addEventListener('focus', function() {
+                    this.style.borderColor = '#FFD700';
+                });
+            });
+            
+            // Phone validation
+            phoneInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    // Remove non-numeric characters
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                    
+                    const phone = this.value;
+                    if (phone && !validatePhone(phone)) {
+                        this.setCustomValidity('Please enter a valid 10-digit phone number');
+                        this.style.borderColor = '#ff4444';
+                    } else {
+                        this.setCustomValidity('');
+                        this.style.borderColor = '';
+                    }
+                });
+                
+                input.addEventListener('blur', function() {
+                    if (this.value && !validatePhone(this.value)) {
+                        this.style.borderColor = '#ff4444';
+                    }
+                });
+                
+                input.addEventListener('focus', function() {
+                    this.style.borderColor = '#FFD700';
+                });
+            });
+            
+            // Terms & Conditions real-time validation
+            const termsCheckbox = document.getElementById('termsCheckbox');
+            const termsGroup = document.getElementById('termsGroup');
+            
+            if (termsCheckbox && termsGroup) {
+                // Real-time validation on checkbox change
+                termsCheckbox.addEventListener('change', function() {
+                    validateTermsAndConditions();
+                });
+                
+                // Validation on form interaction
+                termsCheckbox.addEventListener('focus', function() {
+                    if (termsGroup.style.display !== 'none') {
+                        termsGroup.style.borderColor = '#FFD700';
+                    }
+                });
+                
+                termsCheckbox.addEventListener('blur', function() {
+                    setTimeout(() => validateTermsAndConditions(), 100);
+                });
+            }
+            
+            // Password matching validation
+            const signupPassword = document.getElementById('signupPassword');
+            const confirmPassword = document.getElementById('confirmPassword');
+            
+            if (signupPassword && confirmPassword) {
+                // Real-time validation on password input
+                confirmPassword.addEventListener('input', function() {
+                    validatePassword();
+                });
+                
+                signupPassword.addEventListener('input', function() {
+                    // Only validate if confirm password has content
+                    if (confirmPassword.value) {
+                        validatePassword();
+                    }
+                });
+                
+                // Validation on blur
+                confirmPassword.addEventListener('blur', function() {
+                    validatePassword();
+                });
+            }
+        }
+
+// Enhanced signup form handler with validation and smooth login transition
+
+        // Login form handler integrated with user profile functionality
+    </script>
+    
+    <!-- Booking Type Selection Modal -->
+    <div id="bookingTypeModal" class="booking-type-modal">
+        <div class="booking-type-overlay" onclick="closeBookingTypeModal()"></div>
+        <div class="booking-type-content">
+            <div class="booking-type-header">
+                <h2>Choose Your Booking Type</h2>
+                <button class="close-btn" onclick="closeBookingTypeModal()">×</button>
+            </div>
+            
+            <div class="booking-type-options">
+                <!-- Rider Assisted Option -->
+                <div class="booking-option" id="rider-assisted" onclick="selectBookingType('rider-assisted')">
+                    <div class="option-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="m22 2-5 10-5-5-10 5"></path>
+                        </svg>
+                    </div>
+                    <div class="option-content">
+                        <h3>🚖 Rider Assisted</h3>
+                        <p><strong>Professional Driver Included</strong></p>
+                        <ul>
+                            <li>✓ Professional chauffeur service</li>
+                            <li>✓ Pick-up and drop-off at your location</li>
+                            <li>✓ No driving license required</li>
+                            <li>✓ Fuel and maintenance included</li>
+                            <li>✓ Door-to-door service</li>
+                            <li>✓ Experienced local drivers</li>
+                        </ul>
+                        <div class="pricing-badge">+$50/day for driver service</div>
+                    </div>
+                    <div class="option-select">
+                        <div class="select-indicator"></div>
+                    </div>
+                </div>
+                
+                <!-- Self Drive Option -->
+                <div class="booking-option" id="self-drive" onclick="selectBookingType('self-drive')">
+                    <div class="option-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9L18 10h-1.3l-1.4-2.9A1 1 0 0 0 14.5 6h-5c-.4 0-.8.2-.9.6L7.2 10H6l-2.5 1.1c-.8.2-1.5 1-1.5 1.9v3c0 .6.4 1 1 1h2"></path>
+                            <circle cx="7" cy="17" r="2"></circle>
+                            <path d="M9 17h6"></path>
+                            <circle cx="17" cy="17" r="2"></circle>
+                        </svg>
+                    </div>
+                    <div class="option-content">
+                        <h3>🚗 Self Drive</h3>
+                        <p><strong>Drive Yourself</strong></p>
+                        <ul>
+                            <li>✓ Complete freedom and flexibility</li>
+                            <li>✓ Pick-up from our locations</li>
+                            <li>✓ Valid driving license required</li>
+                            <li>✓ Comprehensive insurance included</li>
+                            <li>✓ 24/7 roadside assistance</li>
+                            <li>✓ Meet car owners directly</li>
+                        </ul>
+                        <div class="pricing-badge">Base rental price only</div>
+                    </div>
+                    <div class="option-select">
+                        <div class="select-indicator"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="booking-type-footer">
+                <button id="proceedBookingBtn" class="proceed-btn" disabled onclick="proceedToBooking()">
+                    Continue to Booking
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbot HTML Structure -->
+    <div id="chatbot-container">
+        <!-- Chatbot Toggle Button -->
+        <div id="chatbot-toggle">
+            <svg id="chatbot-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <svg id="close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </div>
+        
+        <!-- Chatbot Window -->
+        <div id="chatbot-window" class="chatbot-hidden">
+            <!-- Header -->
+            <div class="chatbot-header">
+                <div class="chatbot-avatar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                        <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                        <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                    </svg>
+                </div>
+                <div class="chatbot-info">
+                    <div class="chatbot-name">Elite Assistant</div>
+                    <div class="chatbot-status">Online • Always here to help</div>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <button class="quick-action-btn" onclick="handleQuickAction('booking')">
+                    🚗 Book a Car
+                </button>
+                <button class="quick-action-btn" onclick="handleQuickAction('cancel')">
+                    ❌ Cancel Booking
+                </button>
+                <button class="quick-action-btn" onclick="handleQuickAction('faq')">
+                    ❓ FAQs
+                </button>
+                <button class="quick-action-btn" onclick="handleQuickAction('support')">
+                    💬 Live Support
+                </button>
+            </div>
+            
+            <!-- Messages Container -->
+            <div id="chatbot-messages">
+                <div class="message bot-message">
+                    <div class="message-avatar">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                        </svg>
+                    </div>
+                    <div class="message-content">
+                        <p>👋 Hello! I'm your Elite Rentals assistant. How can I help you today?</p>
+                        <div class="message-time"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Input Area -->
+            <div class="chatbot-input-area">
+                <input type="text" id="chatbot-input" placeholder="Type your message..." maxlength="500">
+                <button id="chatbot-send">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22,2 15,22 11,13 2,9 22,2"></polygon>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Chatbot Styles -->
+    <style>
+        #chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 10000;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        #chatbot-toggle {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #chatbot-toggle::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.5s;
+        }
+        
+        #chatbot-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(255, 215, 0, 0.5);
+        }
+        
+        #chatbot-toggle:hover::before {
+            transform: translateX(100%);
+        }
+        
+        #chatbot-toggle svg {
+            width: 28px;
+            height: 28px;
+            color: #000;
+            transition: all 0.3s ease;
+        }
+        
+        #chatbot-window {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 380px;
+            height: 500px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: bottom right;
+        }
+        
+        .chatbot-hidden {
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0.8) translateY(20px);
+        }
+        
+        .chatbot-header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .chatbot-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .chatbot-avatar svg {
+            width: 22px;
+            height: 22px;
+            color: #000;
+        }
+        
+        .chatbot-name {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 2px;
+        }
+        
+        .chatbot-status {
+            font-size: 12px;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .chatbot-status::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #4CAF50;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .quick-actions {
+            padding: 16px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .quick-action-btn {
+            padding: 8px 12px;
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+        
+        .quick-action-btn:hover {
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            border-color: #FFD700;
+            color: #000;
+            transform: translateY(-1px);
+        }
+        
+        #chatbot-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .message {
+            display: flex;
+            gap: 10px;
+            max-width: 85%;
+        }
+        
+        .user-message {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+        
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .bot-message .message-avatar {
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+        }
+        
+        .bot-message .message-avatar svg {
+            width: 16px;
+            height: 16px;
+            color: #000;
+        }
+        
+        .user-message .message-avatar {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .message-content {
+            background: #f8f9fa;
+            padding: 12px 16px;
+            border-radius: 16px;
+            position: relative;
+        }
+        
+        .user-message .message-content {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+        }
+        
+        .message-content p {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.4;
+            color: #2c3e50;
+        }
+        
+        .user-message .message-content p {
+            color: white;
+        }
+        
+        .message-time {
+            font-size: 10px;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+        
+        .chatbot-input-area {
+            padding: 16px;
+            background: #f8f9fa;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        #chatbot-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #e9ecef;
+            border-radius: 24px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        
+        #chatbot-input:focus {
+            border-color: #FFD700;
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+        }
+        
+        #chatbot-send {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        #chatbot-send:hover {
+            transform: scale(1.05);
+        }
+        
+        #chatbot-send:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        #chatbot-send svg {
+            width: 18px;
+            height: 18px;
+            color: #000;
+        }
+        
+        /* Scrollbar for messages */
+        #chatbot-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        #chatbot-messages::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        #chatbot-messages::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+        
+        #chatbot-messages::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+        
+        /* Typing indicator */
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 12px 16px;
+        }
+        
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: #999;
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+        
+        .typing-dot:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+        
+        @keyframes typing {
+            0%, 80%, 100% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 480px) {
+            #chatbot-window {
+                width: calc(100vw - 40px);
+                height: calc(100vh - 120px);
+                bottom: 80px;
+                right: 20px;
+                left: 20px;
+            }
+            
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    
+    <!-- Chatbot JavaScript -->
+    <script>
+        class EliteChatbot {
+            constructor() {
+                this.isOpen = false;
+                this.currentContext = null;
+                this.userHistory = [];
+                this.init();
+            }
+            
+            init() {
+                this.setupEventListeners();
+                this.updateMessageTime();
+            }
+            
+            setupEventListeners() {
+                const toggle = document.getElementById('chatbot-toggle');
+                const input = document.getElementById('chatbot-input');
+                const sendBtn = document.getElementById('chatbot-send');
+                
+                toggle.addEventListener('click', () => this.toggleChat());
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.sendMessage();
+                    }
+                });
+                sendBtn.addEventListener('click', () => this.sendMessage());
+            }
+            
+            toggleChat() {
+                const window = document.getElementById('chatbot-window');
+                const chatIcon = document.getElementById('chatbot-icon');
+                const closeIcon = document.getElementById('close-icon');
+                
+                this.isOpen = !this.isOpen;
+                
+                if (this.isOpen) {
+                    window.classList.remove('chatbot-hidden');
+                    chatIcon.style.display = 'none';
+                    closeIcon.style.display = 'block';
+                    document.getElementById('chatbot-input').focus();
+                } else {
+                    window.classList.add('chatbot-hidden');
+                    chatIcon.style.display = 'block';
+                    closeIcon.style.display = 'none';
+                }
+            }
+            
+            sendMessage() {
+                const input = document.getElementById('chatbot-input');
+                const message = input.value.trim();
+                
+                if (!message) return;
+                
+                this.addMessage(message, 'user');
+                input.value = '';
+                
+                // Show typing indicator
+                this.showTyping();
+                
+                // Process message and respond
+                setTimeout(() => {
+                    this.hideTyping();
+                    this.processMessage(message);
+                }, 1000 + Math.random() * 1000);
+            }
+            
+            addMessage(content, sender) {
+                const messagesContainer = document.getElementById('chatbot-messages');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender}-message`;
+                
+                const avatarDiv = document.createElement('div');
+                avatarDiv.className = 'message-avatar';
+                
+                if (sender === 'user') {
+                    avatarDiv.textContent = 'U';
+                } else {
+                    avatarDiv.innerHTML = `
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                        </svg>
+                    `;
+                }
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'message-content';
+                contentDiv.innerHTML = `
+                    <p>${content}</p>
+                    <div class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                `;
+                
+                messageDiv.appendChild(avatarDiv);
+                messageDiv.appendChild(contentDiv);
+                messagesContainer.appendChild(messageDiv);
+                
+                // Scroll to bottom
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+            
+            showTyping() {
+                const messagesContainer = document.getElementById('chatbot-messages');
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'message bot-message';
+                typingDiv.id = 'typing-indicator';
+                
+                typingDiv.innerHTML = `
+                    <div class="message-avatar">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                        </svg>
+                    </div>
+                    <div class="message-content">
+                        <div class="typing-indicator">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+                `;
+                
+                messagesContainer.appendChild(typingDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+            
+            hideTyping() {
+                const typingIndicator = document.getElementById('typing-indicator');
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                }
+            }
+            
+            processMessage(message) {
+                const lowerMessage = message.toLowerCase();
+                let response = '';
+                
+                // FAQ Responses
+                if (lowerMessage.includes('price') || lowerMessage.includes('cost') || lowerMessage.includes('rate')) {
+                    response = `💰 Our pricing varies by vehicle type:<br><br>
+                    • Economy: $25-35/day<br>
+                    • Luxury: $80-150/day<br>
+                    • Sports: $200-400/day<br>
+                    • SUV: $60-120/day<br><br>
+                    Would you like me to show you our current available cars with exact pricing?`;
+                    
+                } else if (lowerMessage.includes('cancel') || lowerMessage.includes('cancellation')) {
+                    response = `❌ <strong>Cancellation Policy:</strong><br><br>
+                    • Free cancellation up to 24 hours before pickup<br>
+                    • 50% refund for cancellations 12-24 hours before<br>
+                    • No refund for cancellations less than 12 hours<br><br>
+                    Do you need help canceling an existing booking? Please provide your booking reference number.`;
+                    
+                } else if (lowerMessage.includes('book') || lowerMessage.includes('rent') || lowerMessage.includes('reserve')) {
+                    response = `🚗 <strong>Ready to book a car?</strong><br><br>
+                    I can help you get started! Here's what I need:<br><br>
+                    1. What type of car are you looking for?<br>
+                    2. When do you need it?<br>
+                    3. How long will you need it?<br><br>
+                    Or click the "Book a Car" button above to browse our available vehicles!`;
+                    
+                } else if (lowerMessage.includes('location') || lowerMessage.includes('pickup') || lowerMessage.includes('where')) {
+                    response = `📍 <strong>Pickup Locations:</strong><br><br>
+                    • Downtown Elite Hub - 123 Business District<br>
+                    • Airport Terminal - International Arrivals<br>
+                    • City Center Plaza - Main Street<br>
+                    • Hotel District - Tourism Avenue<br><br>
+                    We also offer free delivery within 10 miles for premium bookings!`;
+                    
+                } else if (lowerMessage.includes('document') || lowerMessage.includes('license') || lowerMessage.includes('requirement')) {
+                    response = `📋 <strong>Required Documents:</strong><br><br>
+                    • Valid driver's license (minimum 2 years)<br>
+                    • Credit/debit card for security deposit<br>
+                    • Government-issued photo ID<br>
+                    • International visitors: IDP required<br><br>
+                    Age requirement: 21+ (25+ for luxury/sports cars)`;
+                    
+                } else if (lowerMessage.includes('insurance') || lowerMessage.includes('coverage')) {
+                    response = `🛡️ <strong>Insurance Options:</strong><br><br>
+                    • Basic Coverage: Included free<br>
+                    • Premium Protection: +$15/day<br>
+                    • Full Coverage: +$25/day<br>
+                    • Personal Items Coverage: +$5/day<br><br>
+                    All rentals include 24/7 roadside assistance!`;
+                    
+                } else if (lowerMessage.includes('fuel') || lowerMessage.includes('gas') || lowerMessage.includes('petrol')) {
+                    response = `⛽ <strong>Fuel Policy:</strong><br><br>
+                    • Pick up with full tank, return with full tank<br>
+                    • Refueling service available: $3.50/gallon + $15 service fee<br>
+                    • Nearest gas stations provided with booking<br><br>
+                    Electric vehicles come fully charged with charging locations mapped!`;
+                    
+                } else if (lowerMessage.includes('support') || lowerMessage.includes('help') || lowerMessage.includes('contact')) {
+                    response = `💬 <strong>Contact Support:</strong><br><br>
+                    • 24/7 Phone: +1-800-ELITE-RENT<br>
+                    • Email: support@eliterentals.com<br>
+                    • Live Chat: Available now<br>
+                    • Emergency Roadside: +1-800-HELP-NOW<br><br>
+                    Average response time: Under 2 minutes!`;
+                    
+                } else if (lowerMessage.includes('hours') || lowerMessage.includes('time') || lowerMessage.includes('open')) {
+                    response = `🕐 <strong>Operating Hours:</strong><br><br>
+                    • Downtown Hub: 6:00 AM - 11:00 PM<br>
+                    • Airport Terminal: 24/7<br>
+                    • City Center: 7:00 AM - 10:00 PM<br>
+                    • Hotel District: 6:00 AM - 11:00 PM<br><br>
+                    Online booking and support available 24/7!`;
+                    
+                } else if (lowerMessage.includes('addon') || lowerMessage.includes('extra') || lowerMessage.includes('gps')) {
+                    response = `🎯 <strong>Available Add-ons:</strong><br><br>
+                    • GPS Navigation: $5/day<br>
+                    • Child Safety Seat: $8/day<br>
+                    • Additional Driver: $10/day<br>
+                    • WiFi Hotspot: $7/day<br>
+                    • Ski Rack/Bike Rack: $12/day<br><br>
+                    Add these during booking or call to modify existing reservations!`;
+                    
+                } else if (lowerMessage.includes('loyalty') || lowerMessage.includes('member') || lowerMessage.includes('reward')) {
+                    response = `⭐ <strong>Elite Rewards Program:</strong><br><br>
+                    • Silver: 5% off after 3 bookings<br>
+                    • Gold: 10% off after 10 bookings<br>
+                    • Platinum: 15% off after 20 bookings<br><br>
+                    Benefits include free upgrades, priority support, and exclusive vehicles!`;
+                    
+                } else if (lowerMessage.includes('hi') || lowerMessage.includes('hello') || lowerMessage.includes('hey')) {
+                    response = `👋 Hello! Welcome to Elite Rentals! I'm here to help you with:<br><br>
+                    • Finding and booking the perfect car<br>
+                    • Answering questions about our services<br>
+                    • Helping with cancellations or changes<br>
+                    • Providing pricing and availability<br><br>
+                    What can I assist you with today?`;
+                    
+                } else {
+                    // Default response with helpful suggestions
+                    response = `🤔 I'd be happy to help! Here are some things I can assist you with:<br><br>
+                    • <strong>Booking:</strong> "I want to book a car"<br>
+                    • <strong>Pricing:</strong> "What are your rates?"<br>
+                    • <strong>Locations:</strong> "Where can I pick up?"<br>
+                    • <strong>Cancellations:</strong> "How do I cancel?"<br>
+                    • <strong>Support:</strong> "I need help"<br><br>
+                    Or try the quick action buttons above! 😊`;
+                }
+                
+                this.addMessage(response, 'bot');
+                this.userHistory.push(message);
+            }
+            
+            updateMessageTime() {
+                const timeElement = document.querySelector('.bot-message .message-time');
+                if (timeElement) {
+                    timeElement.textContent = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                }
+            }
+        }
+        
+        // Quick action handlers
+        function handleQuickAction(action) {
+            const chatbot = window.eliteChatbot;
+            
+            switch(action) {
+                case 'booking':
+                    chatbot.addMessage('I want to book a car', 'user');
+                    setTimeout(() => {
+                        chatbot.addMessage(`🚗 <strong>Great choice!</strong> Let me help you find the perfect vehicle.<br><br>
+                        I can redirect you to our booking page where you can:<br><br>
+                        • Browse available cars with real-time pricing<br>
+                        • Select pickup/return dates and locations<br>
+                        • Choose add-ons and extras<br>
+                        • Complete your reservation securely<br><br>
+                        <a href="index.html#fleet" style="color: #007bff; text-decoration: underline;">Click here to browse our fleet</a> or tell me what type of car you're looking for!`, 'bot');
+                    }, 500);
+                    break;
+                    
+                case 'cancel':
+                    chatbot.addMessage('I need to cancel my booking', 'user');
+                    setTimeout(() => {
+                        chatbot.addMessage(`❌ <strong>Cancellation Help</strong><br><br>
+                        I can help you cancel your booking. I'll need:<br><br>
+                        • Your booking reference number<br>
+                        • Email address used for booking<br><br>
+                        <strong>Cancellation Policy:</strong><br>
+                        • Free: 24+ hours before pickup<br>
+                        • 50% refund: 12-24 hours before<br>
+                        • No refund: Less than 12 hours<br><br>
+                        Please share your booking reference to proceed.`, 'bot');
+                    }, 500);
+                    break;
+                    
+                case 'faq':
+                    chatbot.addMessage('Show me frequently asked questions', 'user');
+                    setTimeout(() => {
+                        chatbot.addMessage(`❓ <strong>Frequently Asked Questions</strong><br><br>
+                        <strong>Popular Questions:</strong><br>
+                        • "What are your prices?" - Pricing info<br>
+                        • "Where can I pick up?" - Location details<br>
+                        • "What documents do I need?" - Requirements<br>
+                        • "How do I cancel?" - Cancellation policy<br>
+                        • "Do you have insurance?" - Coverage options<br>
+                        • "What add-ons are available?" - Extras info<br><br>
+                        Just ask me any of these questions or type what you'd like to know!`, 'bot');
+                    }, 500);
+                    break;
+                    
+                case 'support':
+                    chatbot.addMessage('I need to speak with support', 'user');
+                    setTimeout(() => {
+                        chatbot.addMessage(`💬 <strong>Live Support Options</strong><br><br>
+                        <strong>Immediate Help:</strong><br>
+                        • Phone: <a href="tel:+18003548373" style="color: #007bff;">+1-800-ELITE-RENT</a><br>
+                        • Email: support@eliterentals.com<br>
+                        • Emergency: +1-800-HELP-NOW<br><br>
+                        <strong>Response Times:</strong><br>
+                        • Phone: Immediate<br>
+                        • Email: Within 1 hour<br>
+                        • Chat: Average 2 minutes<br><br>
+                        I'm also here to help with most questions! What do you need assistance with?`, 'bot');
+                    }, 500);
+                    break;
+            }
+        }
+        
+        // Initialize chatbot when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            window.eliteChatbot = new EliteChatbot();
+            
+            // Add floating animation to the toggle button
+            const toggle = document.getElementById('chatbot-toggle');
+            setInterval(() => {
+                if (!window.eliteChatbot.isOpen) {
+                    toggle.style.animation = 'none';
+                    toggle.offsetHeight; // Trigger reflow
+                    toggle.style.animation = 'float 3s ease-in-out infinite';
+                }
+            }, 10000);
+        });
+        
+        // Add CSS animation for floating effect
+        const floatAnimation = `
+            @keyframes float {
+                0%, 100% { transform: translateY(0px) scale(1); }
+                50% { transform: translateY(-5px) scale(1.02); }
+            }
+        `;
+        
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = floatAnimation;
+        document.head.appendChild(styleSheet);
+    </script>
+    
+    <!-- Booking Type Modal Styles -->
+    <style>
+        .booking-type-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 20000;
+        }
+        
+        .booking-type-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+        
+        .booking-type-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        
+        .booking-type-header {
+            padding: 30px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            border-radius: 20px 20px 0 0;
+        }
+        
+        .booking-type-header h2 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 32px;
+            color: white;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(90deg);
+        }
+        
+        .booking-type-options {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        
+        .booking-option {
+            border: 3px solid #e9ecef;
+            border-radius: 16px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            background: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 320px;
+        }
+        
+        .booking-option:hover {
+            border-color: #FFD700;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+        }
+        
+        .booking-option.selected {
+            border-color: #FFD700;
+            background: linear-gradient(135deg, #fff9e6, #fff3cd);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.3);
+        }
+        
+        .option-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .option-icon svg {
+            width: 30px;
+            height: 30px;
+            color: #000;
+        }
+        
+        .option-content h3 {
+            margin: 0 0 10px 0;
+            font-size: 22px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        
+        .option-content p {
+            margin: 0 0 15px 0;
+            color: #6c757d;
+            font-weight: 600;
+        }
+        
+        .option-content ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+        }
+        
+        .option-content li {
+            margin-bottom: 8px;
+            color: #495057;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .pricing-badge {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .option-select {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 25px;
+            height: 25px;
+            border: 2px solid #ccc;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .booking-option.selected .option-select {
+            border-color: #FFD700;
+            background: #FFD700;
+        }
+        
+        .select-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .booking-option.selected .select-indicator {
+            opacity: 1;
+        }
+        
+        .booking-type-footer {
+            padding: 25px 30px;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: center;
+            background: #f8f9fa;
+            border-radius: 0 0 20px 20px;
+        }
+        
+        .proceed-btn {
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            color: #000;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            min-width: 200px;
+        }
+        
+        .proceed-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+        
+        .proceed-btn:disabled {
+            background: #ccc;
+            color: #666;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .booking-type-content {
+                width: 95%;
+                max-height: 95vh;
+            }
+            
+            .booking-type-options {
+                grid-template-columns: 1fr;
+                padding: 20px;
+                gap: 20px;
+            }
+            
+            .booking-type-header {
+                padding: 20px;
+            }
+            
+            .booking-type-header h2 {
+                font-size: 24px;
+            }
+            
+            .booking-option {
+                padding: 20px;
+                min-height: 280px;
+            }
+            
+            .option-content h3 {
+                font-size: 20px;
+            }
+        }
+        
+        /* Show modal */
+        .booking-type-modal.show {
+            display: block;
+        }
+    </style>
+    
+    <!-- Booking Type Modal JavaScript -->
+    <script>
+        let selectedBookingType = null;
+        let selectedCarName = null;
+        
+        // Open booking type modal
+        function openBookingTypeModal(carName) {
+            selectedCarName = carName;
+            const modal = document.getElementById('bookingTypeModal');
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            
+            // Reset selections
+            selectedBookingType = null;
+            document.querySelectorAll('.booking-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            document.getElementById('proceedBookingBtn').disabled = true;
+        }
+        
+        // Close booking type modal
+        function closeBookingTypeModal() {
+            const modal = document.getElementById('bookingTypeModal');
+            modal.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Select booking type
+        function selectBookingType(type) {
+            selectedBookingType = type;
+            
+            // Remove previous selections
+            document.querySelectorAll('.booking-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selection to chosen option
+            document.getElementById(type).classList.add('selected');
+            
+            // Enable proceed button
+            document.getElementById('proceedBookingBtn').disabled = false;
+        }
+        
+        // Proceed to booking
+        function proceedToBooking() {
+            if (!selectedBookingType || !selectedCarName) return;
+            
+            // Store booking type in sessionStorage for the booking page
+            sessionStorage.setItem('bookingType', selectedBookingType);
+            
+            // Close modal
+            closeBookingTypeModal();
+            
+            // Redirect to booking page with parameters
+            const bookingUrl = `booking.html?car=${encodeURIComponent(selectedCarName)}&type=${selectedBookingType}`;
+            window.location.href = bookingUrl;
+        }
+        
+        // Modified bookCar function to open modal instead of direct redirect
+        function bookCar(carName) {
+            openBookingTypeModal(carName);
+        }
+        
+        // Close modal when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('booking-type-overlay')) {
+                closeBookingTypeModal();
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('bookingTypeModal').classList.contains('show')) {
+                closeBookingTypeModal();
+            }
+        });
+    </script>
+</body>
+</html>

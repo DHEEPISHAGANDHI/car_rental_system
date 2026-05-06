@@ -1,0 +1,3365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Your Car - Elite Rentals</title>
+    <meta name="description" content="Complete your luxury car rental booking with Elite Rentals">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Leaflet Map Library (Open Source Alternative) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #111;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #FFD700;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FFC107;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        .header {
+            padding: 2rem 0;
+            background: linear-gradient(180deg, #000000 0%, #0a0a0a 100%);
+            border-bottom: 1px solid #333;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #FFD700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .back-button {
+            background: transparent;
+            color: #ffffff;
+            border: 1px solid #333;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-button:hover {
+            border-color: #FFD700;
+            color: #FFD700;
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        .booking-container {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 3rem;
+            padding: 3rem 0;
+            min-height: calc(100vh - 200px);
+        }
+
+        .booking-form {
+            background: #0a0a0a;
+            border-radius: 20px;
+            padding: 2.5rem;
+            border: 1px solid #333;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #FFD700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .section-icon {
+            width: 1.5rem;
+            height: 1.5rem;
+            color: #FFD700;
+        }
+
+        /* Car Confirmation */
+        .car-confirmation {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid #333;
+        }
+
+        .car-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .car-info {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex: 1;
+        }
+
+        .car-image {
+            width: 120px;
+            height: 80px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 2px solid #FFD700;
+        }
+
+        .car-details h3 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .car-specs {
+            display: flex;
+            gap: 1rem;
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .change-car-btn {
+            background: transparent;
+            color: #FFD700;
+            border: 1px solid #FFD700;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .change-car-btn:hover {
+            background: #FFD700;
+            color: #000000;
+            transform: translateY(-2px);
+        }
+
+        /* Form Inputs */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #FFD700;
+            box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2);
+        }
+
+        .form-input::placeholder {
+            color: #666;
+        }
+
+        /* Date Picker */
+        .date-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .duration-info {
+            background: #1a1a1a;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .duration-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #FFD700;
+        }
+
+        .estimated-cost {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 0.5rem;
+        }
+
+        /* Live Location Section */
+        .location-section {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #333;
+            margin-top: 1rem;
+        }
+
+        .location-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #FFD700;
+            margin-bottom: 1rem;
+        }
+
+        .location-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .location-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .location-input-group {
+            margin-bottom: 0;
+        }
+
+        .location-input-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .location-display {
+            width: 100%;
+            background: #2a2a2a;
+            border: 1px solid #555;
+            color: #ccc;
+            padding: 0.8rem;
+        }
+
+        .location-buttons-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .location-btn {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA000 100%);
+            color: #000;
+            border: none;
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            min-height: 48px;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .map-btn {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+        }
+
+        .map-btn:hover {
+            background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
+        }
+
+        .location-btn:hover {
+            background: linear-gradient(135deg, #FFA000 0%, #FF8F00 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+        }
+
+        .location-btn:active {
+            transform: translateY(0);
+        }
+
+        .location-btn:disabled {
+            background: #555;
+            color: #888;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        .location-status {
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            padding: 0.5rem;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .location-status.loading {
+            background: rgba(255, 215, 0, 0.1);
+            color: #FFD700;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .location-status.success {
+            background: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+            border: 1px solid rgba(40, 167, 69, 0.3);
+        }
+
+        .location-status.error {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+            border: 1px solid rgba(220, 53, 69, 0.3);
+        }
+
+        .location-coords {
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .coords-info {
+            display: flex;
+            gap: 2rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        .coord-item {
+            color: #FFD700;
+            font-weight: 500;
+        }
+
+        .coord-item span {
+            color: #ccc;
+        }
+
+        /* Add-ons */
+        .addons-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .addon-item {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .addon-item:hover {
+            border-color: #FFD700;
+            transform: translateY(-2px);
+        }
+
+        .addon-item.selected {
+            border-color: #FFD700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .addon-checkbox {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 20px;
+            height: 20px;
+            accent-color: #FFD700;
+        }
+
+        .addon-icon {
+            width: 2rem;
+            height: 2rem;
+            color: #FFD700;
+            margin-bottom: 1rem;
+        }
+
+        .addon-name {
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .addon-price {
+            color: #FFD700;
+            font-weight: 700;
+        }
+
+        /* Promo Code */
+        .promo-section {
+            background: #1a1a1a;
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid #333;
+        }
+
+        .promo-input-group {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .promo-input {
+            flex: 1;
+        }
+
+        .apply-promo-btn {
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            color: #000000;
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .apply-promo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .promo-success {
+            margin-top: 1rem;
+            color: #4CAF50;
+            font-weight: 600;
+            display: none;
+        }
+
+        /* Payment Options */
+        .payment-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .payment-option {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-option:hover {
+            border-color: #FFD700;
+            transform: translateY(-2px);
+        }
+
+        .payment-option.selected {
+            border-color: #FFD700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .payment-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            color: #FFD700;
+            margin-bottom: 0.5rem;
+        }
+
+        .payment-name {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        /* Booking Summary Sidebar */
+        .booking-summary {
+            background: #0a0a0a;
+            border-radius: 20px;
+            padding: 2.5rem;
+            border: 1px solid #333;
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .summary-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #FFD700;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            color: #888;
+            font-weight: 500;
+        }
+
+        .summary-value {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .summary-total {
+            font-size: 1.5rem;
+            color: #FFD700;
+            font-weight: 800;
+        }
+
+        .confirm-booking-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            color: #000000;
+            border: none;
+            padding: 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .confirm-booking-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(255, 215, 0, 0.4);
+        }
+
+        .confirm-booking-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .confirm-booking-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .confirm-booking-btn:hover::before {
+            left: 100%;
+        }
+
+        /* Loading Animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #333;
+            border-top: 4px solid #FFD700;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 2rem;
+        }
+
+        .loading-text {
+            font-size: 1.2rem;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        .footer {
+            background: #0a0a0a;
+            padding: 4rem 0 2rem;
+            border-top: 1px solid #333;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            text-align: center;
+        }
+
+        .footer-brand {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+
+        .footer-brand .highlight {
+            color: #FFD700;
+        }
+
+        .footer-tagline {
+            color: #888;
+            margin-bottom: 3rem;
+        }
+
+        .footer-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-feature {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .footer-icon {
+            width: 3rem;
+            height: 3rem;
+            color: #FFD700;
+            margin-bottom: 1rem;
+        }
+
+        .footer-feature p {
+            color: #cccccc;
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            color: #666;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .booking-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .booking-summary {
+                position: static;
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .booking-form,
+            .booking-summary {
+                padding: 1.5rem;
+            }
+
+            .car-info {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .car-image {
+                width: 100px;
+                height: 70px;
+            }
+
+            .form-row,
+            .date-group,
+            .addons-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .location-input-container {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .location-buttons-group {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .location-btn {
+                width: 100%;
+                justify-content: center;
+                min-width: auto;
+            }
+
+            .coords-info {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+
+            .payment-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .promo-input-group {
+                flex-direction: column;
+            }
+
+            .footer-features {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        /* Selection */
+        ::selection {
+            background-color: #FFD700;
+            color: #000000;
+        }
+
+        /* File upload styling */
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload input[type=file] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-label {
+            display: block;
+            padding: 1rem;
+            background: #1a1a1a;
+            border: 1px dashed #333;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #888;
+        }
+
+        .file-upload-label:hover {
+            border-color: #FFD700;
+            color: #FFD700;
+        }
+
+        .file-upload.has-file .file-upload-label {
+            border-color: #FFD700;
+            color: #FFD700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        /* Booking Type Display Styles */
+        .booking-type-display {
+            margin-top: 1rem;
+        }
+
+        .type-card {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border: 2px solid #FFD700;
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .type-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .type-icon svg {
+            width: 24px;
+            height: 24px;
+            color: #000;
+        }
+
+        .type-info {
+            flex-grow: 1;
+        }
+
+        .type-info h3 {
+            color: #FFD700;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .type-info p {
+            color: #cccccc;
+            font-size: 0.9rem;
+        }
+
+        .type-price {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #FFD700;
+        }
+
+        /* Vendor/Owner Details Styles */
+        .vendor-card, .rider-card {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .vendor-card, .rider-card {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .vendor-avatar, .rider-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 3px solid #FFD700;
+        }
+
+        .vendor-avatar img, .rider-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .vendor-info, .rider-info {
+            flex-grow: 1;
+        }
+
+        .vendor-header, .rider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .vendor-header h3, .rider-header h3 {
+            color: #FFD700;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .vendor-rating, .rider-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .rating-stars {
+            display: flex;
+            gap: 2px;
+        }
+
+        .star {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .star.filled {
+            color: #FFD700;
+        }
+
+        .rating-text {
+            color: #cccccc;
+            font-size: 0.9rem;
+        }
+
+        .vendor-details, .rider-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .detail-label {
+            color: #999;
+            font-size: 0.9rem;
+            min-width: 120px;
+        }
+
+        .detail-value {
+            color: #ffffff;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .vendor-badges, .rider-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .badge {
+            background: linear-gradient(135deg, #333, #444);
+            color: #ffffff;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: 1px solid #555;
+        }
+
+        .badge.verified {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            border-color: #28a745;
+        }
+
+        .badge.premium {
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            color: #000;
+            border-color: #FFD700;
+        }
+
+        .badge.insurance, .badge.safe {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            border-color: #007bff;
+        }
+
+        .badge.professional {
+            background: linear-gradient(135deg, #6f42c1, #563d7c);
+            border-color: #6f42c1;
+        }
+
+        /* Responsive Design for new sections */
+        @media (max-width: 768px) {
+            .vendor-card, .rider-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .vendor-avatar, .rider-avatar {
+                align-self: center;
+            }
+
+            .vendor-header, .rider-header {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .vendor-details, .rider-details {
+                grid-template-columns: 1fr;
+            }
+
+            .type-card {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="brand">ELITE RENTALS</div>
+                <a href="index.html" class="back-button">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="15,18 9,12 15,6"></polyline>
+                    </svg>
+                    Back to Fleet
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="booking-container">
+            <!-- Booking Form -->
+            <div class="booking-form">
+                <!-- Car Confirmation -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 17h14l-7-7z"></path>
+                        </svg>
+                        Selected Vehicle
+                    </h2>
+                    <div class="car-confirmation">
+                        <div class="car-header">
+                            <div class="car-info">
+                                <img src="https://images.pexels.com/photos/2920064/pexels-photo-2920064.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Range Rover Velar" class="car-image">
+                                <div class="car-details">
+                                    <h3 id="selected-car-name">Range Rover Velar</h3>
+                                    <div class="car-specs">
+                                        <div class="spec-item">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                                <circle cx="9" cy="7" r="4"></circle>
+                                            </svg>
+                                            <span id="car-seats">5 Seats</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                                <circle cx="12" cy="5" r="2"></circle>
+                                            </svg>
+                                            <span id="car-fuel">Petrol</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <polyline points="12,6 12,12 16,14"></polyline>
+                                            </svg>
+                                            <span id="car-transmission">Automatic</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="index.html#cars-section" class="change-car-btn">Change Car</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Booking Type Display -->
+                <div class="section" id="booking-type-section">
+                    <h2 class="section-title">
+                        <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 12l2 2 4-4"></path>
+                            <path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z"></path>
+                        </svg>
+                        Booking Type
+                    </h2>
+                    <div class="booking-type-display">
+                        <div class="type-card" id="booking-type-card">
+                            <div class="type-icon" id="booking-type-icon">
+                                <!-- Icon will be set by JavaScript -->
+                            </div>
+                            <div class="type-info">
+                                <h3 id="booking-type-title">Loading...</h3>
+                                <p id="booking-type-description">Please wait...</p>
+                            </div>
+                            <div class="type-price" id="booking-type-price"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Car Owner/Vendor Details (for Self Drive only) -->
+                <div class="section" id="vendor-details-section" style="display: none;">
+                    <h2 class="section-title">
+                        <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        Car Owner Details
+                    </h2>
+                    <div class="vendor-card">
+                        <div class="vendor-avatar">
+                            <img src="" alt="Owner" id="vendor-avatar" />
+                        </div>
+                        <div class="vendor-info">
+                            <div class="vendor-header">
+                                <h3 id="vendor-name">Loading...</h3>
+                                <div class="vendor-rating">
+                                    <div class="rating-stars">
+                                        <span class="star filled">★</span>
+                                        <span class="star filled">★</span>
+                                        <span class="star filled">★</span>
+                                        <span class="star filled">★</span>
+                                        <span class="star">★</span>
+                                    </div>
+                                    <span class="rating-text" id="vendor-rating">4.8 (127 reviews)</span>
+                                </div>
+                            </div>
+                            <div class="vendor-details">
+                                <div class="detail-row">
+                                    <span class="detail-label">📍 Location:</span>
+                                    <span class="detail-value" id="vendor-location">Loading...</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">📞 Contact:</span>
+                                    <span class="detail-value" id="vendor-phone">Loading...</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">🚗 Total Cars:</span>
+                                    <span class="detail-value" id="vendor-cars">Loading...</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">⏱️ Response Time:</span>
+                                    <span class="detail-value" id="vendor-response">Usually within 15 minutes</span>
+                                </div>
+                            </div>
+                            <div class="vendor-badges">
+                                <span class="badge verified">✓ Verified Owner</span>
+                                <span class="badge premium">⭐ Premium Host</span>
+                                <span class="badge insurance">🛡️ Insured</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rider Details (for Rider Assisted only) -->
+                <div class="section" id="rider-details-section" style="display: none;">
+                    <h2 class="section-title">
+                        <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="m22 2-5 10-5-5-10 5"></path>
+                        </svg>
+                        Your Professional Driver
+                    </h2>
+                    <div class="rider-card">
+                        <div class="rider-avatar">
+                            <img src="" alt="Driver" id="rider-avatar" />
+                        </div>
+                        <div class="rider-info">
+                            <div class="rider-header">
+                                <h3 id="rider-name">Loading...</h3>
+                                <div class="rider-rating">
+                                    <div class="rating-stars">
+                                        <span class="star filled">★</span>
+                                        <span class="star filled">★</span>
+                                        <span class="star filled">★</span>
+                                        <span class="star filled">★</span>
+                                        <span class="star filled">★</span>
+                                    </div>
+                                    <span class="rating-text" id="rider-rating">4.9 (85 trips)</span>
+                                </div>
+                            </div>
+                            <div class="rider-details">
+                                <div class="detail-row">
+                                    <span class="detail-label">🚗 Experience:</span>
+                                    <span class="detail-value" id="rider-experience">Loading...</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">🗣️ Languages:</span>
+                                    <span class="detail-value" id="rider-languages">Loading...</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">📍 Area Knowledge:</span>
+                                    <span class="detail-value" id="rider-area">Loading...</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">🎖️ Specialties:</span>
+                                    <span class="detail-value" id="rider-specialties">Loading...</span>
+                                </div>
+                            </div>
+                            <div class="rider-badges">
+                                <span class="badge verified">✓ Background Verified</span>
+                                <span class="badge safe">🚗 Safe Driver</span>
+                                <span class="badge professional">👔 Professional</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Date & Time Picker -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                        Rental Period
+                    </h2>
+                    <div class="date-group">
+                        <div class="form-group">
+                            <label class="form-label">Pickup Date & Time</label>
+                            <input type="datetime-local" class="form-input" id="pickup-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Return Date & Time</label>
+                            <input type="datetime-local" class="form-input" id="return-date" required>
+                        </div>
+                    </div>
+                    
+                    <!-- Live Location Section -->
+                    <div class="location-section">
+                        <h3 class="location-title">
+                            <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"></path>
+                                <circle cx="12" cy="9" r="2.5"></circle>
+                            </svg>
+                            Your Current Location
+                        </h3>
+                        <div class="location-group">
+                            <div class="form-group location-input-group">
+                                <label class="form-label">Current Address</label>
+                                <div class="location-input-container">
+                                    <input type="text" class="form-input location-display" id="current-location" 
+                                           placeholder="Click 'Get My Location' or 'Select on Map' to set your address" readonly>
+                                    <div class="location-buttons-group">
+                                        <button type="button" class="location-btn" id="get-location-btn" onclick="getCurrentLocation()">
+                                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <polygon points="16.24,7.76 14.12,14.12 7.76,16.24 9.88,9.88"></polygon>
+                                            </svg>
+                                            Get My Location
+                                        </button>
+                                        <button type="button" class="location-btn map-btn" id="map-location-btn" onclick="openLocationMap()">
+                                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                                <circle cx="12" cy="10" r="3"></circle>
+                                            </svg>
+                                            Select on Map
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="location-status" id="location-status"></div>
+                            </div>
+                            <div class="form-group location-coords" id="coordinates-display" style="display: none;">
+                                <label class="form-label">Coordinates</label>
+                                <div class="coords-info">
+                                    <span class="coord-item">Lat: <span id="latitude">-</span></span>
+                                    <span class="coord-item">Lng: <span id="longitude">-</span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="duration-info">
+                        <div class="duration-text" id="duration-display">Select dates to see duration</div>
+                        <div class="estimated-cost" id="estimated-cost">Estimated cost will be calculated</div>
+                    </div>
+                </div>
+
+                <!-- Pickup & Drop-off Locations -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        Locations
+                    </h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Pickup Location</label>
+                            <select class="form-input" id="pickup-location" required>
+                                <option value="">Select pickup location</option>
+                                <option value="downtown">Downtown Elite Center</option>
+                                <option value="airport">International Airport</option>
+                                <option value="mall">Premium Mall Location</option>
+                                <option value="hotel">Luxury Hotel District</option>
+                                <option value="station">Central Station</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Return Location</label>
+                            <select class="form-input" id="return-location" required>
+                                <option value="">Select return location</option>
+                                <option value="same">Same as pickup</option>
+                                <option value="downtown">Downtown Elite Center</option>
+                                <option value="airport">International Airport</option>
+                                <option value="mall">Premium Mall Location</option>
+                                <option value="hotel">Luxury Hotel District</option>
+                                <option value="station">Central Station</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Details Form -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        Personal Details
+                    </h2>
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-input" id="full-name" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-input" id="email" placeholder="your.email@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Mobile Number</label>
+                            <input type="tel" class="form-input" id="mobile" placeholder="+1 (555) 123-4567" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Driving License</label>
+                        <div class="file-upload">
+                            <input type="file" id="license-upload" accept=".jpg,.jpeg,.png,.pdf">
+                            <label for="license-upload" class="file-upload-label">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom: 0.5rem;">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14,2 14,8 20,8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10,9 9,9 8,9"></polyline>
+                                </svg>
+                                <div>Click to upload driving license</div>
+                                <div style="font-size: 0.8rem; margin-top: 0.5rem;">JPG, PNG or PDF (Max 5MB)</div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add-ons Selection -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                        Add-ons & Extras
+                    </h2>
+                    <div class="addons-grid">
+                        <div class="addon-item" data-addon="gps" data-price="15">
+                            <input type="checkbox" class="addon-checkbox" id="gps-addon">
+                            <svg class="addon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <div class="addon-name">GPS Navigation</div>
+                            <div class="addon-price">+$15/day</div>
+                        </div>
+                        <div class="addon-item" data-addon="baby-seat" data-price="20">
+                            <input type="checkbox" class="addon-checkbox" id="baby-seat-addon">
+                            <svg class="addon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                            </svg>
+                            <div class="addon-name">Baby Seat</div>
+                            <div class="addon-price">+$20/day</div>
+                        </div>
+                        <div class="addon-item" data-addon="insurance" data-price="35">
+                            <input type="checkbox" class="addon-checkbox" id="insurance-addon">
+                            <svg class="addon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                            <div class="addon-name">Full Insurance</div>
+                            <div class="addon-price">+$35/day</div>
+                        </div>
+                        <div class="addon-item" data-addon="chauffeur" data-price="150">
+                            <input type="checkbox" class="addon-checkbox" id="chauffeur-addon">
+                            <svg class="addon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <circle cx="16" cy="7" r="4"></circle>
+                            </svg>
+                            <div class="addon-name">Chauffeur Service</div>
+                            <div class="addon-price">+$150/day</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Promo Code Section -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 8.5l-4-4L12.5 9l4 4L21 8.5z"></path>
+                            <path d="M12.5 9L8 4.5 3.5 9l4.5 4.5L12.5 9z"></path>
+                        </svg>
+                        Promo Code
+                    </h2>
+                    <div class="promo-section">
+                        <div class="promo-input-group">
+                            <input type="text" class="form-input promo-input" id="promo-code" placeholder="Enter promo code">
+                            <button type="button" class="apply-promo-btn" id="apply-promo">Apply</button>
+                        </div>
+                        <div class="promo-success" id="promo-success">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 0.5rem;">
+                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            Promo code applied! You saved $50
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Options -->
+                <div class="section">
+                    <h2 class="section-title">
+                        <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                            <line x1="1" y1="10" x2="23" y2="10"></line>
+                        </svg>
+                        Payment Method
+                    </h2>
+                    <div class="payment-options">
+                        <div class="payment-option" data-payment="upi">
+                            <svg class="payment-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 9V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2m2 4h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2"></path>
+                            </svg>
+                            <div class="payment-name">UPI</div>
+                        </div>
+                        <div class="payment-option" data-payment="card">
+                            <svg class="payment-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                                <line x1="1" y1="10" x2="23" y2="10"></line>
+                            </svg>
+                            <div class="payment-name">Card</div>
+                        </div>
+                        <div class="payment-option" data-payment="netbanking">
+                            <svg class="payment-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                            <div class="payment-name">Net Banking</div>
+                        </div>
+                        <div class="payment-option" data-payment="pickup">
+                            <svg class="payment-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 7c0-1.1-.9-2-2-2H7c-1.1 0-2 .9-2 2v2h14V7zM5 11v8c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2v-8H5z"></path>
+                            </svg>
+                            <div class="payment-name">Pay at Pickup</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Booking Summary Sidebar -->
+            <div class="booking-summary">
+                <h3 class="summary-title">Booking Summary</h3>
+                
+                <div class="summary-item">
+                    <span class="summary-label">Vehicle</span>
+                    <span class="summary-value" id="summary-car">Range Rover Velar</span>
+                </div>
+                
+                <div class="summary-item">
+                    <span class="summary-label">Duration</span>
+                    <span class="summary-value" id="summary-duration">Select dates</span>
+                </div>
+                
+                <div class="summary-item">
+                    <span class="summary-label">Pickup Location</span>
+                    <span class="summary-value" id="summary-pickup">Select location</span>
+                </div>
+                
+                <div class="summary-item">
+                    <span class="summary-label">Base Price</span>
+                    <span class="summary-value" id="summary-base-price">$0</span>
+                </div>
+                
+                <div class="summary-item" id="addons-summary" style="display: none;">
+                    <span class="summary-label">Add-ons</span>
+                    <span class="summary-value" id="summary-addons">$0</span>
+                </div>
+                
+                <div class="summary-item" id="promo-summary" style="display: none;">
+                    <span class="summary-label">Promo Discount</span>
+                    <span class="summary-value" id="summary-promo">-$0</span>
+                </div>
+                
+                <div class="summary-item">
+                    <span class="summary-label">Total</span>
+                    <span class="summary-total" id="summary-total">$0</span>
+                </div>
+                
+                <!-- Terms & Conditions for Booking -->
+                <div class="booking-terms" style="margin: 20px 0; padding: 15px; background: rgba(255, 215, 0, 0.05); border: 2px solid #333; border-radius: 8px;">
+                    <label class="checkbox-container" style="display: flex; align-items: flex-start; cursor: pointer; font-size: 0.9em; line-height: 1.4;">
+                        <input type="checkbox" id="bookingTermsCheckbox" style="margin-right: 10px; margin-top: 2px;">
+                        <span class="checkbox-text">
+                            I agree to the 
+                            <a href="#" onclick="openBookingTermsModal()" style="color: #FFD700; text-decoration: underline;">Terms & Conditions</a> 
+                            and 
+                            <a href="#" onclick="openBookingPrivacyModal()" style="color: #FFD700; text-decoration: underline;">Privacy Policy</a>
+                            for this booking transaction
+                        </span>
+                    </label>
+                    <div id="bookingTermsError" class="error-message" style="display: none; color: #ff4444; font-size: 0.85em; margin-top: 8px; padding: 8px; background: rgba(255, 68, 68, 0.1); border-radius: 4px; border-left: 3px solid #ff4444;"></div>
+                </div>
+                
+                <button class="confirm-booking-btn" id="confirm-booking" disabled>
+                    Confirm Booking
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Processing your booking...</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="highlight">ELITE</span> RENTALS
+                </div>
+                <p class="footer-tagline">Premium car rental experience</p>
+                
+                <div class="footer-features">
+                    <div class="footer-feature">
+                        <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <p>Multiple Premium Locations</p>
+                    </div>
+                    <div class="footer-feature">
+                        <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12,6 12,12 16,14"></polyline>
+                        </svg>
+                        <p>24/7 Customer Support</p>
+                    </div>
+                    <div class="footer-feature">
+                        <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <circle cx="12" cy="5" r="2"></circle>
+                            <path d="M12 7v4"></path>
+                        </svg>
+                        <p>Fully Insured Fleet</p>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p>© 2025 Elite Rentals. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Car data with prices
+        const carData = {
+            'Mercedes-Benz S-Class': { price: 250, image: 'https://images.pexels.com/photos/3802510/pexels-photo-3802510.jpeg?auto=compress&cs=tinysrgb&w=800', seats: 5, fuel: 'Petrol', transmission: 'Automatic' },
+            'BMW X7': { price: 320, image: 'https://images.pexels.com/photos/3354648/pexels-photo-3354648.jpeg?auto=compress&cs=tinysrgb&w=800', seats: 7, fuel: 'Petrol', transmission: 'Automatic' },
+            'Audi A8': { price: 280, image: 'https://images.pexels.com/photos/1719649/pexels-photo-1719649.jpeg?auto=compress&cs=tinysrgb&w=800', seats: 5, fuel: 'Petrol', transmission: 'Automatic' },
+            'Porsche Macan': { price: 290, image: 'https://images.pexels.com/photos/6322546/pexels-photo-6322546.jpeg', seats: 5, fuel: 'Petrol', transmission: 'Automatic' },
+            'Range Rover Velar': { price: 310, image: 'https://images.pexels.com/photos/2920064/pexels-photo-2920064.jpeg?auto=compress&cs=tinysrgb&w=800', seats: 5, fuel: 'Petrol', transmission: 'Automatic' },
+            'Jaguar F-PACE': { price: 270, image: 'https://images.pexels.com/photos/3311574/pexels-photo-3311574.jpeg?auto=compress&cs=tinysrgb&w=800', seats: 5, fuel: 'Petrol', transmission: 'Automatic' }
+        };
+
+        let selectedCar = 'Range Rover Velar';
+        let basePricePerDay = carData[selectedCar].price;
+        let promoDiscount = 0;
+        let selectedAddons = [];
+        let selectedPayment = '';
+
+        // Get URL parameters to set selected car
+        const urlParams = new URLSearchParams(window.location.search);
+        const carFromUrl = urlParams.get('car');
+        if (carFromUrl && carData[carFromUrl]) {
+            selectedCar = carFromUrl;
+            basePricePerDay = carData[selectedCar].price;
+            updateCarDisplay();
+        }
+
+        function updateCarDisplay() {
+            const car = carData[selectedCar];
+            document.getElementById('selected-car-name').textContent = selectedCar;
+            document.getElementById('car-seats').textContent = `${car.seats} Seats`;
+            document.getElementById('car-fuel').textContent = car.fuel;
+            document.getElementById('car-transmission').textContent = car.transmission;
+            document.querySelector('.car-image').src = car.image;
+            document.getElementById('summary-car').textContent = selectedCar;
+        }
+
+        // Enhanced Live Location Function with OpenStreetMap (no API key required)
+        async function getCurrentLocation() {
+            const locationBtn = document.getElementById('get-location-btn');
+            const locationInput = document.getElementById('current-location');
+            const locationStatus = document.getElementById('location-status');
+            const coordsDisplay = document.getElementById('coordinates-display');
+            const latitudeSpan = document.getElementById('latitude');
+            const longitudeSpan = document.getElementById('longitude');
+
+            // Check if geolocation is supported
+            if (!navigator.geolocation) {
+                showLocationStatus('Geolocation is not supported by this browser.', 'error');
+                return;
+            }
+
+            // Disable button and show loading state
+            locationBtn.disabled = true;
+            locationBtn.innerHTML = `
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"></path>
+                </svg>
+                Getting Location...
+            `;
+            showLocationStatus('📍 Detecting your current location...', 'loading');
+
+            try {
+                // Get user's current position with high accuracy
+                const position = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject, {
+                        enableHighAccuracy: true,
+                        timeout: 15000,
+                        maximumAge: 0
+                    });
+                });
+
+                const { latitude, longitude } = position.coords;
+
+                // Update coordinates display
+                latitudeSpan.textContent = latitude.toFixed(6);
+                longitudeSpan.textContent = longitude.toFixed(6);
+                coordsDisplay.style.display = 'block';
+
+                showLocationStatus('🔍 Finding nearby landmarks and institutions...', 'loading');
+
+                // Use OpenStreetMap for geocoding (no API key required)
+                let locationData = null;
+                try {
+                    locationData = await tryOpenStreetMapGeocoding(latitude, longitude);
+                    console.log('Using OpenStreetMap data:', locationData);
+                } catch (osmError) {
+                    console.log('OpenStreetMap failed:', osmError);
+                    // Fallback - use coordinates with basic location
+                    locationData = {
+                        formattedAddress: `Location: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`,
+                        provider: 'coordinates_only'
+                    };
+                }
+                
+                if (locationData) {
+                    locationInput.value = locationData.formattedAddress;
+                    showLocationStatus('✅ Location detected successfully!', 'success');
+                    
+                    // Store comprehensive location data
+                    window.userLocation = {
+                        latitude: latitude,
+                        longitude: longitude,
+                        formattedAddress: locationData.formattedAddress,
+                        addressComponents: locationData.addressComponents,
+                        nearbyPlaces: locationData.nearbyPlaces || [],
+                        timestamp: new Date().toISOString(),
+                        provider: locationData.provider
+                    };
+                    
+                    console.log('Final Location Data:', window.userLocation);
+                } else {
+                    throw new Error('Unable to determine address');
+                }
+
+            } catch (error) {
+                console.error('Location Error:', error);
+                let errorMessage = '❌ ';
+                
+                if (error.code === 1) {
+                    errorMessage += 'Location access denied. Please enable location services.';
+                } else if (error.code === 2) {
+                    errorMessage += 'Location unavailable. Please try again.';
+                } else if (error.code === 3) {
+                    errorMessage += 'Location request timeout. Please try again.';
+                } else {
+                    errorMessage += 'Failed to get location. Please try again.';
+                }
+                
+                showLocationStatus(errorMessage, 'error');
+                coordsDisplay.style.display = 'none';
+            } finally {
+                // Reset button state
+                locationBtn.disabled = false;
+                locationBtn.innerHTML = `
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polygon points="16.24,7.76 14.12,14.12 7.76,16.24 9.88,9.88"></polygon>
+                    </svg>
+                    Get My Location
+                `;
+            }
+        }
+
+        // Interactive Map Functions using Leaflet (Open Source)
+        let locationMap = null;
+        let selectedLocationMarker = null;
+        let selectedLocation = null;
+        let currentLocationMarker = null;
+
+        function openLocationMap() {
+            document.getElementById('locationMapModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            // Initialize map after modal is visible
+            setTimeout(initializeLocationMap, 100);
+        }
+
+        function closeLocationMap() {
+            document.getElementById('locationMapModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            // Reset selection
+            selectedLocation = null;
+            document.getElementById('confirmLocationBtn').disabled = true;
+            document.getElementById('selectedLocationInfo').style.display = 'none';
+            
+            // Clean up map
+            if (locationMap) {
+                locationMap.remove();
+                locationMap = null;
+            }
+        }
+
+        function initializeLocationMap() {
+            if (typeof L !== 'undefined') {
+                // Default center (Salem, Tamil Nadu)
+                let center = [11.1271, 78.6569];
+                
+                // Use user's current location if available
+                if (window.userLocation) {
+                    center = [window.userLocation.latitude, window.userLocation.longitude];
+                }
+                
+                // Initialize Leaflet map
+                locationMap = L.map('location-map').setView(center, 15);
+                
+                // Add OpenStreetMap tiles
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors',
+                    maxZoom: 19
+                }).addTo(locationMap);
+                
+                // Add click listener to map
+                locationMap.on('click', function(e) {
+                    selectLocationOnMap(e.latlng.lat, e.latlng.lng);
+                });
+                
+                // Try to get user's current location for better positioning
+                if (navigator.geolocation && !window.userLocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            const userCenter = [position.coords.latitude, position.coords.longitude];
+                            locationMap.setView(userCenter, 15);
+                            
+                            // Add current location marker
+                            currentLocationMarker = L.circleMarker(userCenter, {
+                                color: '#4285F4',
+                                fillColor: '#4285F4',
+                                fillOpacity: 0.8,
+                                radius: 8
+                            }).addTo(locationMap)
+                              .bindPopup('Your Current Location')
+                              .openPopup();
+                        },
+                        (error) => console.log('Could not get current location for map:', error),
+                        { timeout: 5000 }
+                    );
+                }
+            } else {
+                alert('Map library is not available. Please check your internet connection and try again.');
+            }
+        }
+
+        async function selectLocationOnMap(lat, lng) {
+            console.log('Location selected on map:', lat, lng);
+            
+            // Remove previous marker
+            if (selectedLocationMarker) {
+                locationMap.removeLayer(selectedLocationMarker);
+            }
+            
+            // Add new marker
+            selectedLocationMarker = L.marker([lat, lng], {
+                icon: L.divIcon({
+                    className: 'custom-marker',
+                    html: `<div style="background: #FFD700; border: 3px solid #000; border-radius: 50% 50% 50% 0; width: 25px; height: 25px; transform: rotate(-45deg); margin: -12px 0 0 -12px;"></div>`,
+                    iconSize: [25, 25],
+                    iconAnchor: [12, 24]
+                })
+            }).addTo(locationMap);
+            
+            // Get address for selected location
+            document.getElementById('selectedLocationAddress').textContent = 'Getting address...';
+            document.getElementById('selectedLat').textContent = lat.toFixed(6);
+            document.getElementById('selectedLng').textContent = lng.toFixed(6);
+            document.getElementById('selectedLocationInfo').style.display = 'block';
+            
+            try {
+                const locationData = await tryOpenStreetMapGeocoding(lat, lng);
+                const address = locationData ? locationData.formattedAddress : `Location: ${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+                
+                selectedLocation = {
+                    latitude: lat,
+                    longitude: lng,
+                    address: address,
+                    provider: locationData ? locationData.provider : 'coordinates'
+                };
+                
+                document.getElementById('selectedLocationAddress').textContent = address;
+                document.getElementById('confirmLocationBtn').disabled = false;
+                
+            } catch (error) {
+                console.log('Error getting address for selected location:', error);
+                selectedLocation = {
+                    latitude: lat,
+                    longitude: lng,
+                    address: `Location: ${lat.toFixed(4)}, ${lng.toFixed(4)}`,
+                    provider: 'coordinates'
+                };
+                
+                document.getElementById('selectedLocationAddress').textContent = selectedLocation.address;
+                document.getElementById('confirmLocationBtn').disabled = false;
+            }
+        }
+
+        function confirmSelectedLocation() {
+            if (selectedLocation) {
+                // Set the location in the booking form
+                document.getElementById('current-location').value = selectedLocation.address;
+                document.getElementById('latitude').textContent = selectedLocation.latitude.toFixed(6);
+                document.getElementById('longitude').textContent = selectedLocation.longitude.toFixed(6);
+                document.getElementById('coordinates-display').style.display = 'block';
+                
+                // Store location data
+                window.userLocation = {
+                    latitude: selectedLocation.latitude,
+                    longitude: selectedLocation.longitude,
+                    formattedAddress: selectedLocation.address,
+                    provider: selectedLocation.provider + '_map_selected',
+                    timestamp: new Date().toISOString()
+                };
+                
+                // Show success status
+                showLocationStatus('✅ Location selected from map successfully!', 'success');
+                
+                // Close modal
+                closeLocationMap();
+                
+                console.log('Location confirmed from map:', window.userLocation);
+            }
+        }
+
+        // Enhanced OpenStreetMap geocoding with better location details
+        async function tryOpenStreetMapGeocoding(latitude, longitude) {
+            try {
+                console.log('Using OpenStreetMap for enhanced geocoding...');
+                
+                // Create timeout for fetch request
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 8000); // 8 second timeout for better results
+                
+                // Get detailed address information
+                const addressUrl = `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&addressdetails=1&zoom=18&extratags=1`;
+                
+                const addressResponse = await fetch(addressUrl, {
+                    signal: controller.signal,
+                    headers: {
+                        'User-Agent': 'Elite Rentals Location Service/1.0'
+                    }
+                });
+                
+                clearTimeout(timeoutId);
+                
+                if (!addressResponse.ok) {
+                    throw new Error(`HTTP ${addressResponse.status}`);
+                }
+                
+                const addressData = await addressResponse.json();
+                console.log('OpenStreetMap address data:', addressData);
+                
+                if (!addressData || !addressData.address) {
+                    throw new Error('No address data received');
+                }
+                
+                // Enhanced search for nearby educational institutions and landmarks
+                let nearbyPlaces = [];
+                try {
+                    const searchQueries = [
+                        'college+university+institute+school',
+                        'engineering+college',
+                        'kongu+engineering'
+                    ];
+                    
+                    for (const query of searchQueries) {
+                        const landmarksController = new AbortController();
+                        setTimeout(() => landmarksController.abort(), 4000);
+                        
+                        const landmarksUrl = `https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=10&bounded=1&viewbox=${longitude-0.02},${latitude-0.02},${longitude+0.02},${latitude+0.02}&addressdetails=1`;
+                        
+                        try {
+                            const landmarksResponse = await fetch(landmarksUrl, {
+                                signal: landmarksController.signal,
+                                headers: {
+                                    'User-Agent': 'Elite Rentals Location Service/1.0'
+                                }
+                            });
+                            
+                            if (landmarksResponse.ok) {
+                                const landmarksData = await landmarksResponse.json();
+                                const filteredPlaces = landmarksData.filter(place => {
+                                    const distance = calculateDistance(latitude, longitude, parseFloat(place.lat), parseFloat(place.lon));
+                                    return distance <= 3000; // 3km radius
+                                }).map(place => ({
+                                    name: place.display_name.split(',')[0].trim(),
+                                    distance: calculateDistance(latitude, longitude, parseFloat(place.lat), parseFloat(place.lon)),
+                                    fullName: place.display_name
+                                }));
+                                
+                                nearbyPlaces.push(...filteredPlaces);
+                            }
+                        } catch (searchError) {
+                            console.log(`Search failed for ${query}:`, searchError);
+                        }
+                    }
+                    
+                    // Sort by distance and remove duplicates
+                    nearbyPlaces = nearbyPlaces
+                        .filter((place, index, self) => 
+                            index === self.findIndex(p => p.name.toLowerCase() === place.name.toLowerCase())
+                        )
+                        .sort((a, b) => a.distance - b.distance)
+                        .slice(0, 3);
+                    
+                } catch (landmarkError) {
+                    console.log('Landmark search failed, continuing with address only:', landmarkError);
+                }
+                
+                // Build enhanced address with smart formatting
+                const parts = [];
+                const addr = addressData.address;
+                
+                // Add the closest educational institution as primary identifier
+                const educationalPlace = nearbyPlaces.find(place => {
+                    const name = place.name.toLowerCase();
+                    return name.includes('college') || name.includes('university') || 
+                           name.includes('institute') || name.includes('engineering') ||
+                           name.includes('kongu');
+                });
+                
+                if (educationalPlace && educationalPlace.distance <= 1000) { // Within 1km
+                    parts.push(educationalPlace.name);
+                }
+                
+                // Add specific place/building name if available
+                if (addressData.name && !parts.some(p => p.toLowerCase().includes(addressData.name.toLowerCase()))) {
+                    parts.push(addressData.name);
+                }
+                
+                // Add road/street
+                if (addr.road || addr.street) {
+                    const road = addr.road || addr.street;
+                    if (!parts.some(p => p.toLowerCase().includes(road.toLowerCase()))) {
+                        parts.push(road);
+                    }
+                }
+                
+                // Add locality/area
+                const locality = addr.neighbourhood || addr.suburb || addr.village || 
+                                addr.hamlet || addr.residential || addr.commercial;
+                if (locality && !parts.some(p => p.toLowerCase().includes(locality.toLowerCase()))) {
+                    parts.push(locality);
+                }
+                
+                // Add city/town
+                const city = addr.city || addr.town || addr.municipality || addr.county;
+                if (city && !parts.some(p => p.toLowerCase().includes(city.toLowerCase()))) {
+                    parts.push(city);
+                }
+                
+                // Add state
+                if (addr.state && !parts.some(p => p.toLowerCase().includes(addr.state.toLowerCase()))) {
+                    parts.push(addr.state);
+                }
+                
+                // Ensure we have a good formatted address
+                let formattedAddress;
+                if (parts.length >= 2) {
+                    formattedAddress = parts.slice(0, 4).join(', '); // Limit to first 4 parts
+                } else {
+                    // Fallback to display name processing
+                    const displayParts = addressData.display_name.split(',').map(p => p.trim());
+                    formattedAddress = displayParts.slice(0, 4).join(', ');
+                }
+                
+                // Special handling for Kongu Engineering College area
+                if (formattedAddress.toLowerCase().includes('perundurai') || 
+                    formattedAddress.toLowerCase().includes('erode')) {
+                    
+                    const konguPlace = nearbyPlaces.find(p => 
+                        p.name.toLowerCase().includes('kongu') && p.distance <= 2000
+                    );
+                    
+                    if (konguPlace) {
+                        const addressParts = [konguPlace.name];
+                        if (!konguPlace.name.toLowerCase().includes('perundurai')) {
+                            addressParts.push('Perundurai');
+                        }
+                        if (!konguPlace.name.toLowerCase().includes('erode')) {
+                            addressParts.push('Erode');
+                        }
+                        if (!konguPlace.name.toLowerCase().includes('tamil nadu')) {
+                            addressParts.push('Tamil Nadu');
+                        }
+                        formattedAddress = addressParts.join(', ');
+                    }
+                }
+                
+                return {
+                    formattedAddress: formattedAddress,
+                    addressComponents: addr,
+                    nearbyPlaces: nearbyPlaces,
+                    provider: 'openstreetmap_enhanced'
+                };
+                
+            } catch (error) {
+                console.log('OpenStreetMap geocoding failed:', error);
+                throw error;
+            }
+        }
+
+        // Calculate distance between two coordinates (Haversine formula)
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371e3; // Earth's radius in meters
+            const φ1 = lat1 * Math.PI/180;
+            const φ2 = lat2 * Math.PI/180;
+            const Δφ = (lat2-lat1) * Math.PI/180;
+            const Δλ = (lon2-lon1) * Math.PI/180;
+
+            const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                      Math.cos(φ1) * Math.cos(φ2) *
+                      Math.sin(Δλ/2) * Math.sin(Δλ/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+            return R * c; // Distance in meters
+        }
+
+        // Format Google Maps address with nearby places
+        function formatGoogleAddress(geocodingResults, nearbyPlaces) {
+            console.log('Formatting Google address with results:', geocodingResults);
+            console.log('Nearby places:', nearbyPlaces);
+            
+            const parts = [];
+            
+            // Find the best nearby place to use as primary identifier
+            let primaryPlace = null;
+            
+            // Prioritize educational institutions
+            primaryPlace = nearbyPlaces.find(place => 
+                place.types.includes('university') || 
+                place.types.includes('school') ||
+                place.name.toLowerCase().includes('college') ||
+                place.name.toLowerCase().includes('university') ||
+                place.name.toLowerCase().includes('institute')
+            );
+            
+            // If no educational institution, use the closest high-rated place
+            if (!primaryPlace && nearbyPlaces.length > 0) {
+                primaryPlace = nearbyPlaces
+                    .filter(place => place.rating >= 4.0 || place.types.includes('establishment'))
+                    .sort((a, b) => a.distance - b.distance)[0] || nearbyPlaces[0];
+            }
+            
+            // Add the primary place
+            if (primaryPlace) {
+                parts.push(primaryPlace.name);
+                console.log('Using primary place:', primaryPlace.name);
+            }
+            
+            // Parse address components from the most detailed geocoding result
+            if (geocodingResults && geocodingResults.length > 0) {
+                const detailedResult = geocodingResults[0]; // Most specific result
+                console.log('Using geocoding result:', detailedResult);
+                
+                // Extract components from the formatted address
+                const addressComponents = detailedResult.address_components;
+                let road = null, locality = null, city = null, state = null, country = null;
+                
+                for (const component of addressComponents) {
+                    const types = component.types;
+                    
+                    if (types.includes('route') || types.includes('street_address')) {
+                        road = component.long_name;
+                    } else if (types.includes('sublocality') || types.includes('sublocality_level_1')) {
+                        locality = component.long_name;
+                    } else if (types.includes('locality') || types.includes('administrative_area_level_2')) {
+                        city = component.long_name;
+                    } else if (types.includes('administrative_area_level_1')) {
+                        state = component.long_name;
+                    } else if (types.includes('country')) {
+                        country = component.long_name;
+                    }
+                }
+                
+                // Add road/street if available and not already included
+                if (road && !parts.some(p => p.toLowerCase().includes(road.toLowerCase()))) {
+                    parts.push(road);
+                }
+                
+                // Add locality/neighborhood 
+                if (locality && !parts.some(p => p.toLowerCase().includes(locality.toLowerCase()))) {
+                    parts.push(locality);
+                }
+                
+                // Add city
+                if (city && !parts.some(p => p.toLowerCase().includes(city.toLowerCase()))) {
+                    parts.push(city);
+                }
+                
+                // Add state
+                if (state && !parts.some(p => p.toLowerCase().includes(state.toLowerCase()))) {
+                    parts.push(state);
+                }
+                
+                // If no primary place was found, try to extract establishment name from formatted address
+                if (!primaryPlace) {
+                    const formattedAddress = detailedResult.formatted_address;
+                    const addressParts = formattedAddress.split(',').map(p => p.trim());
+                    
+                    // Look for establishment name in the first part
+                    const firstPart = addressParts[0];
+                    if (firstPart && !firstPart.match(/^\d+/) && firstPart.length < 50) {
+                        // If first part doesn't start with a number and is reasonable length, it might be a place name
+                        if (!parts.some(p => p.toLowerCase().includes(firstPart.toLowerCase()))) {
+                            parts.unshift(firstPart); // Add to beginning
+                        }
+                    }
+                }
+            }
+            
+            // If still no good address, use the formatted address from Google
+            if (parts.length === 0 && geocodingResults && geocodingResults.length > 0) {
+                const formattedAddress = geocodingResults[0].formatted_address;
+                // Take first 3-4 parts of the formatted address
+                const addressParts = formattedAddress.split(',').slice(0, 4).map(p => p.trim());
+                return addressParts.join(', ');
+            }
+            
+            const result = parts.filter(p => p && p.trim()).join(', ');
+            console.log('Formatted Google address result:', result);
+            return result || 'Location detected';
+        }
+
+        function formatAddress(addressComponents) {
+            if (!addressComponents) return null;
+            
+            // Extract relevant address components
+            const parts = [];
+            
+            if (addressComponents.house_number) parts.push(addressComponents.house_number);
+            if (addressComponents.road) parts.push(addressComponents.road);
+            if (addressComponents.neighbourhood || addressComponents.suburb) {
+                parts.push(addressComponents.neighbourhood || addressComponents.suburb);
+            }
+            if (addressComponents.city || addressComponents.town || addressComponents.village) {
+                parts.push(addressComponents.city || addressComponents.town || addressComponents.village);
+            }
+            if (addressComponents.state) parts.push(addressComponents.state);
+            if (addressComponents.postcode) parts.push(addressComponents.postcode);
+            
+            return parts.slice(0, 4).join(', '); // Limit to first 4 parts for brevity
+        }
+
+        function showLocationStatus(message, type) {
+            const statusDiv = document.getElementById('location-status');
+            statusDiv.textContent = message;
+            statusDiv.className = `location-status ${type}`;
+            statusDiv.style.display = 'block';
+            
+            if (type === 'success') {
+                // Auto-hide success message after 5 seconds
+                setTimeout(() => {
+                    statusDiv.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // Date calculations
+        function calculateDuration() {
+            const pickupDate = document.getElementById('pickup-date').value;
+            const returnDate = document.getElementById('return-date').value;
+            
+            if (pickupDate && returnDate) {
+                const pickup = new Date(pickupDate);
+                const returnTime = new Date(returnDate);
+                
+                if (returnTime > pickup) {
+                    const diffTime = Math.abs(returnTime - pickup);
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    const diffHours = Math.ceil(diffTime / (1000 * 60 * 60));
+                    
+                    document.getElementById('duration-display').textContent = 
+                        diffDays > 1 ? `${diffDays} days` : `${diffHours} hours`;
+                    document.getElementById('summary-duration').textContent = 
+                        diffDays > 1 ? `${diffDays} days` : `${diffHours} hours`;
+                    
+                    updatePricing();
+                    return diffDays;
+                }
+            }
+            
+            document.getElementById('duration-display').textContent = 'Select dates to see duration';
+            document.getElementById('summary-duration').textContent = 'Select dates';
+            return 0;
+        }
+
+        // Pricing calculations
+        function updatePricing() {
+            const pickupDate = document.getElementById('pickup-date').value;
+            const returnDate = document.getElementById('return-date').value;
+            
+            let days = 0;
+            if (pickupDate && returnDate) {
+                const pickup = new Date(pickupDate);
+                const returnTime = new Date(returnDate);
+                
+                if (returnTime > pickup) {
+                    const diffTime = Math.abs(returnTime - pickup);
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    days = Math.max(diffDays, 1); // Minimum 1 day
+                }
+            }
+            
+            // Always show base price, even if no dates selected
+            const basePrice = basePricePerDay * Math.max(days, 1);
+            const addonsPrice = selectedAddons.reduce((sum, addon) => sum + (addon.price * Math.max(days, 1)), 0);
+            const totalBeforeDiscount = basePrice + addonsPrice;
+            const total = totalBeforeDiscount - promoDiscount;
+            
+            console.log('Pricing calculation:', {
+                selectedCar,
+                basePricePerDay,
+                days: Math.max(days, 1),
+                basePrice,
+                addonsPrice,
+                promoDiscount,
+                total
+            });
+            
+            // Update displays
+            document.getElementById('estimated-cost').textContent = `Estimated: $${total}`;
+            document.getElementById('summary-base-price').textContent = `$${basePrice}`;
+            document.getElementById('summary-total').textContent = `$${total}`;
+            
+            // Update addons summary
+            if (addonsPrice > 0) {
+                const addonsSummary = document.getElementById('addons-summary');
+                const summaryAddons = document.getElementById('summary-addons');
+                if (addonsSummary) addonsSummary.style.display = 'flex';
+                if (summaryAddons) summaryAddons.textContent = `$${addonsPrice}`;
+            } else {
+                const addonsSummary = document.getElementById('addons-summary');
+                if (addonsSummary) addonsSummary.style.display = 'none';
+            }
+            
+            // Update promo summary
+            if (promoDiscount > 0) {
+                const promoSummary = document.getElementById('promo-summary');
+                const summaryPromo = document.getElementById('summary-promo');
+                if (promoSummary) promoSummary.style.display = 'flex';
+                if (summaryPromo) summaryPromo.textContent = `-$${promoDiscount}`;
+            } else {
+                const promoSummary = document.getElementById('promo-summary');
+                if (promoSummary) promoSummary.style.display = 'none';
+            }
+            
+            checkFormValidation();
+        }
+
+        // Add-ons handling
+        document.querySelectorAll('.addon-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const checkbox = this.querySelector('.addon-checkbox');
+                const addonName = this.querySelector('.addon-name').textContent;
+                const addonPrice = parseFloat(this.dataset.price);
+                
+                checkbox.checked = !checkbox.checked;
+                this.classList.toggle('selected', checkbox.checked);
+                
+                if (checkbox.checked) {
+                    selectedAddons.push({ name: addonName, price: addonPrice });
+                } else {
+                    selectedAddons = selectedAddons.filter(addon => addon.name !== addonName);
+                }
+                
+                updatePricing();
+            });
+        });
+
+        // Payment method selection
+        document.querySelectorAll('.payment-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.payment-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedPayment = this.dataset.payment;
+                checkFormValidation();
+            });
+        });
+
+        // Promo code handling
+        document.getElementById('apply-promo').addEventListener('click', function() {
+            const promoCode = document.getElementById('promo-code').value.toUpperCase();
+            const validPromoCodes = {
+                'ELITE50': 50,
+                'LUXURY25': 25,
+                'WEEKEND': 30
+            };
+            
+            if (validPromoCodes[promoCode]) {
+                promoDiscount = validPromoCodes[promoCode];
+                document.getElementById('promo-success').style.display = 'block';
+                document.getElementById('promo-success').innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 0.5rem;">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Promo code applied! You saved $${promoDiscount}
+                `;
+                updatePricing();
+            } else {
+                document.getElementById('promo-success').style.display = 'block';
+                document.getElementById('promo-success').style.color = '#f44336';
+                document.getElementById('promo-success').innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 0.5rem;">
+                        <path d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/>
+                    </svg>
+                    Invalid promo code
+                `;
+                setTimeout(() => {
+                    document.getElementById('promo-success').style.display = 'none';
+                }, 3000);
+            }
+        });
+
+        // Location updates
+        document.getElementById('pickup-location').addEventListener('change', function() {
+            const location = this.options[this.selectedIndex].text;
+            document.getElementById('summary-pickup').textContent = location !== 'Select pickup location' ? location : 'Select location';
+            checkFormValidation();
+        });
+
+        // File upload handling
+        document.getElementById('license-upload').addEventListener('change', function() {
+            const fileUpload = this.closest('.file-upload');
+            if (this.files.length > 0) {
+                fileUpload.classList.add('has-file');
+                fileUpload.querySelector('.file-upload-label div').textContent = `Selected: ${this.files[0].name}`;
+            } else {
+                fileUpload.classList.remove('has-file');
+                fileUpload.querySelector('.file-upload-label div').textContent = 'Click to upload driving license';
+            }
+            checkFormValidation();
+        });
+
+        // Form validation
+        function checkFormValidation() {
+            const requiredFields = [
+                'full-name',
+                'email',
+                'mobile'
+            ];
+            
+            const allFilled = requiredFields.every(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (!field) return false;
+                return field.value.trim() !== '';
+            });
+            
+            // Check basic required fields only
+            const pickupDate = document.getElementById('pickup-date').value;
+            const returnDate = document.getElementById('return-date').value;
+            const pickupLocation = document.getElementById('pickup-location').value;
+            const returnLocation = document.getElementById('return-location').value;
+            
+            const hasBasicInfo = allFilled && pickupDate && returnDate && pickupLocation && returnLocation;
+            const hasPayment = selectedPayment !== '';
+            
+            const confirmButton = document.getElementById('confirm-booking');
+            if (confirmButton) {
+                // Enable button if basic info is filled and payment method is selected
+                const shouldEnable = hasBasicInfo && hasPayment;
+                confirmButton.disabled = !shouldEnable;
+                
+                // Visual feedback
+                if (shouldEnable) {
+                    confirmButton.style.opacity = '1';
+                    confirmButton.style.cursor = 'pointer';
+                    confirmButton.style.background = 'linear-gradient(135deg, #FFD700, #FFC107)';
+                } else {
+                    confirmButton.style.opacity = '0.6';
+                    confirmButton.style.cursor = 'not-allowed';
+                    confirmButton.style.background = '#666';
+                }
+                
+                // Add debugging
+                console.log('Form validation check:', {
+                    hasBasicInfo,
+                    hasPayment,
+                    shouldEnable,
+                    allFilled,
+                    pickupDate: !!pickupDate,
+                    returnDate: !!returnDate,
+                    pickupLocation: !!pickupLocation,
+                    returnLocation: !!returnLocation,
+                    selectedPayment
+                });
+            }
+        }
+
+        // Generate OTP
+        function generateOTP() {
+            return Math.floor(100000 + Math.random() * 900000).toString();
+        }
+
+        // Generate transaction ID
+        function generateTransactionId() {
+            const timestamp = Date.now();
+            const random = Math.floor(Math.random() * 10000);
+            return `TXN${timestamp}${random}`;
+        }
+
+        // Process payment based on selected method
+        function processPayment(bookingData) {
+            console.log('Processing payment for method:', bookingData.paymentMethod);
+            
+            try {
+                const paymentData = {
+                    transactionId: generateTransactionId(),
+                    amount: bookingData.totalAmount,
+                    paymentMethod: bookingData.paymentMethod,
+                    timestamp: new Date().toISOString(),
+                    status: 'success'
+                };
+
+                if (bookingData.paymentMethod === 'pickup') {
+                    // For pay at pickup, skip payment processing
+                    paymentData.status = 'pending';
+                    paymentData.note = 'Payment to be collected at pickup';
+                    console.log('Pay at pickup selected, completing booking directly');
+                    completeBooking(bookingData, paymentData);
+                } else if (['upi', 'card', 'netbanking'].includes(bookingData.paymentMethod)) {
+                    // Simulate online payment processing
+                    console.log('Online payment method selected, showing payment modal');
+                    showPaymentModal(bookingData, paymentData);
+                } else {
+                    console.error('Invalid payment method:', bookingData.paymentMethod);
+                    console.log('Please select a valid payment method.');
+                }
+            } catch (error) {
+                console.error('Error processing payment:', error);
+                console.log('There was an error processing your payment. Please try again.');
+            }
+        }
+
+        // Show payment processing modal
+        function showPaymentModal(bookingData, paymentData) {
+            const paymentMethods = {
+                'upi': 'UPI Payment',
+                'card': 'Card Payment',
+                'netbanking': 'Net Banking'
+            };
+
+            const modalHtml = `
+                <div id="payment-modal" style="
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.95);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 2000;
+                ">
+                    <div style="
+                        background: #0a0a0a;
+                        border-radius: 20px;
+                        padding: 3rem;
+                        border: 1px solid #FFD700;
+                        max-width: 500px;
+                        width: 90%;
+                        text-align: center;
+                    ">
+                        <div style="
+                            width: 80px;
+                            height: 80px;
+                            margin: 0 auto 2rem;
+                            background: linear-gradient(135deg, #FFD700, #FFC107);
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        ">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2">
+                                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                                <line x1="1" y1="10" x2="23" y2="10"></line>
+                            </svg>
+                        </div>
+                        <h3 style="color: #FFD700; font-size: 1.8rem; margin-bottom: 1rem;">
+                            ${paymentMethods[bookingData.paymentMethod]}
+                        </h3>
+                        <p style="color: #cccccc; margin-bottom: 2rem;">
+                            Processing payment of <strong style="color: #FFD700;">${bookingData.totalAmount}</strong>
+                        </p>
+                        <div style="
+                            background: #1a1a1a;
+                            border-radius: 10px;
+                            padding: 1.5rem;
+                            margin-bottom: 2rem;
+                            border: 1px solid #333;
+                        ">
+                            <div style="color: #888; margin-bottom: 0.5rem;">Transaction ID</div>
+                            <div style="color: #FFD700; font-family: monospace; font-size: 1.1rem;">${paymentData.transactionId}</div>
+                        </div>
+                        <div id="payment-progress" style="
+                            width: 100%;
+                            height: 4px;
+                            background: #333;
+                            border-radius: 2px;
+                            overflow: hidden;
+                            margin-bottom: 2rem;
+                        ">
+                            <div style="
+                                width: 0%;
+                                height: 100%;
+                                background: linear-gradient(90deg, #FFD700, #FFC107);
+                                border-radius: 2px;
+                                animation: progressBar 3s ease-in-out forwards;
+                            "></div>
+                        </div>
+                        <div style="color: #888; font-size: 0.9rem;">
+                            Please do not close this window...
+                        </div>
+                    </div>
+                </div>
+                <style>
+                    @keyframes progressBar {
+                        0% { width: 0%; }
+                        50% { width: 60%; }
+                        100% { width: 100%; }
+                    }
+                </style>
+            `;
+
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+
+            // Simulate payment processing
+            setTimeout(() => {
+                document.getElementById('payment-modal').remove();
+                showPaymentReceipt(bookingData, paymentData);
+            }, 3500);
+        }
+
+        // Show payment receipt
+        function showPaymentReceipt(bookingData, paymentData) {
+            const receiptHtml = `
+                <div id="payment-receipt" style="
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.95);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 2000;
+                ">
+                    <div style="
+                        background: #0a0a0a;
+                        border-radius: 20px;
+                        padding: 3rem;
+                        border: 1px solid #4CAF50;
+                        max-width: 500px;
+                        width: 90%;
+                        text-align: center;
+                        max-height: 90vh;
+                        overflow-y: auto;
+                    ">
+                        <div style="
+                            width: 80px;
+                            height: 80px;
+                            margin: 0 auto 2rem;
+                            background: linear-gradient(135deg, #4CAF50, #45a049);
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            animation: successPulse 0.6s ease-out;
+                        ">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3">
+                                <polyline points="20,6 9,17 4,12"></polyline>
+                            </svg>
+                        </div>
+                        <h3 style="color: #4CAF50; font-size: 1.8rem; margin-bottom: 1rem;">
+                            Payment Successful!
+                        </h3>
+                        <div style="
+                            background: #1a1a1a;
+                            border-radius: 15px;
+                            padding: 2rem;
+                            margin-bottom: 2rem;
+                            border: 1px solid #333;
+                            text-align: left;
+                        ">
+                            <h4 style="color: #FFD700; margin-bottom: 1rem; text-align: center;">Payment Receipt</h4>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.8rem; padding-bottom: 0.8rem; border-bottom: 1px solid #333;">
+                                <span style="color: #888;">Transaction ID:</span>
+                                <span style="color: #ffffff; font-family: monospace;">${paymentData.transactionId}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.8rem; padding-bottom: 0.8rem; border-bottom: 1px solid #333;">
+                                <span style="color: #888;">Amount Paid:</span>
+                                <span style="color: #4CAF50; font-weight: bold;">${bookingData.totalAmount}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.8rem; padding-bottom: 0.8rem; border-bottom: 1px solid #333;">
+                                <span style="color: #888;">Payment Method:</span>
+                                <span style="color: #ffffff;">${bookingData.paymentMethod.toUpperCase()}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.8rem; padding-bottom: 0.8rem; border-bottom: 1px solid #333;">
+                                <span style="color: #888;">Date & Time:</span>
+                                <span style="color: #ffffff;">${new Date().toLocaleString()}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: #888;">Status:</span>
+                                <span style="color: #4CAF50; font-weight: bold;">SUCCESS</span>
+                            </div>
+                        </div>
+                        <button onclick="continueToBooking()" style="
+                            width: 100%;
+                            background: linear-gradient(135deg, #FFD700, #FFC107);
+                            color: #000000;
+                            border: none;
+                            padding: 1rem 2rem;
+                            border-radius: 10px;
+                            cursor: pointer;
+                            font-weight: 700;
+                            font-size: 1.1rem;
+                            transition: all 0.3s ease;
+                        ">
+                            Continue to Booking Confirmation
+                        </button>
+                    </div>
+                </div>
+                <style>
+                    @keyframes successPulse {
+                        0% { transform: scale(0.8); opacity: 0; }
+                        50% { transform: scale(1.1); }
+                        100% { transform: scale(1); opacity: 1; }
+                    }
+                </style>
+            `;
+
+            document.body.insertAdjacentHTML('beforeend', receiptHtml);
+
+            // Store payment data for later use
+            localStorage.setItem('paymentData', JSON.stringify(paymentData));
+
+            // Make continue function globally available
+            window.continueToBooking = function() {
+                document.getElementById('payment-receipt').remove();
+                completeBooking(bookingData, paymentData);
+            };
+        }
+
+        // Complete booking process
+        function completeBooking(bookingData, paymentData) {
+            console.log('Completing booking process...');
+            
+            try {
+                // Generate OTP
+                const otp = generateOTP();
+                
+                // Add payment and OTP data to booking
+                bookingData.paymentData = paymentData;
+                bookingData.otp = otp;
+                bookingData.bookingTime = new Date().toISOString();
+                
+                console.log('Final booking data:', bookingData);
+                
+                // Store complete booking data
+                localStorage.setItem('bookingData', JSON.stringify(bookingData));
+                console.log('Booking data saved to localStorage');
+                
+                // Small delay before redirect
+                setTimeout(() => {
+                    console.log('Redirecting to confirmation page...');
+                    window.location.href = 'confirmation.html';
+                }, 500);
+                
+            } catch (error) {
+                console.error('Error completing booking:', error);
+                console.log('There was an error completing your booking. Please try again.');
+            }
+        }
+
+        // Confirm booking
+        document.getElementById('confirm-booking').addEventListener('click', function() {
+            console.log('Confirm booking button clicked');
+            
+            // Validate Terms & Conditions
+            const bookingTermsCheckbox = document.getElementById('bookingTermsCheckbox');
+            const bookingTermsError = document.getElementById('bookingTermsError');
+            
+            if (!bookingTermsCheckbox.checked) {
+                bookingTermsError.innerHTML = '📋 <strong>Please accept Terms & Conditions</strong><br>You must agree to proceed with the booking.';
+                bookingTermsError.style.display = 'block';
+                
+                // Scroll to T&C section
+                bookingTermsCheckbox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                bookingTermsCheckbox.focus();
+                return;
+            }
+            
+            // Clear any previous T&C error
+            bookingTermsError.style.display = 'none';
+            
+            // Validate form one more time
+            if (this.disabled) {
+                console.log('Please fill in all required fields and select a payment method.');
+                return;
+            }
+            // Show loading overlay
+            const loadingOverlay = document.getElementById('loading-overlay');
+            if (loadingOverlay) {
+                loadingOverlay.style.display = 'flex';
+            }
+            // Prepare booking data for backend
+            const userEmail = localStorage.getItem('userEmail');
+            const car = selectedCar;
+            const terms_accepted = bookingTermsCheckbox.checked;
+            
+            // Send booking request to backend
+            fetch('http://localhost:5000/api/book', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    email: userEmail, 
+                    car,
+                    terms_accepted 
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.bookingId) {
+                    // Store booking data for OTP verification
+                    localStorage.setItem('currentBookingId', data.bookingId);
+                    localStorage.setItem('userEmail', userEmail);
+                    
+                    // Collect full booking data for later use
+                    const fullBookingData = collectBookingData();
+                    fullBookingData.bookingId = data.bookingId;
+                    localStorage.setItem('pendingBookingData', JSON.stringify(fullBookingData));
+                    
+                    console.log('Booking created, redirecting to OTP verification...');
+                    
+                    // Redirect to OTP verification page with booking details
+                    window.location.href = `otp-verification.html?bookingId=${data.bookingId}&email=${encodeURIComponent(userEmail)}`;
+                } else {
+                    alert(data.message || 'Booking failed. Please try again.');
+                }
+            })
+            .catch(err => {
+                console.error('Booking error:', err);
+                alert('Network error. Please check your connection and try again.');
+            })
+            .finally(() => {
+                if (loadingOverlay) loadingOverlay.style.display = 'none';
+            });
+        });
+
+        // Collect booking data helper used before OTP verification
+        function collectBookingData() {
+            try {
+                const fullName = document.getElementById('full-name')?.value || localStorage.getItem('userName') || '';
+                const email = document.getElementById('email')?.value || localStorage.getItem('userEmail') || '';
+                const mobile = document.getElementById('mobile')?.value || '';
+                const pickupDate = document.getElementById('pickup-date')?.value || '';
+                const returnDate = document.getElementById('return-date')?.value || '';
+                const pickupLocation = document.getElementById('pickup-location')?.value || '';
+                const returnLocation = document.getElementById('return-location')?.value || '';
+                const selectedCarName = window.selectedCar || document.getElementById('selected-car-name')?.textContent || '';
+                const duration = document.getElementById('duration-display')?.textContent || '';
+
+                return {
+                    customerName: fullName,
+                    customerEmail: email,
+                    customerMobile: mobile,
+                    pickupDate,
+                    returnDate,
+                    pickupLocation,
+                    returnLocation,
+                    car: selectedCarName,
+                    duration
+                };
+            } catch (err) {
+                console.error('collectBookingData error:', err);
+                return {};
+            }
+        }
+
+        // Event listeners for date changes
+        document.getElementById('pickup-date').addEventListener('change', function() {
+            calculateDuration();
+            checkFormValidation();
+        });
+
+        document.getElementById('return-date').addEventListener('change', function() {
+            calculateDuration();
+            checkFormValidation();
+        });
+
+        // Event listeners for form validation
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('input', checkFormValidation);
+            input.addEventListener('change', checkFormValidation);
+        });
+
+        // Set minimum date to today
+        const today = new Date();
+        const minDate = today.toISOString().slice(0, 16);
+        const pickupDateField = document.getElementById('pickup-date');
+        const returnDateField = document.getElementById('return-date');
+        
+        if (pickupDateField && returnDateField) {
+            pickupDateField.min = minDate;
+            returnDateField.min = minDate;
+            
+            // Set default dates for demo (today and tomorrow)
+            pickupDateField.value = minDate;
+            const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+            returnDateField.value = tomorrow.toISOString().slice(0, 16);
+        }
+
+        // Initialize display
+        updateCarDisplay();
+        updatePricing();
+        
+        // Auto-fill form for demo purposes
+        setTimeout(() => {
+            document.getElementById('full-name').value = 'John Doe';
+            document.getElementById('email').value = 'john.doe@example.com';
+            document.getElementById('mobile').value = '+1234567890';
+            
+            // Set locations
+            document.getElementById('pickup-location').value = 'airport';
+            document.getElementById('return-location').value = 'downtown';
+            
+            console.log('Form pre-filled for demo');
+        }, 100);
+        
+        // Auto-select UPI payment method for demo
+        setTimeout(() => {
+            const upiOption = document.querySelector('[data-payment="upi"]');
+            if (upiOption) {
+                upiOption.click();
+                console.log('Auto-selected UPI payment method');
+            }
+        }, 500);
+        
+        // Initial form validation check
+        setTimeout(() => {
+            checkFormValidation();
+            console.log('Initial setup complete');
+            console.log('Selected car:', selectedCar);
+            console.log('Base price per day:', basePricePerDay);
+            console.log('Selected payment:', selectedPayment);
+        }, 1000);
+
+        // Terms & Conditions modal functions for booking
+        function openBookingTermsModal() {
+            alert('📄 Terms & Conditions for Car Rental Booking\n\n' +
+                  '🔹 Vehicle Rental Agreement\n' +
+                  '🔹 Driver Requirements (21+ years, valid license)\n' +
+                  '🔹 Insurance Coverage & Liability\n' +
+                  '🔹 Fuel Policy & Return Conditions\n' +
+                  '🔹 Cancellation & Refund Policy\n' +
+                  '🔹 Damage Assessment Procedures\n\n' +
+                  'By proceeding, you agree to all rental terms and conditions.');
+        }
+
+        function openBookingPrivacyModal() {
+            alert('🔒 Privacy Policy for Car Rental Booking\n\n' +
+                  '🔹 Personal Data Collection & Usage\n' +
+                  '🔹 Payment Information Security\n' +
+                  '🔹 Driving Record Verification\n' +
+                  '🔹 GPS Tracking (if enabled)\n' +
+                  '🔹 Data Sharing with Insurance Partners\n' +
+                  '🔹 Marketing Communications Consent\n\n' +
+                  'Your privacy is protected according to industry standards.');
+        }
+
+        // Real-time T&C validation for booking
+        const bookingTermsCheckbox = document.getElementById('bookingTermsCheckbox');
+        if (bookingTermsCheckbox) {
+            bookingTermsCheckbox.addEventListener('change', function() {
+                const bookingTermsError = document.getElementById('bookingTermsError');
+                if (this.checked) {
+                    bookingTermsError.style.display = 'none';
+                }
+                // Revalidate the form
+                checkFormValidation();
+            });
+        }
+
+        // Booking Type Handler
+        function initializeBookingType() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const bookingType = urlParams.get('type') || sessionStorage.getItem('bookingType') || 'self-drive';
+            
+            console.log('Detected booking type:', bookingType);
+            
+            // Update booking type display
+            updateBookingTypeDisplay(bookingType);
+            
+            // Show appropriate sections
+            if (bookingType === 'rider-assisted') {
+                showRiderAssistedMode();
+            } else {
+                showSelfDriveMode();
+            }
+            
+            // Store the booking type for later use
+            sessionStorage.setItem('bookingType', bookingType);
+        }
+        
+        function updateBookingTypeDisplay(type) {
+            const icon = document.getElementById('booking-type-icon');
+            const title = document.getElementById('booking-type-title');
+            const description = document.getElementById('booking-type-description');
+            const price = document.getElementById('booking-type-price');
+            
+            if (type === 'rider-assisted') {
+                icon.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="m22 2-5 10-5-5-10 5"></path>
+                    </svg>
+                `;
+                title.textContent = '🚖 Rider Assisted Booking';
+                description.textContent = 'Professional driver included with door-to-door service';
+                price.textContent = '+$50/day';
+            } else {
+                icon.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9L18 10h-1.3l-1.4-2.9A1 1 0 0 0 14.5 6h-5c-.4 0-.8.2-.9.6L7.2 10H6l-2.5 1.1c-.8.2-1.5 1-1.5 1.9v3c0 .6.4 1 1 1h2"></path>
+                        <circle cx="7" cy="17" r="2"></circle>
+                        <path d="M9 17h6"></path>
+                        <circle cx="17" cy="17" r="2"></circle>
+                    </svg>
+                `;
+                title.textContent = '🚗 Self Drive Booking';
+                description.textContent = 'Drive yourself with complete freedom and flexibility';
+                price.textContent = 'Base price only';
+            }
+        }
+        
+        function showRiderAssistedMode() {
+            // Hide vendor details, show rider details
+            document.getElementById('vendor-details-section').style.display = 'none';
+            document.getElementById('rider-details-section').style.display = 'block';
+            
+            // Load rider/driver data
+            loadRiderData();
+            
+            // Hide chauffeur addon since it's included
+            const chauffeurAddon = document.querySelector('[data-addon="chauffeur"]');
+            if (chauffeurAddon) {
+                chauffeurAddon.style.display = 'none';
+            }
+        }
+        
+        function showSelfDriveMode() {
+            // Show vendor details, hide rider details
+            document.getElementById('vendor-details-section').style.display = 'block';
+            document.getElementById('rider-details-section').style.display = 'none';
+            
+            // Load vendor/owner data
+            loadVendorData();
+            
+            // Show chauffeur addon as optional
+            const chauffeurAddon = document.querySelector('[data-addon="chauffeur"]');
+            if (chauffeurAddon) {
+                chauffeurAddon.style.display = 'block';
+            }
+        }
+        
+        function loadVendorData() {
+            // Sample vendor data - in real app, this would come from API
+            const vendors = [
+                {
+                    name: "Rajesh Kumar",
+                    location: "Downtown Business District",
+                    phone: "+91 98765 43210",
+                    cars: "12 vehicles",
+                    rating: "4.8 (127 reviews)",
+                    avatar: "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150"
+                },
+                {
+                    name: "Priya Sharma", 
+                    location: "City Center Plaza",
+                    phone: "+91 87654 32109",
+                    cars: "8 vehicles",
+                    rating: "4.9 (89 reviews)",
+                    avatar: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150"
+                }
+            ];
+            
+            const vendor = vendors[Math.floor(Math.random() * vendors.length)];
+            
+            document.getElementById('vendor-name').textContent = vendor.name;
+            document.getElementById('vendor-location').textContent = vendor.location;
+            document.getElementById('vendor-phone').textContent = vendor.phone;
+            document.getElementById('vendor-cars').textContent = vendor.cars;
+            document.getElementById('vendor-rating').textContent = vendor.rating;
+            document.getElementById('vendor-avatar').src = vendor.avatar;
+        }
+        
+        function loadRiderData() {
+            // Sample rider/driver data
+            const riders = [
+                {
+                    name: "Vikram Singh",
+                    experience: "8+ years professional driving",
+                    languages: "English, Hindi, Punjabi",
+                    area: "Complete city and highways",
+                    specialties: "Luxury cars, Airport transfers",
+                    rating: "4.9 (85 trips)",
+                    avatar: "https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=150"
+                },
+                {
+                    name: "Ahmed Hassan",
+                    experience: "12+ years chauffeur service", 
+                    languages: "English, Hindi, Urdu, Arabic",
+                    area: "Metropolitan area expert",
+                    specialties: "Corporate trips, VIP service",
+                    rating: "5.0 (142 trips)",
+                    avatar: "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=150"
+                }
+            ];
+            
+            const rider = riders[Math.floor(Math.random() * riders.length)];
+            
+            document.getElementById('rider-name').textContent = rider.name;
+            document.getElementById('rider-experience').textContent = rider.experience;
+            document.getElementById('rider-languages').textContent = rider.languages;
+            document.getElementById('rider-area').textContent = rider.area;
+            document.getElementById('rider-specialties').textContent = rider.specialties;
+            document.getElementById('rider-rating').textContent = rider.rating;
+            document.getElementById('rider-avatar').src = rider.avatar;
+        }
+        
+        // Initialize booking type when page loads
+        window.addEventListener('load', function() {
+            initializeBookingType();
+        });
+    </script>
+
+    <!-- Interactive Map Modal -->
+    <div class="modal-overlay" id="locationMapModal" style="display: none;">
+        <div class="modal-content map-modal">
+            <div class="modal-header">
+                <h3>Select Your Location</h3>
+                <p>Click on the map to select your exact location</p>
+                <button class="modal-close" onclick="closeLocationMap()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="location-map" style="height: 400px; width: 100%; border-radius: 8px;"></div>
+                <div class="selected-location-info" id="selectedLocationInfo" style="display: none;">
+                    <h4>Selected Location:</h4>
+                    <p id="selectedLocationAddress">Click on the map to select a location</p>
+                    <div class="location-coordinates">
+                        <span>Lat: <span id="selectedLat">-</span></span>
+                        <span>Lng: <span id="selectedLng">-</span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeLocationMap()">Cancel</button>
+                <button class="btn-primary" id="confirmLocationBtn" onclick="confirmSelectedLocation()" disabled>Confirm Location</button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Map Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .map-modal {
+            background: #1a1a1a;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 90%;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid #333;
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .modal-header h3 {
+            color: #FFD700;
+            margin: 0;
+            font-size: 1.4rem;
+        }
+
+        .modal-header p {
+            color: #ccc;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: #ccc;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: #FFD700;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .selected-location-info {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #2a2a2a;
+            border-radius: 8px;
+            border: 1px solid #444;
+        }
+
+        .selected-location-info h4 {
+            color: #FFD700;
+            margin: 0 0 0.5rem 0;
+            font-size: 1rem;
+        }
+
+        .selected-location-info p {
+            color: #ccc;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .location-coordinates {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: #999;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid #333;
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn-secondary {
+            background: #444;
+            color: #ccc;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #555;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA000 100%);
+            color: #000;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: linear-gradient(135deg, #FFA000 0%, #FF8F00 100%);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:disabled {
+            background: #555;
+            color: #888;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Custom Leaflet Marker */
+        .custom-marker {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Leaflet Map Container */
+        #location-map {
+            background: #2a2a2a;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .map-modal {
+                width: 95%;
+                margin: 1rem;
+            }
+            
+            #location-map {
+                height: 300px;
+            }
+        }
+    </style>
+</body>
+</html>

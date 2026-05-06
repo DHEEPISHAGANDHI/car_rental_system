@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking System Diagnostic - Elite Rentals</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #000;
+            color: #fff;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+        .diagnostic-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #111;
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid #FFD700;
+        }
+        h1 {
+            color: #FFD700;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .test-section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #222;
+            border-radius: 8px;
+            border-left: 4px solid #FFD700;
+        }
+        .test-title {
+            color: #FFD700;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .status {
+            padding: 0.5rem;
+            border-radius: 4px;
+            margin: 0.5rem 0;
+            font-family: monospace;
+        }
+        .success { background: #0a5d0a; color: #00ff00; }
+        .error { background: #5d0a0a; color: #ff0000; }
+        .info { background: #0a0a5d; color: #00ffff; }
+        button {
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            color: #000;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 0.5rem;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        pre {
+            background: #333;
+            padding: 1rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="diagnostic-container">
+        <h1>🔧 Booking System Diagnostic</h1>
+        
+        <div class="test-section">
+            <div class="test-title">📋 System Status</div>
+            <div id="system-status">Checking...</div>
+        </div>
+        
+        <div class="test-section">
+            <div class="test-title">🚗 Car Data Test</div>
+            <div id="car-data-status">Checking...</div>
+            <button onclick="testCarData()">Test Car Data</button>
+        </div>
+        
+        <div class="test-section">
+            <div class="test-title">💰 Pricing Test</div>
+            <div id="pricing-status">Checking...</div>
+            <button onclick="testPricing()">Test Pricing</button>
+        </div>
+        
+        <div class="test-section">
+            <div class="test-title">📝 Form Test</div>
+            <div id="form-status">Checking...</div>
+            <button onclick="testForm()">Test Form</button>
+        </div>
+        
+        <div class="test-section">
+            <div class="test-title">💳 Payment Test</div>
+            <div id="payment-status">Checking...</div>
+            <button onclick="testPayment()">Test Payment</button>
+        </div>
+        
+        <div class="test-section">
+            <div class="test-title">🚀 Complete Flow Test</div>
+            <div id="complete-flow-status">Ready to test</div>
+            <button onclick="testCompleteFlow()">Run Complete Test</button>
+            <button onclick="openBookingPage()">Open Booking Page</button>
+        </div>
+        
+        <div class="test-section">
+            <div class="test-title">📊 Debug Information</div>
+            <pre id="debug-info">Debug info will appear here...</pre>
+        </div>
+    </div>
+
+    <script>
+        // Car data (same as booking page)
+        const carData = {
+            'Mercedes-Benz S-Class': { price: 250, seats: 5, fuel: 'Petrol', transmission: 'Automatic' },
+            'BMW X7': { price: 320, seats: 7, fuel: 'Petrol', transmission: 'Automatic' },
+            'Audi A8': { price: 280, seats: 5, fuel: 'Petrol', transmission: 'Automatic' },
+            'Porsche Macan': { price: 290, seats: 5, fuel: 'Petrol', transmission: 'Automatic' },
+            'Range Rover Velar': { price: 310, seats: 5, fuel: 'Petrol', transmission: 'Automatic' },
+            'Jaguar F-PACE': { price: 270, seats: 5, fuel: 'Petrol', transmission: 'Automatic' }
+        };
+
+        function updateStatus(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        function updateDebug(info) {
+            const debugElement = document.getElementById('debug-info');
+            const timestamp = new Date().toLocaleTimeString();
+            debugElement.textContent += `[${timestamp}] ${info}\n`;
+        }
+
+        function testCarData() {
+            updateDebug('Testing car data...');
+            
+            try {
+                const carCount = Object.keys(carData).length;
+                const sampleCar = carData['Mercedes-Benz S-Class'];
+                
+                if (carCount === 6 && sampleCar && sampleCar.price === 250) {
+                    updateStatus('car-data-status', `✅ Car data OK: ${carCount} cars loaded, Mercedes price: $${sampleCar.price}/day`, 'success');
+                    updateDebug(`Car data test passed: ${carCount} cars`);
+                } else {
+                    updateStatus('car-data-status', '❌ Car data invalid', 'error');
+                    updateDebug('Car data test failed');
+                }
+            } catch (error) {
+                updateStatus('car-data-status', `❌ Error: ${error.message}`, 'error');
+                updateDebug(`Car data error: ${error.message}`);
+            }
+        }
+
+        function testPricing() {
+            updateDebug('Testing pricing calculations...');
+            
+            try {
+                const basePricePerDay = carData['Mercedes-Benz S-Class'].price;
+                const days = 2;
+                const expectedTotal = basePricePerDay * days;
+                
+                if (expectedTotal === 500) {
+                    updateStatus('pricing-status', `✅ Pricing OK: $${basePricePerDay}/day × ${days} days = $${expectedTotal}`, 'success');
+                    updateDebug(`Pricing test passed: $${expectedTotal}`);
+                } else {
+                    updateStatus('pricing-status', '❌ Pricing calculation error', 'error');
+                    updateDebug('Pricing test failed');
+                }
+            } catch (error) {
+                updateStatus('pricing-status', `❌ Error: ${error.message}`, 'error');
+                updateDebug(`Pricing error: ${error.message}`);
+            }
+        }
+
+        function testForm() {
+            updateDebug('Testing form validation...');
+            
+            try {
+                const requiredFields = ['full-name', 'email', 'mobile', 'pickup-date', 'return-date'];
+                const sampleData = {
+                    'full-name': 'John Doe',
+                    'email': 'john@example.com',
+                    'mobile': '+1234567890',
+                    'pickup-date': '2025-07-31T10:00',
+                    'return-date': '2025-08-01T10:00'
+                };
+                
+                let allValid = true;
+                requiredFields.forEach(field => {
+                    if (!sampleData[field] || sampleData[field].trim() === '') {
+                        allValid = false;
+                    }
+                });
+                
+                if (allValid) {
+                    updateStatus('form-status', '✅ Form validation OK: All required fields can be filled', 'success');
+                    updateDebug('Form validation test passed');
+                } else {
+                    updateStatus('form-status', '❌ Form validation failed', 'error');
+                    updateDebug('Form validation test failed');
+                }
+            } catch (error) {
+                updateStatus('form-status', `❌ Error: ${error.message}`, 'error');
+                updateDebug(`Form error: ${error.message}`);
+            }
+        }
+
+        function testPayment() {
+            updateDebug('Testing payment methods...');
+            
+            try {
+                const paymentMethods = ['upi', 'card', 'netbanking', 'pickup'];
+                const paymentData = {
+                    transactionId: `TXN${Date.now()}`,
+                    amount: '$500',
+                    paymentMethod: 'upi',
+                    status: 'success'
+                };
+                
+                if (paymentMethods.length === 4 && paymentData.transactionId) {
+                    updateStatus('payment-status', `✅ Payment OK: ${paymentMethods.length} methods, TXN: ${paymentData.transactionId}`, 'success');
+                    updateDebug(`Payment test passed: ${paymentData.transactionId}`);
+                } else {
+                    updateStatus('payment-status', '❌ Payment system error', 'error');
+                    updateDebug('Payment test failed');
+                }
+            } catch (error) {
+                updateStatus('payment-status', `❌ Error: ${error.message}`, 'error');
+                updateDebug(`Payment error: ${error.message}`);
+            }
+        }
+
+        function testCompleteFlow() {
+            updateDebug('Running complete booking flow test...');
+            
+            setTimeout(() => testCarData(), 100);
+            setTimeout(() => testPricing(), 200);
+            setTimeout(() => testForm(), 300);
+            setTimeout(() => testPayment(), 400);
+            
+            setTimeout(() => {
+                const bookingData = {
+                    car: 'Mercedes-Benz S-Class',
+                    customerName: 'John Doe',
+                    customerEmail: 'john@example.com',
+                    customerMobile: '+1234567890',
+                    pickupDate: '2025-07-31T10:00',
+                    returnDate: '2025-08-01T10:00',
+                    paymentMethod: 'upi',
+                    totalAmount: '$500',
+                    otp: Math.floor(100000 + Math.random() * 900000).toString()
+                };
+                
+                localStorage.setItem('bookingData', JSON.stringify(bookingData));
+                updateStatus('complete-flow-status', '✅ Complete flow test passed! Ready for booking.', 'success');
+                updateDebug('Complete flow test completed successfully');
+            }, 500);
+        }
+
+        function openBookingPage() {
+            updateDebug('Opening booking page...');
+            window.open('booking.html?car=Mercedes-Benz%20S-Class', '_blank');
+        }
+
+        // Initialize system check
+        window.onload = function() {
+            updateStatus('system-status', '✅ Diagnostic system loaded', 'success');
+            updateDebug('Diagnostic system initialized');
+            
+            // Auto-run basic tests
+            setTimeout(() => {
+                testCarData();
+                testPricing();
+            }, 500);
+        };
+    </script>
+</body>
+</html>

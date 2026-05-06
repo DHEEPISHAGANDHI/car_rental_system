@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Rider Tracking - Elite Rentals</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #000, #1a1a1a);
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #FFD700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .tracking-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .tracking-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .highlight {
+            color: #FFD700;
+        }
+
+        .tracking-subtitle {
+            color: #ccc;
+            font-size: 1.1rem;
+        }
+
+        /* Status Cards */
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .status-card {
+            background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .status-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.2);
+        }
+
+        .status-icon {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 15px;
+            color: #FFD700;
+        }
+
+        .status-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #FFD700;
+            margin-bottom: 8px;
+        }
+
+        .status-label {
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        /* Map Container */
+        .map-container {
+            background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 40px;
+        }
+
+        .map-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .map-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #FFD700;
+        }
+
+        .refresh-btn {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid #FFD700;
+            color: #FFD700;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            background: #FFD700;
+            color: #000;
+        }
+
+        #map {
+            height: 500px;
+            width: 100%;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 215, 0, 0.2);
+        }
+
+        /* Rider Info */
+        .rider-info {
+            background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .rider-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .rider-details h3 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+            color: #FFD700;
+        }
+
+        .rider-details p {
+            color: #ccc;
+            margin-bottom: 3px;
+        }
+
+        .rider-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 10px;
+        }
+
+        .star {
+            width: 16px;
+            height: 16px;
+            color: #FFD700;
+        }
+
+        .call-btn {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .call-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.3);
+        }
+
+        .call-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Timeline */
+        .timeline {
+            background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .timeline-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #FFD700;
+            margin-bottom: 20px;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+        }
+
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+
+        .timeline-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .timeline-icon.completed {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+        }
+
+        .timeline-icon.active {
+            background: rgba(255, 215, 0, 0.2);
+            color: #FFD700;
+            animation: pulse 2s infinite;
+        }
+
+        .timeline-icon.pending {
+            background: rgba(158, 158, 158, 0.2);
+            color: #9e9e9e;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .timeline-content h4 {
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .timeline-content p {
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        .timeline-time {
+            color: #FFD700;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px 15px;
+            }
+
+            .tracking-title {
+                font-size: 2rem;
+            }
+
+            .status-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .rider-info {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            #map {
+                height: 400px;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Notification animations */
+        @keyframes slideInFromRight {
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOutToRight {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(400px); opacity: 0; }
+        }
+
+        @keyframes slideInFromBottom {
+            from { transform: translateX(-50%) translateY(100px); opacity: 0; }
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideOutToBottom {
+            from { transform: translateX(-50%) translateY(0); opacity: 1; }
+            to { transform: translateX(-50%) translateY(100px); opacity: 0; }
+        }
+
+        @keyframes celebrationPulse {
+            0% { transform: scale(1); box-shadow: 0 6px 20px rgba(76, 175, 80, 0.6); }
+            50% { transform: scale(1.1); box-shadow: 0 8px 30px rgba(76, 175, 80, 0.8); }
+            100% { transform: scale(1); box-shadow: 0 6px 20px rgba(76, 175, 80, 0.6); }
+        }
+
+        /* WebSocket connection indicator */
+        .connection-indicator {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background: rgba(76, 175, 80, 0.9);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .connection-dot {
+            width: 8px;
+            height: 8px;
+            background: #4CAF50;
+            border-radius: 50%;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+
+        /* Custom Map Styles */
+        .leaflet-popup-content-wrapper {
+            background: #1a1a1a;
+            color: #fff;
+            border-radius: 8px;
+        }
+
+        .leaflet-popup-content {
+            margin: 15px;
+        }
+
+        .leaflet-popup-tip {
+            background: #1a1a1a;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                🚗 ELITE RENTALS - LIVE TRACKING
+            </div>
+            <a href="index.html" class="back-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5"></path>
+                    <polyline points="12,19 5,12 12,5"></polyline>
+                </svg>
+                Back to Home
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Tracking Header -->
+        <div class="tracking-header fade-in">
+            <h1 class="tracking-title"><span class="highlight">LIVE</span> RIDER TRACKING</h1>
+            <p class="tracking-subtitle">Watch your rider's real-time location as they bring your Mercedes-Benz S-Class</p>
+        </div>
+
+        <!-- Status Cards -->
+        <div class="status-grid fade-in">
+            <div class="status-card">
+                <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <div class="status-value" id="distance">2.3 km</div>
+                <div class="status-label">Distance Away</div>
+            </div>
+            <div class="status-card">
+                <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12,6 12,12 16,14"></polyline>
+                </svg>
+                <div class="status-value" id="eta">8 mins</div>
+                <div class="status-label">Estimated Arrival</div>
+            </div>
+            <div class="status-card">
+                <svg class="status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                </svg>
+                <div class="status-value" id="speed">45 km/h</div>
+                <div class="status-label">Current Speed</div>
+            </div>
+        </div>
+
+        <!-- Map Container -->
+        <div class="map-container fade-in">
+            <div class="map-header">
+                <h2 class="map-title">📍 Real-Time Location</h2>
+                <button class="refresh-btn" onclick="refreshMap()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="23,4 23,10 17,10"></polyline>
+                        <polyline points="1,20 1,14 7,14"></polyline>
+                        <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+                    </svg>
+                    Refresh
+                </button>
+            </div>
+            <div id="map"></div>
+        </div>
+
+        <!-- Rider Info -->
+        <div class="rider-info fade-in">
+            <div class="rider-avatar">JD</div>
+            <div class="rider-details">
+                <h3>John Doe</h3>
+                <p>Rider ID: RD001</p>
+                <p>Vehicle: Honda CBR 650R</p>
+                <p>License: DL1420110012345</p>
+                <div class="rider-rating">
+                    <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                    </svg>
+                    <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                    </svg>
+                    <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                    </svg>
+                    <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                    </svg>
+                    <svg class="star" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                    </svg>
+                    <span style="color: #FFD700; margin-left: 5px;">4.9 (234 rides)</span>
+                </div>
+            </div>
+            <button class="call-btn" onclick="callRider()">
+                <svg class="call-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                </svg>
+                Call Rider
+            </button>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline fade-in">
+            <h2 class="timeline-title">🕒 Delivery Timeline</h2>
+            <div class="timeline-item">
+                <div class="timeline-icon completed">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20,6 9,17 4,12"></polyline>
+                    </svg>
+                </div>
+                <div class="timeline-content">
+                    <h4>Booking Confirmed</h4>
+                    <p>Your Mercedes-Benz S-Class reservation is confirmed</p>
+                </div>
+                <div class="timeline-time">10:30 AM</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-icon completed">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20,6 9,17 4,12"></polyline>
+                    </svg>
+                </div>
+                <div class="timeline-content">
+                    <h4>Rider Assigned</h4>
+                    <p>John Doe has been assigned to deliver your vehicle</p>
+                </div>
+                <div class="timeline-time">10:35 AM</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-icon completed">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20,6 9,17 4,12"></polyline>
+                    </svg>
+                </div>
+                <div class="timeline-content">
+                    <h4>Vehicle Picked Up</h4>
+                    <p>Rider has collected the vehicle from our depot</p>
+                </div>
+                <div class="timeline-time">10:45 AM</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-icon active">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                </div>
+                <div class="timeline-content">
+                    <h4>En Route to You</h4>
+                    <p>Rider is currently traveling to your pickup location</p>
+                </div>
+                <div class="timeline-time">Now</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-icon pending">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12,6 12,12 16,14"></polyline>
+                    </svg>
+                </div>
+                <div class="timeline-content">
+                    <h4>Arrival & Handover</h4>
+                    <p>Vehicle inspection and key handover</p>
+                </div>
+                <div class="timeline-time">ETA 11:00 AM</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <script>
+        // Map and tracking variables
+        let map;
+        let riderMarker;
+        let pickupMarker;
+        let routeLine;
+        let currentRiderPosition = { lat: 12.9716, lng: 77.5946 }; // Starting position (Bangalore)
+        let pickupLocation = { lat: 12.9349, lng: 77.6247 }; // Destination (different area in Bangalore)
+        let isMoving = true;
+        let routePoints = [];
+        let currentRouteIndex = 0;
+
+        // Custom car icon for rider
+        const carIcon = L.divIcon({
+            html: `
+                <div style="
+                    background: linear-gradient(135deg, #FFD700, #FFA500);
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+                    border: 3px solid #fff;
+                    font-size: 18px;
+                    transform: rotate(45deg);
+                ">
+                    🚗
+                </div>
+            `,
+            className: 'car-marker',
+            iconSize: [40, 40],
+            iconAnchor: [20, 20]
+        });
+
+        // Pickup location icon
+        const pickupIcon = L.divIcon({
+            html: `
+                <div style="
+                    background: linear-gradient(135deg, #4CAF50, #45a049);
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+                    border: 3px solid #fff;
+                    font-size: 20px;
+                    animation: pulse 2s infinite;
+                ">
+                    📍
+                </div>
+            `,
+            className: 'pickup-marker',
+            iconSize: [50, 50],
+            iconAnchor: [25, 25]
+        });
+
+        // Initialize map
+        function initializeMap() {
+            map = L.map('map').setView([currentRiderPosition.lat, currentRiderPosition.lng], 13);
+
+            // Dark theme tile layer
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '© OpenStreetMap contributors, © CartoDB',
+                maxZoom: 19
+            }).addTo(map);
+
+            // Add rider marker
+            riderMarker = L.marker([currentRiderPosition.lat, currentRiderPosition.lng], {
+                icon: carIcon
+            }).addTo(map);
+
+            // Add pickup location marker
+            pickupMarker = L.marker([pickupLocation.lat, pickupLocation.lng], {
+                icon: pickupIcon
+            }).addTo(map);
+
+            // Add popups
+            riderMarker.bindPopup(`
+                <div style="color: #fff; text-align: center;">
+                    <h4 style="margin: 0 0 10px 0; color: #FFD700;">🚗 John Doe</h4>
+                    <p style="margin: 0;">Mercedes-Benz S-Class</p>
+                    <p style="margin: 5px 0 0 0; font-size: 12px; color: #ccc;">Moving at 45 km/h</p>
+                </div>
+            `);
+
+            pickupMarker.bindPopup(`
+                <div style="color: #fff; text-align: center;">
+                    <h4 style="margin: 0 0 10px 0; color: #4CAF50;">📍 Your Location</h4>
+                    <p style="margin: 0;">123 Elite Avenue</p>
+                    <p style="margin: 5px 0 0 0; font-size: 12px; color: #ccc;">Pickup Point</p>
+                </div>
+            `);
+
+            // Generate route points for realistic movement
+            generateRoutePoints();
+            
+            // Draw initial route line
+            updateRouteLine();
+
+            // Fit map to show both markers
+            const group = new L.featureGroup([riderMarker, pickupMarker]);
+            map.fitBounds(group.getBounds().pad(0.1));
+        }
+
+        // Generate route points for realistic movement
+        function generateRoutePoints() {
+            const startLat = currentRiderPosition.lat;
+            const startLng = currentRiderPosition.lng;
+            const endLat = pickupLocation.lat;
+            const endLng = pickupLocation.lng;
+            
+            const steps = 50; // Number of steps for smooth movement
+            
+            for (let i = 0; i <= steps; i++) {
+                const progress = i / steps;
+                
+                // Add some curve to make it look like realistic road movement
+                const curveFactor = Math.sin(progress * Math.PI) * 0.01;
+                
+                const lat = startLat + (endLat - startLat) * progress + curveFactor;
+                const lng = startLng + (endLng - startLng) * progress + curveFactor * 0.5;
+                
+                routePoints.push({ lat, lng });
+            }
+        }
+
+        // Update route line on map
+        function updateRouteLine() {
+            if (routeLine) {
+                map.removeLayer(routeLine);
+            }
+
+            // Draw route from current position to destination
+            const routeCoords = routePoints.slice(currentRouteIndex).map(point => [point.lat, point.lng]);
+            
+            routeLine = L.polyline(routeCoords, {
+                color: '#FFD700',
+                weight: 4,
+                opacity: 0.8,
+                dashArray: '10, 5'
+            }).addTo(map);
+        }
+
+        // Simulate realistic GPS movement with WebSocket-like updates
+        function simulateRealisticMovement() {
+            if (!isMoving || currentRouteIndex >= routePoints.length - 1) {
+                if (currentRouteIndex >= routePoints.length - 1) {
+                    riderArrived();
+                }
+                return;
+            }
+
+            // Simulate WebSocket connection status
+            const connectionStrength = Math.random();
+            if (connectionStrength < 0.05) {
+                // Simulate temporary GPS signal loss
+                console.log('GPS signal temporarily lost... reconnecting...');
+                setTimeout(simulateRealisticMovement, 1000);
+                return;
+            }
+
+            // Variable movement speed based on traffic conditions
+            const trafficConditions = ['light', 'moderate', 'heavy'];
+            const currentTraffic = trafficConditions[Math.floor(Math.random() * 3)];
+            
+            let movementSpeed = 1;
+            switch(currentTraffic) {
+                case 'light': movementSpeed = Math.random() < 0.8 ? 2 : 1; break;
+                case 'moderate': movementSpeed = Math.random() < 0.6 ? 1 : 0.5; break;
+                case 'heavy': movementSpeed = Math.random() < 0.3 ? 1 : 0.25; break;
+            }
+
+            // Move rider with realistic speed variations
+            for (let i = 0; i < movementSpeed && currentRouteIndex < routePoints.length - 1; i++) {
+                currentRouteIndex++;
+            }
+
+            const newPosition = routePoints[currentRouteIndex];
+            
+            // Smooth animation with slight position variations (GPS accuracy simulation)
+            const latVariation = (Math.random() - 0.5) * 0.0001; // Small GPS variance
+            const lngVariation = (Math.random() - 0.5) * 0.0001;
+            
+            riderMarker.setLatLng([
+                newPosition.lat + latVariation, 
+                newPosition.lng + lngVariation
+            ]);
+            
+            // Update route line
+            updateRouteLine();
+            
+            // Update status displays with traffic info
+            updateRealtimeStatus(currentTraffic);
+            
+            // Dynamic popup with real-time info
+            const currentSpeed = getCurrentSpeed(currentTraffic);
+            riderMarker.setPopupContent(`
+                <div style="color: #fff; text-align: center;">
+                    <h4 style="margin: 0 0 10px 0; color: #FFD700;">🚗 John Doe</h4>
+                    <p style="margin: 0;">Mercedes-Benz S-Class</p>
+                    <p style="margin: 5px 0 0 0; font-size: 12px; color: #ccc;">Speed: ${currentSpeed} km/h</p>
+                    <p style="margin: 2px 0 0 0; font-size: 11px; color: ${getTrafficColor(currentTraffic)};">Traffic: ${currentTraffic.toUpperCase()}</p>
+                    <div style="margin-top: 5px; font-size: 10px; color: #4CAF50;">● Live GPS</div>
+                </div>
+            `);
+        }
+
+        // Move rider along the route (legacy function kept for compatibility)
+        function moveRider() {
+            simulateRealisticMovement();
+        }
+
+        // Get current speed based on traffic
+        function getCurrentSpeed(traffic) {
+            const baseSpeed = 45;
+            switch(traffic) {
+                case 'light': return Math.floor(baseSpeed + Math.random() * 15);
+                case 'moderate': return Math.floor(baseSpeed + (Math.random() - 0.5) * 20);
+                case 'heavy': return Math.floor(Math.max(15, baseSpeed - Math.random() * 25));
+                default: return baseSpeed;
+            }
+        }
+
+        // Get traffic condition color
+        function getTrafficColor(traffic) {
+            switch(traffic) {
+                case 'light': return '#4CAF50';
+                case 'moderate': return '#FFD700';
+                case 'heavy': return '#f44336';
+                default: return '#ccc';
+            }
+        }
+
+        // Update status displays with real-time traffic information
+        function updateRealtimeStatus(trafficCondition = 'moderate') {
+            const remainingDistance = (routePoints.length - currentRouteIndex) * 0.05; // Approximate km
+            
+            // Calculate ETA based on traffic conditions
+            let avgSpeed;
+            switch(trafficCondition) {
+                case 'light': avgSpeed = 0.9; break;    // 54 km/h average
+                case 'moderate': avgSpeed = 0.75; break; // 45 km/h average  
+                case 'heavy': avgSpeed = 0.5; break;    // 30 km/h average
+                default: avgSpeed = 0.75;
+            }
+            
+            const eta = Math.ceil(remainingDistance / avgSpeed * 60); // Minutes
+            const currentSpeed = getCurrentSpeed(trafficCondition);
+
+            // Update displays with animations
+            animateValueChange('distance', `${remainingDistance.toFixed(1)} km`);
+            animateValueChange('eta', `${eta} mins`);
+            animateValueChange('speed', `${currentSpeed} km/h`);
+            
+            // Add traffic indicator to speed display
+            const speedElement = document.getElementById('speed');
+            const speedCard = speedElement.closest('.status-card');
+            speedCard.style.borderColor = getTrafficColor(trafficCondition);
+            
+            // Update route line color based on traffic
+            if (routeLine) {
+                routeLine.setStyle({ color: getTrafficColor(trafficCondition) });
+            }
+        }
+
+        // Animate value changes for smooth updates
+        function animateValueChange(elementId, newValue) {
+            const element = document.getElementById(elementId);
+            element.style.transform = 'scale(1.1)';
+            element.style.transition = 'transform 0.2s ease';
+            
+            setTimeout(() => {
+                element.textContent = newValue;
+                element.style.transform = 'scale(1)';
+            }, 100);
+        }
+
+        // Update status displays (legacy function kept for compatibility)
+        function updateStatusDisplays() {
+            updateRealtimeStatus();
+        }
+
+        // Enhanced rider arrived function with comprehensive notifications
+        function riderArrived() {
+            isMoving = false;
+            
+            // Update status with celebration
+            animateValueChange('distance', '0 km');
+            animateValueChange('eta', 'ARRIVED! 🎉');
+            animateValueChange('speed', '0 km/h');
+            
+            // Update timeline with completion animations
+            const activeIcon = document.querySelector('.timeline-icon.active');
+            const pendingIcon = document.querySelector('.timeline-icon.pending');
+            
+            if (activeIcon) {
+                activeIcon.className = 'timeline-icon completed';
+                activeIcon.innerHTML = `
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20,6 9,17 4,12"></polyline>
+                    </svg>
+                `;
+            }
+            
+            if (pendingIcon) {
+                pendingIcon.className = 'timeline-icon active';
+                pendingIcon.style.animation = 'pulse 1s infinite';
+            }
+            
+            // Enhanced arrival notification with multiple steps
+            setTimeout(() => {
+                // First notification - arrival alert
+                showArrivalNotification();
+                
+                // Second notification - handover instructions
+                setTimeout(() => {
+                    showHandoverInstructions();
+                }, 3000);
+                
+                // Third notification - completion confirmation
+                setTimeout(() => {
+                    showCompletionPrompt();
+                }, 8000);
+            }, 1000);
+            
+            // Remove route line with fade effect
+            if (routeLine) {
+                routeLine.setStyle({ opacity: 0.3 });
+                setTimeout(() => {
+                    map.removeLayer(routeLine);
+                }, 2000);
+            }
+            
+            // Add celebration effect to rider marker
+            riderMarker.setPopupContent(`
+                <div style="color: #fff; text-align: center;">
+                    <h4 style="margin: 0 0 10px 0; color: #4CAF50;">🎉 John Doe - ARRIVED!</h4>
+                    <p style="margin: 0;">Mercedes-Benz S-Class</p>
+                    <p style="margin: 5px 0 0 0; font-size: 12px; color: #4CAF50;">Ready for handover</p>
+                    <div style="margin-top: 8px; padding: 5px; background: rgba(76, 175, 80, 0.2); border-radius: 5px;">
+                        <div style="font-size: 11px; color: #4CAF50;">📍 At your location</div>
+                        <div style="font-size: 10px; color: #ccc; margin-top: 2px;">Tap to call rider</div>
+                    </div>
+                </div>
+            `);
+            
+            // Auto-open popup and add click handler
+            riderMarker.openPopup();
+            riderMarker.on('click', function() {
+                callRider();
+            });
+            
+            // Add arrival animation to pickup marker
+            pickupMarker.setIcon(L.divIcon({
+                html: `
+                    <div style="
+                        background: linear-gradient(135deg, #4CAF50, #45a049);
+                        width: 60px;
+                        height: 60px;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        box-shadow: 0 6px 20px rgba(76, 175, 80, 0.6);
+                        border: 4px solid #fff;
+                        font-size: 24px;
+                        animation: celebrationPulse 2s infinite;
+                    ">
+                        🎉
+                    </div>
+                `,
+                className: 'celebration-marker',
+                iconSize: [60, 60],
+                iconAnchor: [30, 30]
+            }));
+        }
+
+        // Show arrival notification
+        function showArrivalNotification() {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #4CAF50, #45a049);
+                color: white;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 10px 30px rgba(76, 175, 80, 0.3);
+                z-index: 1000;
+                animation: slideInFromRight 0.5s ease;
+                max-width: 300px;
+            `;
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 24px;">🎉</span>
+                    <div>
+                        <h4 style="margin: 0; font-size: 16px;">Rider Arrived!</h4>
+                        <p style="margin: 5px 0 0 0; font-size: 12px; opacity: 0.9;">John is waiting at your pickup location</p>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOutToRight 0.5s ease';
+                setTimeout(() => notification.remove(), 500);
+            }, 4000);
+        }
+
+        // Show handover instructions
+        function showHandoverInstructions() {
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1001;
+                animation: fadeIn 0.3s ease;
+            `;
+            
+            modal.innerHTML = `
+                <div style="
+                    background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+                    border: 2px solid #FFD700;
+                    border-radius: 15px;
+                    padding: 30px;
+                    max-width: 400px;
+                    text-align: center;
+                    color: white;
+                ">
+                    <h3 style="color: #FFD700; margin-bottom: 20px;">🚗 Vehicle Handover</h3>
+                    <p style="margin-bottom: 15px;">Please proceed with the following steps:</p>
+                    <div style="text-align: left; margin: 20px 0;">
+                        <div style="margin: 10px 0; display: flex; align-items: center; gap: 10px;">
+                            <span style="color: #4CAF50;">✓</span> Verify rider's ID (John Doe)
+                        </div>
+                        <div style="margin: 10px 0; display: flex; align-items: center; gap: 10px;">
+                            <span style="color: #4CAF50;">✓</span> Inspect vehicle condition
+                        </div>
+                        <div style="margin: 10px 0; display: flex; align-items: center; gap: 10px;">
+                            <span style="color: #4CAF50;">✓</span> Check fuel level & documents
+                        </div>
+                        <div style="margin: 10px 0; display: flex; align-items: center; gap: 10px;">
+                            <span style="color: #4CAF50;">✓</span> Receive keys & complete handover
+                        </div>
+                    </div>
+                    <button onclick="this.parentElement.parentElement.remove()" style="
+                        background: linear-gradient(135deg, #FFD700, #FFA500);
+                        color: #000;
+                        border: none;
+                        padding: 12px 24px;
+                        border-radius: 8px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        margin-top: 15px;
+                    ">Got it!</button>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+
+        // Show completion prompt
+        function showCompletionPrompt() {
+            const prompt = document.createElement('div');
+            prompt.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: linear-gradient(135deg, #FFD700, #FFA500);
+                color: #000;
+                padding: 15px 25px;
+                border-radius: 25px;
+                box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+                z-index: 1000;
+                animation: slideInFromBottom 0.5s ease;
+                font-weight: 600;
+                cursor: pointer;
+            `;
+            prompt.innerHTML = `📝 Complete handover & rate your experience`;
+            prompt.onclick = function() {
+                console.log('🌟 Thank you for choosing Elite Rentals! Your feedback helps us improve our service.');
+                prompt.remove();
+            };
+            
+            document.body.appendChild(prompt);
+            
+            setTimeout(() => {
+                if (document.body.contains(prompt)) {
+                    prompt.style.animation = 'slideOutToBottom 0.5s ease';
+                    setTimeout(() => prompt.remove(), 500);
+                }
+            }, 10000);
+        }
+
+        // Refresh map function
+        function refreshMap() {
+            const btn = document.querySelector('.refresh-btn');
+            btn.style.transform = 'rotate(360deg)';
+            setTimeout(() => {
+                btn.style.transform = 'rotate(0deg)';
+            }, 500);
+            
+            // Update displays
+            updateStatusDisplays();
+        }
+
+        // Call rider function
+        function callRider() {
+            console.log('📞 Calling John Doe (+91 98765 43210)... "Hi! I\'m about 8 minutes away with your Mercedes-Benz S-Class. Please be ready at the pickup location!"');
+        }
+
+        // Initialize everything when page loads with WebSocket simulation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add connection indicator
+            addConnectionIndicator();
+            
+            // Initialize map with delay for better UX
+            setTimeout(() => {
+                initializeMap();
+                
+                // Start WebSocket simulation
+                simulateWebSocketConnection();
+                
+                // Start enhanced rider movement
+                setInterval(simulateRealisticMovement, 1500); // Every 1.5 seconds for smooth movement
+                
+                // Update status displays every 2 seconds for real-time feel
+                setInterval(() => updateRealtimeStatus(), 2000);
+                
+                // Simulate occasional GPS updates
+                setInterval(simulateGPSUpdate, 5000);
+                
+            }, 500);
+        });
+
+        // Add WebSocket connection indicator
+        function addConnectionIndicator() {
+            const indicator = document.createElement('div');
+            indicator.className = 'connection-indicator';
+            indicator.innerHTML = `
+                <div class="connection-dot"></div>
+                <span>Live GPS Connected</span>
+            `;
+            document.body.appendChild(indicator);
+        }
+
+        // Simulate WebSocket connection with real-time updates
+        function simulateWebSocketConnection() {
+            console.log('🔗 WebSocket connection established');
+            console.log('📡 GPS tracking active');
+            
+            // Simulate connection health checks
+            setInterval(() => {
+                const connectionHealth = Math.random();
+                const indicator = document.querySelector('.connection-indicator span');
+                
+                if (connectionHealth > 0.9) {
+                    indicator.textContent = 'Live GPS - Excellent Signal';
+                    indicator.parentElement.style.background = 'rgba(76, 175, 80, 0.9)';
+                } else if (connectionHealth > 0.7) {
+                    indicator.textContent = 'Live GPS - Good Signal';
+                    indicator.parentElement.style.background = 'rgba(255, 215, 0, 0.9)';
+                } else if (connectionHealth > 0.3) {
+                    indicator.textContent = 'Live GPS - Weak Signal';
+                    indicator.parentElement.style.background = 'rgba(255, 152, 0, 0.9)';
+                } else {
+                    indicator.textContent = 'GPS Reconnecting...';
+                    indicator.parentElement.style.background = 'rgba(244, 67, 54, 0.9)';
+                }
+            }, 8000);
+        }
+
+        // Simulate GPS updates
+        function simulateGPSUpdate() {
+            if (!isMoving) return;
+            
+            console.log(`📍 GPS Update: Rider at ${currentRiderPosition.lat.toFixed(6)}, ${currentRiderPosition.lng.toFixed(6)}`);
+            
+            // Occasionally show GPS accuracy information
+            if (Math.random() < 0.3) {
+                const accuracy = Math.floor(Math.random() * 10) + 3; // 3-12 meter accuracy
+                console.log(`📡 GPS Accuracy: ±${accuracy}m`);
+            }
+        }
+
+        // Add some interactive features
+        document.addEventListener('keydown', function(e) {
+            if (e.key === ' ') { // Spacebar to pause/resume
+                e.preventDefault();
+                isMoving = !isMoving;
+                console.log(isMoving ? 'Tracking resumed' : 'Tracking paused');
+            }
+        });
+
+        // Add fade-in animations
+        function addFadeInAnimations() {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach((el, index) => {
+                el.style.animationDelay = `${index * 0.1}s`;
+            });
+        }
+
+        // Call animation function
+        addFadeInAnimations();
+    </script>
+</body>
+</html>

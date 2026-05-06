@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Rentals - Rider Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000000;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #FFD700;
+            letter-spacing: -1px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 215, 0, 0.1);
+            padding: 8px 16px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFD700, #FFF700);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #000;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 2px solid #FFD700;
+            color: #FFD700;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #FFD700;
+            color: #000;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .dashboard-title {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-title .highlight {
+            color: #FFD700;
+        }
+
+        .dashboard-subtitle {
+            color: #ccc;
+            font-size: 18px;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 15px;
+            color: #FFD700;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 800;
+            color: #FFD700;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        /* Task Sections */
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #FFD700;
+        }
+
+        .status-filter {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            background: transparent;
+            color: #ccc;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: #FFD700;
+            color: #000;
+            border-color: #FFD700;
+        }
+
+        /* Task Cards */
+        .tasks-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .task-card {
+            background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .task-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.1);
+        }
+
+        .task-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .task-id {
+            font-size: 18px;
+            font-weight: 700;
+            color: #FFD700;
+        }
+
+        .task-status {
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-pending { background: rgba(255, 165, 0, 0.2); color: #FFA500; }
+        .status-accepted { background: rgba(0, 255, 0, 0.2); color: #00FF00; }
+        .status-in-progress { background: rgba(0, 123, 255, 0.2); color: #007BFF; }
+        .status-completed { background: rgba(40, 167, 69, 0.2); color: #28A745; }
+
+        .task-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .detail-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .detail-label {
+            color: #FFD700;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .detail-value {
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .btn-accept {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+        }
+
+        .btn-accept:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-update {
+            background: linear-gradient(135deg, #FFD700, #FFF700);
+            color: #000;
+        }
+
+        .btn-update:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn-reject {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+        }
+
+        .btn-reject:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+        }
+
+        /* No tasks message */
+        .no-tasks {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .no-tasks-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 20px;
+            color: #333;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .task-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .task-actions {
+                flex-direction: column;
+            }
+            
+            .action-btn {
+                min-width: auto;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">🚕 ELITE RENTALS - RIDER</div>
+            <div class="user-info">
+                <div class="user-profile">
+                    <div class="user-avatar" id="userAvatar">R</div>
+                    <span id="userName">Rider</span>
+                </div>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title"><span class="highlight">RIDER</span> DASHBOARD</h1>
+            <p class="dashboard-subtitle">Manage your delivery tasks and track your performance</p>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="8.5" cy="7" r="4"></circle>
+                    <line x1="20" y1="8" x2="20" y2="14"></line>
+                    <line x1="23" y1="11" x2="17" y2="11"></line>
+                </svg>
+                <div class="stat-number" id="pendingTasks">3</div>
+                <div class="stat-label">Pending Tasks</div>
+            </div>
+            <div class="stat-card">
+                <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"></polyline>
+                </svg>
+                <div class="stat-number" id="activeTasks">2</div>
+                <div class="stat-label">Active Tasks</div>
+            </div>
+            <div class="stat-card">
+                <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22,4 12,14.01 9,11.01"></polyline>
+                </svg>
+                <div class="stat-number" id="completedTasks">15</div>
+                <div class="stat-label">Completed Tasks</div>
+            </div>
+            <div class="stat-card">
+                <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+                <div class="stat-number" id="totalEarnings">$2,340</div>
+                <div class="stat-label">Total Earnings</div>
+            </div>
+        </div>
+
+        <!-- Pending Tasks Section -->
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">🔔 New Delivery Requests</h2>
+                <div class="status-filter">
+                    <button class="filter-btn active" onclick="filterTasks('all')">All</button>
+                    <button class="filter-btn" onclick="filterTasks('pickup')">Pickup</button>
+                    <button class="filter-btn" onclick="filterTasks('delivery')">Delivery</button>
+                </div>
+            </div>
+            <div class="tasks-grid" id="pendingTasksGrid">
+                <!-- Pending tasks will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Active Tasks Section -->
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">🚗 Active Deliveries</h2>
+            </div>
+            <div class="tasks-grid" id="activeTasksGrid">
+                <!-- Active tasks will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Recent Completed Tasks -->
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title">✅ Recently Completed</h2>
+            </div>
+            <div class="tasks-grid" id="completedTasksGrid">
+                <!-- Completed tasks will be populated by JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Sample task data
+        const sampleTasks = {
+            pending: [
+                {
+                    id: "DR001",
+                    type: "pickup",
+                    car: "Mercedes-Benz S-Class",
+                    customer: "John Smith",
+                    phone: "+1 (555) 123-4567",
+                    pickupLocation: "Downtown Hotel",
+                    deliveryLocation: "123 Main St",
+                    pickupTime: "2025-08-01 10:00 AM",
+                    fee: "$50"
+                },
+                {
+                    id: "DR002",
+                    type: "delivery",
+                    car: "BMW X7",
+                    customer: "Sarah Johnson",
+                    phone: "+1 (555) 234-5678",
+                    pickupLocation: "Elite Rentals Hub",
+                    deliveryLocation: "456 Oak Avenue",
+                    pickupTime: "2025-08-01 2:00 PM",
+                    fee: "$45"
+                },
+                {
+                    id: "DR003",
+                    type: "pickup",
+                    car: "Audi A8",
+                    customer: "Mike Davis",
+                    phone: "+1 (555) 345-6789",
+                    pickupLocation: "Airport Terminal 2",
+                    deliveryLocation: "Elite Rentals Hub",
+                    pickupTime: "2025-08-01 6:00 PM",
+                    fee: "$60"
+                }
+            ],
+            active: [
+                {
+                    id: "DR004",
+                    type: "delivery",
+                    car: "Porsche Macan",
+                    customer: "Emma Wilson",
+                    phone: "+1 (555) 456-7890",
+                    pickupLocation: "Elite Rentals Hub",
+                    deliveryLocation: "789 Pine Street",
+                    pickupTime: "2025-08-01 11:00 AM",
+                    fee: "$55",
+                    status: "in-progress"
+                },
+                {
+                    id: "DR005",
+                    type: "pickup",
+                    car: "Range Rover Velar",
+                    customer: "David Brown",
+                    phone: "+1 (555) 567-8901",
+                    pickupLocation: "321 Elm Road",
+                    deliveryLocation: "Elite Rentals Hub",
+                    pickupTime: "2025-08-01 3:00 PM",
+                    fee: "$50",
+                    status: "accepted"
+                }
+            ],
+            completed: [
+                {
+                    id: "DR006",
+                    type: "delivery",
+                    car: "Jaguar F-PACE",
+                    customer: "Lisa Anderson",
+                    phone: "+1 (555) 678-9012",
+                    pickupLocation: "Elite Rentals Hub",
+                    deliveryLocation: "654 Cedar Lane",
+                    completedTime: "2025-07-31 4:30 PM",
+                    fee: "$48",
+                    status: "completed"
+                }
+            ]
+        };
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserInfo();
+            loadTasks();
+            updateStats();
+        });
+
+        function loadUserInfo() {
+            const userName = localStorage.getItem('userName') || 'Rider';
+            const userEmail = localStorage.getItem('userEmail') || 'rider@example.com';
+            
+            document.getElementById('userName').textContent = userName;
+            document.getElementById('userAvatar').textContent = userName.charAt(0).toUpperCase();
+        }
+
+        function loadTasks() {
+            loadPendingTasks();
+            loadActiveTasks();
+            loadCompletedTasks();
+        }
+
+        function loadPendingTasks() {
+            const container = document.getElementById('pendingTasksGrid');
+            
+            if (sampleTasks.pending.length === 0) {
+                container.innerHTML = `
+                    <div class="no-tasks">
+                        <svg class="no-tasks-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                        </svg>
+                        <h3>No pending tasks</h3>
+                        <p>Great job! All delivery requests have been handled.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = sampleTasks.pending.map(task => `
+                <div class="task-card">
+                    <div class="task-header">
+                        <div class="task-id">${task.id}</div>
+                        <div class="task-status status-pending">Pending</div>
+                    </div>
+                    <div class="task-details">
+                        <div class="detail-group">
+                            <div class="detail-label">Vehicle</div>
+                            <div class="detail-value">${task.car}</div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">Customer</div>
+                            <div class="detail-value">${task.customer}</div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">Phone</div>
+                            <div class="detail-value">${task.phone}</div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">Type</div>
+                            <div class="detail-value">${task.type === 'pickup' ? '🔄 Return Pickup' : '🚗 Delivery'}</div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">From</div>
+                            <div class="detail-value">${task.pickupLocation}</div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">To</div>
+                            <div class="detail-value">${task.deliveryLocation}</div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">Time</div>
+                            <div class="detail-value">${task.pickupTime}</div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">Fee</div>
+                            <div class="detail-value">${task.fee}</div>
+                        </div>
+                    </div>
+                    <div class="task-actions">
+                        <button class="action-btn btn-accept" onclick="acceptTask('${task.id}')">Accept Task</button>
+                        <button class="action-btn btn-reject" onclick="rejectTask('${task.id}')">Decline</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadActiveTasks() {
+            const container = document.getElementById('activeTasksGrid');
+            
+            if (sampleTasks.active.length === 0) {
+                container.innerHTML = `
+                    <div class="no-tasks">
+                        <svg class="no-tasks-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                            <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                            <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                        </svg>
+                        <h3>No active tasks</h3>
+                        <p>Accept some delivery requests to get started!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = sampleTasks.active.map(task => `
+                <div class="task-card">
+                    <div class="task-header">
+                        <div class="task-id">${task.id}</div>
+                        <div class="task-status status-${task.status}">${task.status.replace('-', ' ')}</div>
+                    </div>
+                    <div class="task-details">
+                        <div class="detail-group">
+                            <div class="detail-label">Vehicle</div>
+                            <div class="detail-value">${task.car}</div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">Customer</div>
+                            <div class="detail-value">${task.customer}</div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">Phone</div>
+                            <div class="detail-value">${task.phone}</div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">Type</div>
+                            <div class="detail-value">${task.type === 'pickup' ? '🔄 Return Pickup' : '🚗 Delivery'}</div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">From</div>
+                            <div class="detail-value">${task.pickupLocation}</div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">To</div>
+                            <div class="detail-value">${task.deliveryLocation}</div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">Time</div>
+                            <div class="detail-value">${task.pickupTime}</div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">Fee</div>
+                            <div class="detail-value">${task.fee}</div>
+                        </div>
+                    </div>
+                    <div class="task-actions">
+                        <button class="action-btn btn-update" onclick="updateTaskStatus('${task.id}')">Update Status</button>
+                        <button class="action-btn btn-accept" onclick="completeTask('${task.id}')">Mark Complete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadCompletedTasks() {
+            const container = document.getElementById('completedTasksGrid');
+            
+            if (sampleTasks.completed.length === 0) {
+                container.innerHTML = `
+                    <div class="no-tasks">
+                        <svg class="no-tasks-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22,4 12,14.01 9,11.01"></polyline>
+                        </svg>
+                        <h3>No completed tasks yet</h3>
+                        <p>Complete some deliveries to see them here!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = sampleTasks.completed.map(task => `
+                <div class="task-card">
+                    <div class="task-header">
+                        <div class="task-id">${task.id}</div>
+                        <div class="task-status status-completed">Completed</div>
+                    </div>
+                    <div class="task-details">
+                        <div class="detail-group">
+                            <div class="detail-label">Vehicle</div>
+                            <div class="detail-value">${task.car}</div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">Customer</div>
+                            <div class="detail-value">${task.customer}</div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">Type</div>
+                            <div class="detail-value">${task.type === 'pickup' ? '🔄 Return Pickup' : '🚗 Delivery'}</div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">From</div>
+                            <div class="detail-value">${task.pickupLocation}</div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">To</div>
+                            <div class="detail-value">${task.deliveryLocation}</div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">Completed</div>
+                            <div class="detail-value">${task.completedTime}</div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">Earned</div>
+                            <div class="detail-value">${task.fee}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateStats() {
+            document.getElementById('pendingTasks').textContent = sampleTasks.pending.length;
+            document.getElementById('activeTasks').textContent = sampleTasks.active.length;
+            document.getElementById('completedTasks').textContent = sampleTasks.completed.length;
+        }
+
+        // Task Actions
+        function acceptTask(taskId) {
+            if (confirm(`Accept delivery task ${taskId}?`)) {
+                // Move task from pending to active
+                const taskIndex = sampleTasks.pending.findIndex(task => task.id === taskId);
+                if (taskIndex !== -1) {
+                    const task = sampleTasks.pending.splice(taskIndex, 1)[0];
+                    task.status = 'accepted';
+                    sampleTasks.active.push(task);
+                    
+                    loadTasks();
+                    updateStats();
+                    console.log(`Task ${taskId} accepted! You can now start the delivery.`);
+                }
+            }
+        }
+
+        function rejectTask(taskId) {
+            if (confirm(`Decline delivery task ${taskId}?`)) {
+                const taskIndex = sampleTasks.pending.findIndex(task => task.id === taskId);
+                if (taskIndex !== -1) {
+                    sampleTasks.pending.splice(taskIndex, 1);
+                    loadTasks();
+                    updateStats();
+                    console.log(`Task ${taskId} declined.`);
+                }
+            }
+        }
+
+        function updateTaskStatus(taskId) {
+            const statusOptions = ['accepted', 'in-progress', 'picked-up', 'delivered'];
+            const currentTask = sampleTasks.active.find(task => task.id === taskId);
+            
+            if (currentTask) {
+                const newStatus = prompt(`Update status for ${taskId}:\n\n1. accepted\n2. in-progress\n3. picked-up\n4. delivered\n\nEnter status:`, currentTask.status);
+                
+                if (newStatus && statusOptions.includes(newStatus)) {
+                    currentTask.status = newStatus;
+                    loadActiveTasks();
+                    console.log(`Task ${taskId} status updated to: ${newStatus}`);
+                }
+            }
+        }
+
+        function completeTask(taskId) {
+            if (confirm(`Mark task ${taskId} as completed?`)) {
+                const taskIndex = sampleTasks.active.findIndex(task => task.id === taskId);
+                if (taskIndex !== -1) {
+                    const task = sampleTasks.active.splice(taskIndex, 1)[0];
+                    task.status = 'completed';
+                    task.completedTime = new Date().toLocaleString();
+                    sampleTasks.completed.unshift(task);
+                    
+                    loadTasks();
+                    updateStats();
+                    console.log(`Task ${taskId} completed! Great job! 🎉`);
+                }
+            }
+        }
+
+        function filterTasks(type) {
+            // Update filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Filter logic can be implemented here
+            console.log(`Filtering tasks by: ${type}`);
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('userRole');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userName');
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Check if user is logged in and has rider role
+        document.addEventListener('DOMContentLoaded', function() {
+            const userRole = localStorage.getItem('userRole');
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            
+            if (!isLoggedIn || userRole !== 'rider') {
+                console.log('Access denied. Please login as a rider.');
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>

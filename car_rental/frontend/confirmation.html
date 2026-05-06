@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .booking-confirmed-message {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 40vh;
+            margin-top: 3rem;
+            font-size: 2rem;
+            color: #FFD700;
+            font-weight: 800;
+            text-align: center;
+            animation: pop 0.6s;
+        }
+        .booking-confirmed-message span {
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 400;
+            margin-top: 1.2rem;
+        }
+    </style>
+    <style>
+        .confirmation-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 60vh;
+        }
+        .otp-label {
+            color: #FFD700;
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            margin-bottom: 1.2rem;
+            display: block;
+            text-align: center;
+        }
+        .otp-input-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+            justify-content: center;
+        }
+        .otp-input {
+            padding: 1.1rem 1.5rem;
+            border-radius: 12px;
+            border: 2px solid #FFD700;
+            font-size: 2rem;
+            letter-spacing: 0.5rem;
+            text-align: center;
+            background: #181818;
+            color: #FFD700;
+            box-shadow: 0 2px 16px 0 #FFD70033;
+            outline: none;
+            transition: box-shadow 0.3s, border-color 0.3s;
+            font-weight: 800;
+            width: 15rem;
+            max-width: 90vw;
+        }
+        .otp-input:focus {
+            border-color: #FFC107;
+            box-shadow: 0 0 0 4px #FFD70055;
+            background: #222;
+            color: #fffbe7;
+        }
+        .verify-btn {
+            background: linear-gradient(135deg,#FFD700,#FFC107);
+            color: #000;
+            padding: 0.7rem 2.2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 12px 0 #FFD70044;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 1.2rem;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .otp-success {
+            font-size: 4rem;
+            color: #00e676;
+            font-weight: bold;
+            margin-left: 1rem;
+            animation: pop 0.5s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        @keyframes pop {
+            0% { transform: scale(0.7); opacity: 0; }
+            80% { transform: scale(1.15); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+    </style>
+    <style>
+        .otp-label {
+            color: #FFD700;
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            margin-bottom: 1.2rem;
+            display: block;
+        }
+        .otp-input-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+        .otp-input {
+            padding: 1.1rem 1.5rem;
+            border-radius: 12px;
+            border: 2px solid #FFD700;
+            font-size: 2rem;
+            letter-spacing: 0.5rem;
+            text-align: center;
+            background: #181818;
+            color: #FFD700;
+            box-shadow: 0 2px 16px 0 #FFD70033;
+            outline: none;
+            transition: box-shadow 0.3s, border-color 0.3s;
+            font-weight: 800;
+            width: 15rem;
+            max-width: 90vw;
+        }
+        .otp-input:focus {
+            border-color: #FFC107;
+            box-shadow: 0 0 0 4px #FFD70055;
+            background: #222;
+            color: #fffbe7;
+        }
+        .verify-btn {
+            background: linear-gradient(135deg,#FFD700,#FFC107);
+            color: #000;
+            padding: 0.7rem 2.2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 12px 0 #FFD70044;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 1.2rem;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .otp-success {
+            font-size: 2.2rem;
+            color: #00e676;
+            font-weight: bold;
+            margin-left: 1rem;
+            animation: pop 0.5s;
+        }
+        @keyframes pop {
+            0% { transform: scale(0.7); opacity: 0; }
+            80% { transform: scale(1.15); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmed - Elite Rentals</title>
+    <meta name="description" content="Your luxury car rental booking has been confirmed with Elite Rentals">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #111;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #FFD700;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FFC107;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        .header {
+            padding: 2rem 0;
+            background: linear-gradient(180deg, #000000 0%, #0a0a0a 100%);
+            border-bottom: 1px solid #333;
+        }
+
+        .header-content {
+            text-align: center;
+        }
+
+        .brand {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #FFD700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Main Content */
+        .confirmation-container {
+            padding: 4rem 0;
+            text-align: center;
+            min-height: calc(100vh - 300px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .success-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        .success-icon svg {
+            width: 60px;
+            height: 60px;
+            color: #ffffff;
+        }
+
+        .confirmation-title {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #FFD700;
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.6s ease-out 0.2s backwards;
+        }
+
+        .confirmation-subtitle {
+            font-size: 1.3rem;
+            color: #cccccc;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.6s ease-out 0.4s backwards;
+        }
+
+        .booking-details {
+            background: #0a0a0a;
+            border-radius: 20px;
+            padding: 2.5rem;
+            border: 1px solid #333;
+            margin-bottom: 3rem;
+            text-align: left;
+            animation: fadeInUp 0.6s ease-out 0.6s backwards;
+        }
+
+        .booking-id {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .booking-id-label {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 0.5rem;
+        }
+
+        .booking-id-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #FFD700;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+        }
+
+        .details-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #888;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .detail-total {
+            font-size: 1.3rem;
+            color: #FFD700;
+            font-weight: 800;
+        }
+
+        /* OTP Section */
+        .otp-section {
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            color: #000000;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            border: 2px solid #FFD700;
+            animation: otpGlow 2s ease-in-out infinite alternate;
+        }
+
+        .otp-section h4 {
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .otp-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            letter-spacing: 8px;
+            font-family: 'Courier New', monospace;
+            margin-bottom: 1rem;
+        }
+
+        .otp-note {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Payment Receipt */
+        .payment-receipt {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid #4CAF50;
+        }
+
+        .payment-receipt h4 {
+            color: #4CAF50;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .receipt-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .receipt-item:last-child {
+            border-bottom: none;
+        }
+
+        .receipt-label {
+            color: #888;
+        }
+
+        .receipt-value {
+            color: #ffffff;
+        }
+
+        .receipt-value.monospace {
+            font-family: monospace;
+        }
+
+        .receipt-value.success {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        @keyframes otpGlow {
+            from {
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            }
+            to {
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+            }
+        }
+
+        .actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.6s ease-out 0.8s backwards;
+        }
+
+        .action-button {
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            color: #000000;
+            padding: 1rem 2rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        .action-button.secondary {
+            background: transparent;
+            color: #ffffff;
+            border: 1px solid #333;
+        }
+
+        .action-button.secondary:hover {
+            border-color: #FFD700;
+            color: #FFD700;
+        }
+
+        /* Live Tracking Button Styles */
+        .live-tracking-btn {
+            background: linear-gradient(135deg, #FF6B6B, #FF8E53) !important;
+            border: 2px solid #FF6B6B !important;
+            animation: pulse-glow 2s infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .live-tracking-btn:hover {
+            background: linear-gradient(135deg, #FF5252, #FF7043) !important;
+            transform: translateY(-3px) !important;
+            box-shadow: 0 15px 40px rgba(255, 107, 107, 0.4) !important;
+        }
+
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 5px 20px rgba(255, 107, 107, 0.3);
+            }
+            50% {
+                box-shadow: 0 8px 30px rgba(255, 107, 107, 0.6);
+            }
+        }
+
+        /* Animated red dot for live indicator */
+        .live-indicator::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+            animation: blink 1.5s infinite;
+            margin-right: 4px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .next-steps {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border: 1px solid #333;
+            animation: fadeInUp 0.6s ease-out 1s backwards;
+        }
+
+        .next-steps-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #FFD700;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .steps-list {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            background: #FFD700;
+            color: #000000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.3rem;
+        }
+
+        .step-description {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .contact-info {
+            background: #0a0a0a;
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid #333;
+            text-align: center;
+            animation: fadeInUp 0.6s ease-out 1.2s backwards;
+        }
+
+        .contact-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #FFD700;
+            margin-bottom: 1rem;
+        }
+
+        .contact-methods {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #cccccc;
+        }
+
+        .contact-icon {
+            width: 1.2rem;
+            height: 1.2rem;
+            color: #FFD700;
+        }
+
+        /* Footer */
+        .footer {
+            background: #0a0a0a;
+            padding: 4rem 0 2rem;
+            border-top: 1px solid #333;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            text-align: center;
+        }
+
+        .footer-brand {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+
+        .footer-brand .highlight {
+            color: #FFD700;
+        }
+
+        .footer-tagline {
+            color: #888;
+            margin-bottom: 2rem;
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            color: #666;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .confirmation-title {
+                font-size: 2rem;
+            }
+
+            .booking-details {
+                padding: 1.5rem;
+            }
+
+            .actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .action-button {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+
+            .contact-methods {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .steps-list {
+                gap: 1.5rem;
+            }
+        }
+
+        /* Selection */
+        ::selection {
+            background-color: #FFD700;
+            color: #000000;
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+            
+            .header, .footer {
+                display: none;
+            }
+            
+            .confirmation-container {
+                padding: 1rem 0;
+            }
+            
+            .booking-details {
+                border: 2px solid #333;
+                background: white;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="brand">ELITE RENTALS</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="confirmation-container">
+            <div id="otp-verify-reminder" style="margin-bottom:1.5rem;">
+                <p style="margin:0 0 0.5rem 0;">If your booking requires OTP verification, please complete it on the dedicated verification page.</p>
+                <button id="go-to-otp" class="verify-btn">Go to OTP Verification</button>
+            </div>
+    <script>
+    // Redirect helper to the dedicated OTP verification page. Uses currentBookingId/pendingBookingData if available.
+    document.getElementById('go-to-otp').addEventListener('click', function() {
+        const bookingId = localStorage.getItem('currentBookingId') || (localStorage.getItem('bookingData') && JSON.parse(localStorage.getItem('bookingData')).bookingId);
+        const pending = localStorage.getItem('pendingBookingData');
+        const email = pending ? (JSON.parse(pending).customerEmail || localStorage.getItem('userEmail')) : localStorage.getItem('userEmail');
+        if (bookingId) {
+            const paramEmail = encodeURIComponent(email || '');
+            window.location.href = `otp-verification.html?bookingId=${bookingId}&email=${paramEmail}`;
+        } else {
+            // No booking id available — go back to booking page
+            window.location.href = 'booking.html';
+        }
+    });
+    </script>
+            <!-- Success Icon -->
+            <div class="success-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                    <polyline points="20,6 9,17 4,12"></polyline>
+                </svg>
+            </div>
+
+            <!-- Confirmation Message -->
+            <h1 class="confirmation-title">Booking Confirmed!</h1>
+            <p class="confirmation-subtitle">Thank you for choosing Elite Rentals. Your luxury vehicle is reserved.</p>
+
+            <!-- Booking Details -->
+            <div class="booking-details">
+                <div class="booking-id">
+                    <div class="booking-id-label">Booking Reference</div>
+                    <div class="booking-id-value" id="booking-reference">ER-2025-001234</div>
+                </div>
+
+                <!-- OTP Section -->
+                <div class="otp-section" id="otp-section">
+                    <h4>🔐 Your Ride OTP</h4>
+                    <div class="otp-value" id="ride-otp">123456</div>
+                    <p class="otp-note">Share this OTP with the driver at pickup time</p>
+                </div>
+
+                <!-- Payment Receipt -->
+                <div class="payment-receipt" id="payment-receipt-section">
+                    <h4>💳 Payment Receipt</h4>
+                    <div class="receipt-details" id="receipt-details">
+                        <div class="receipt-item">
+                            <span class="receipt-label">Transaction ID:</span>
+                            <span class="receipt-value monospace" id="transaction-id">-</span>
+                        </div>
+                        <div class="receipt-item">
+                            <span class="receipt-label">Payment Status:</span>
+                            <span class="receipt-value success" id="payment-status">SUCCESS</span>
+                        </div>
+                        <div class="receipt-item">
+                            <span class="receipt-label">Payment Method:</span>
+                            <span class="receipt-value" id="payment-method-receipt">UPI</span>
+                        </div>
+                        <div class="receipt-item">
+                            <span class="receipt-label">Payment Time:</span>
+                            <span class="receipt-value" id="payment-time">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <span class="detail-label">Vehicle</span>
+                        <span class="detail-value" id="confirmed-car">Range Rover Velar</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Customer Name</span>
+                        <span class="detail-value" id="confirmed-name">John Doe</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Email</span>
+                        <span class="detail-value" id="confirmed-email">john.doe@example.com</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Mobile</span>
+                        <span class="detail-value" id="confirmed-mobile">+1 (555) 123-4567</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Pickup Date</span>
+                        <span class="detail-value" id="confirmed-pickup-date">Jan 15, 2025 10:00 AM</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Return Date</span>
+                        <span class="detail-value" id="confirmed-return-date">Jan 18, 2025 10:00 AM</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Pickup Location</span>
+                        <span class="detail-value" id="confirmed-pickup-location">Downtown Elite Center</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Return Location</span>
+                        <span class="detail-value" id="confirmed-return-location">Downtown Elite Center</span>
+                    </div>
+                    <div class="detail-item" id="confirmed-addons-section" style="display: none;">
+                        <span class="detail-label">Add-ons</span>
+                        <span class="detail-value" id="confirmed-addons">None</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Payment Method</span>
+                        <span class="detail-value" id="confirmed-payment">UPI</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Total Amount</span>
+                        <span class="detail-value detail-total" id="confirmed-total">$930</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Next Steps -->
+            <div class="next-steps">
+                <h3 class="next-steps-title">What Happens Next?</h3>
+                <div class="steps-list">
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <div class="step-title">Confirmation Email</div>
+                            <div class="step-description">You'll receive a detailed confirmation email with all booking information and our terms.</div>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <div class="step-title">Vehicle Preparation</div>
+                            <div class="step-description">Our team will prepare your luxury vehicle and ensure it's in perfect condition.</div>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <div class="step-title">Pickup Reminder</div>
+                            <div class="step-description">We'll send you a reminder 24 hours before your pickup time with location details.</div>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <div class="step-title">Enjoy Your Ride</div>
+                            <div class="step-description">Arrive at the pickup location with your documents and enjoy your premium driving experience.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="contact-info">
+                <h3 class="contact-title">Need Help? Contact Us</h3>
+                <div class="contact-methods">
+                    <div class="contact-method">
+                        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                        </svg>
+                        <span>+1 (800) ELITE-01</span>
+                    </div>
+                    <div class="contact-method">
+                        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                        <span>support@eliterentals.com</span>
+                    </div>
+                    <div class="contact-method">
+                        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12,6 12,12 16,14"></polyline>
+                        </svg>
+                        <span>24/7 Support Available</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="actions">
+                <!-- Primary Action: Live Tracking -->
+                <button type="button" class="action-button live-tracking-btn" onclick="openLiveTracking()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    <span class="live-indicator">🔴 Track Your Rider Live</span>
+                </button>
+                
+                <button type="button" class="action-button" onclick="downloadReceipt()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7,10 12,15 17,10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Download Receipt
+                </button>
+                <button type="button" class="action-button" onclick="window.print()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6,9 6,2 18,2 18,9"></polyline>
+                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                        <rect x="6" y="14" width="12" height="8"></rect>
+                    </svg>
+                    Print Confirmation
+                </button>
+                <a href="index.html" class="action-button secondary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9,22 9,12 15,12 15,22"></polyline>
+                    </svg>
+                    Back to Home
+                </a>
+                <a href="booking.html" class="action-button secondary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="8,12 12,16 16,12"></polyline>
+                        <line x1="12" y1="8" x2="12" y2="16"></line>
+                    </svg>
+                    Book Another Car
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="highlight">ELITE</span> RENTALS
+                </div>
+                <p class="footer-tagline">Premium car rental experience</p>
+                <div class="footer-bottom">
+                    <p>&copy; 2025 Elite Rentals. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Generate random booking reference
+        function generateBookingReference() {
+            const year = new Date().getFullYear();
+            const randomNum = Math.floor(Math.random() * 900000) + 100000;
+            return `ER-${year}-${randomNum}`;
+        }
+
+        // Format date for display
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Load booking data from localStorage
+        function loadBookingData() {
+            console.log('Loading booking data from localStorage...');
+            
+            // Check localStorage
+            let bookingData = localStorage.getItem('bookingData');
+            let paymentData = localStorage.getItem('paymentData');
+            
+            console.log('Raw booking data:', bookingData);
+            console.log('Raw payment data:', paymentData);
+            
+            // If no booking data in localStorage, try to get from URL parameters
+            if (!bookingData) {
+                console.log('No booking data in localStorage, checking URL parameters...');
+                const urlParams = new URLSearchParams(window.location.search);
+                const bookingDataFromUrl = urlParams.get('bookingData');
+                if (bookingDataFromUrl) {
+                    try {
+                        bookingData = decodeURIComponent(bookingDataFromUrl);
+                        console.log('Booking data found in URL:', bookingData);
+                    } catch (error) {
+                        console.error('Error decoding booking data from URL:', error);
+                    }
+                }
+            }
+            
+            // If still no booking data, try sessionStorage
+            if (!bookingData) {
+                console.log('No booking data found, checking sessionStorage...');
+                bookingData = sessionStorage.getItem('bookingData');
+                if (bookingData) {
+                    console.log('Booking data found in sessionStorage:', bookingData);
+                }
+            }
+            
+            // If we have payment data but no booking data, try to reconstruct basic booking data
+            if (!bookingData && paymentData) {
+                console.log('No booking data but payment data exists, attempting to reconstruct...');
+                try {
+                    const payment = JSON.parse(paymentData);
+                    // Create minimal booking data structure
+                    const reconstructedBooking = {
+                        transactionId: payment.transactionId,
+                        amount: payment.amount,
+                        paymentMethod: payment.paymentMethod,
+                        status: payment.status,
+                        timestamp: payment.timestamp,
+                        car: 'Car information not available',
+                        customerName: 'Customer information not available',
+                        customerEmail: 'Email not available',
+                        customerMobile: 'Mobile not available',
+                        pickupDate: 'Date not available',
+                        returnDate: 'Date not available',
+                        pickupLocation: 'Location not available'
+                    };
+                    bookingData = JSON.stringify(reconstructedBooking);
+                    console.log('Reconstructed booking data:', bookingData);
+                } catch (error) {
+                    console.error('Error reconstructing booking data:', error);
+                }
+            }
+            
+            if (bookingData) {
+                try {
+                    const data = JSON.parse(bookingData);
+                    console.log('Parsed booking data:', data);
+                    
+                    // Update confirmation details
+                    const elements = {
+                        'confirmed-car': data.car,
+                        'confirmed-name': data.customerName,
+                        'confirmed-email': data.customerEmail,
+                        'confirmed-mobile': data.customerMobile,
+                        'confirmed-pickup-date': formatDate(data.pickupDate),
+                        'confirmed-return-date': formatDate(data.returnDate),
+                        'confirmed-total': data.totalAmount
+                    };
+                    
+                    // Safely update elements
+                    Object.entries(elements).forEach(([id, value]) => {
+                        const element = document.getElementById(id);
+                        if (element && value) {
+                            element.textContent = value;
+                        }
+                    });
+                    
+                    // Display OTP
+                    if (data.otp) {
+                        const otpElement = document.getElementById('ride-otp');
+                        if (otpElement) {
+                            otpElement.textContent = data.otp;
+                        }
+                    } else {
+                        // Hide OTP section if no OTP
+                        const otpSection = document.getElementById('otp-section');
+                        if (otpSection) {
+                            otpSection.style.display = 'none';
+                        }
+                    }
+                    
+                    // Display payment information
+                    if (data.paymentData) {
+                        const paymentElements = {
+                            'transaction-id': data.paymentData.transactionId,
+                            'payment-status': data.paymentData.status.toUpperCase(),
+                            'payment-time': formatDate(data.paymentData.timestamp)
+                        };
+                        
+                        Object.entries(paymentElements).forEach(([id, value]) => {
+                            const element = document.getElementById(id);
+                            if (element && value) {
+                                element.textContent = value;
+                            }
+                        });
+                        
+                        // Update status color based on payment status
+                        const statusElement = document.getElementById('payment-status');
+                        if (statusElement && data.paymentData.status === 'pending') {
+                            statusElement.style.color = '#FFA500';
+                            statusElement.textContent = 'PENDING - PAY AT PICKUP';
+                        }
+                    } else if (paymentData) {
+                        try {
+                            const payment = JSON.parse(paymentData);
+                            const paymentElements = {
+                                'transaction-id': payment.transactionId,
+                                'payment-status': payment.status.toUpperCase(),
+                                'payment-time': formatDate(payment.timestamp)
+                            };
+                            
+                            Object.entries(paymentElements).forEach(([id, value]) => {
+                                const element = document.getElementById(id);
+                                if (element && value) {
+                                    element.textContent = value;
+                                }
+                            });
+                        } catch (paymentError) {
+                            console.error('Error parsing payment data:', paymentError);
+                        }
+                    }
+                    
+                    // Update payment method display
+                    const paymentMethods = {
+                        'upi': 'UPI',
+                        'card': 'Credit/Debit Card',
+                        'netbanking': 'Net Banking',
+                        'pickup': 'Pay at Pickup'
+                    };
+                    
+                    const paymentMethodText = paymentMethods[data.paymentMethod] || data.paymentMethod;
+                    const confirmedPaymentElement = document.getElementById('confirmed-payment');
+                    const paymentMethodReceiptElement = document.getElementById('payment-method-receipt');
+                    
+                    if (confirmedPaymentElement) {
+                        confirmedPaymentElement.textContent = paymentMethodText;
+                    }
+                    if (paymentMethodReceiptElement) {
+                        paymentMethodReceiptElement.textContent = paymentMethodText;
+                    }
+                    
+                    // Update location display
+                    const locationNames = {
+                        'downtown': 'Downtown Elite Center',
+                        'airport': 'International Airport',
+                        'mall': 'Premium Mall Location',
+                        'hotel': 'Luxury Hotel District',
+                        'station': 'Central Station',
+                        'same': 'Same as pickup'
+                    };
+                    
+                    const pickupLocationText = locationNames[data.pickupLocation] || data.pickupLocationName || data.pickupLocation;
+                    const returnLocationText = locationNames[data.returnLocation] || data.returnLocation;
+                    
+                    const confirmedPickupElement = document.getElementById('confirmed-pickup-location');
+                    const confirmedReturnElement = document.getElementById('confirmed-return-location');
+                    
+                    if (confirmedPickupElement) {
+                        confirmedPickupElement.textContent = pickupLocationText;
+                    }
+                    if (confirmedReturnElement) {
+                        confirmedReturnElement.textContent = returnLocationText;
+                    }
+                    
+                    // Show addons if any
+                    if (data.addons && data.addons.length > 0) {
+                        const addonsSection = document.getElementById('confirmed-addons-section');
+                        const addonsElement = document.getElementById('confirmed-addons');
+                        
+                        if (addonsSection) {
+                            addonsSection.style.display = 'flex';
+                        }
+                        if (addonsElement) {
+                            const addonNames = data.addons.map(addon => addon.name).join(', ');
+                            addonsElement.textContent = addonNames;
+                        }
+                    }
+                    
+                    // Add booking summary details
+                    if (data.duration) {
+                        // Find and update duration display in existing detail items
+                        const detailItems = document.querySelectorAll('.detail-item');
+                        detailItems.forEach(item => {
+                            const label = item.querySelector('.detail-label');
+                            if (label && label.textContent === 'Return Date') {
+                                // Add duration info after return date
+                                const durationItem = item.cloneNode(true);
+                                durationItem.querySelector('.detail-label').textContent = 'Duration';
+                                durationItem.querySelector('.detail-value').textContent = data.duration;
+                                item.parentNode.insertBefore(durationItem, item.nextSibling);
+                            }
+                        });
+                    }
+                    
+                    console.log('Booking data loaded successfully');
+                    
+                    // Also display available localStorage/sessionStorage data for debugging
+                    console.log('All localStorage keys:', Object.keys(localStorage));
+                    console.log('All sessionStorage keys:', Object.keys(sessionStorage));
+                    
+                } catch (error) {
+                    console.error('Error parsing booking data:', error);
+                    console.log('Raw data that caused error:', bookingData);
+                    
+                    // Show error message to user
+                    const confirmationContainer = document.querySelector('.confirmation-container');
+                    if (confirmationContainer) {
+                        const errorDiv = document.createElement('div');
+                        errorDiv.style.cssText = `
+                            background: #ffebee;
+                            border: 1px solid #e57373;
+                            color: #c62828;
+                            padding: 1rem;
+                            border-radius: 8px;
+                            margin: 1rem 0;
+                        `;
+                        errorDiv.innerHTML = `
+                            <strong>Error loading booking data:</strong><br>
+                            There was an error processing your booking data. Please contact support.
+                        `;
+                        confirmationContainer.prepend(errorDiv);
+                    }
+                }
+            } else {
+                console.error('No booking data found anywhere (localStorage, sessionStorage, URL)');
+                console.log('Available localStorage keys:', Object.keys(localStorage));
+                console.log('Available sessionStorage keys:', Object.keys(sessionStorage));
+                console.log('Current URL:', window.location.href);
+                
+                // Show a more informative message to the user
+                const confirmationContainer = document.querySelector('.confirmation-container');
+                const paymentData = localStorage.getItem('paymentData');
+                
+                if (confirmationContainer) {
+                    if (paymentData) {
+                        // We have payment data but no booking data - show partial confirmation
+                        try {
+                            const payment = JSON.parse(paymentData);
+                            confirmationContainer.innerHTML = `
+                                <div style="text-align: center; padding: 2rem;">
+                                    <div style="background: linear-gradient(135deg, #4CAF50, #45a049); color: white; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
+                                        <h2 style="margin: 0 0 1rem 0;">✓ Payment Confirmed!</h2>
+                                        <p style="margin: 0; opacity: 0.9;">Your payment has been successfully processed</p>
+                                    </div>
+                                    
+                                    <div style="background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+                                        <h3 style="margin: 0 0 1rem 0;">⚠️ Booking Details Unavailable</h3>
+                                        <p style="margin: 0;">We found your payment but couldn't retrieve your booking details. Don't worry - your payment is secure!</p>
+                                    </div>
+                                    
+                                    <div style="text-align: left; background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+                                        <h3 style="margin: 0 0 1rem 0; color: #2c3e50;">Payment Details:</h3>
+                                        <div style="display: grid; gap: 0.5rem;">
+                                            <div><strong>Transaction ID:</strong> ${payment.transactionId || 'N/A'}</div>
+                                            <div><strong>Amount:</strong> ${payment.amount || 'N/A'}</div>
+                                            <div><strong>Payment Method:</strong> ${payment.paymentMethod || 'N/A'}</div>
+                                            <div><strong>Status:</strong> <span style="color: #4CAF50; font-weight: bold;">${payment.status || 'N/A'}</span></div>
+                                            <div><strong>Date & Time:</strong> ${payment.timestamp ? new Date(payment.timestamp).toLocaleString() : 'N/A'}</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                                        <a href="index.html" style="
+                                            background: linear-gradient(135deg, #FFD700, #FFC107);
+                                            color: #000000;
+                                            padding: 1rem 2rem;
+                                            text-decoration: none;
+                                            border-radius: 8px;
+                                            font-weight: 700;
+                                        ">Start New Booking</a>
+                                        
+                                        <button onclick="contactSupport()" style="
+                                            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+                                            color: white;
+                                            padding: 1rem 2rem;
+                                            border: none;
+                                            border-radius: 8px;
+                                            font-weight: 700;
+                                            cursor: pointer;
+                                        ">Contact Support</button>
+                                    </div>
+                                </div>
+                            `;
+                        } catch (error) {
+                            console.error('Error parsing payment data:', error);
+                            showDefaultError(confirmationContainer);
+                        }
+                    } else {
+                        // No payment or booking data
+                        showDefaultError(confirmationContainer);
+                    }
+                }
+            }
+        }
+        
+        // Helper function to show default error message
+        function showDefaultError(container) {
+            container.innerHTML = `
+                <div style="text-align: center; padding: 2rem;">
+                    <h2 style="color: #FF6B6B; margin-bottom: 1rem;">No Booking Data Found</h2>
+                    <p style="margin-bottom: 2rem;">It looks like you don't have an active booking. Please start a new booking.</p>
+                    <a href="index.html" style="
+                        background: linear-gradient(135deg, #FFD700, #FFC107);
+                        color: #000000;
+                        padding: 1rem 2rem;
+                        text-decoration: none;
+                        border-radius: 8px;
+                        font-weight: 700;
+                    ">Start New Booking</a>
+                </div>
+            `;
+        }
+        
+        // Contact support function
+        function contactSupport() {
+            const paymentData = localStorage.getItem('paymentData');
+            let supportMessage = "Hello! I need help with my car rental booking. ";
+            
+            if (paymentData) {
+                try {
+                    const payment = JSON.parse(paymentData);
+                    supportMessage += `My payment was successful (Transaction ID: ${payment.transactionId}) but I can't see my booking details.`;
+                } catch (error) {
+                    supportMessage += "I completed a payment but can't see my booking details.";
+                }
+            } else {
+                supportMessage += "I'm having trouble with my booking confirmation.";
+            }
+            
+            // You can modify this to integrate with your support system
+            alert(`Support Contact Info:
+            
+Email: support@eliterentals.com
+Phone: +1-800-RENTALS
+            
+Message to include:
+${supportMessage}`);
+        }
+
+        // Download receipt function
+        function downloadReceipt() {
+            const bookingData = JSON.parse(localStorage.getItem('bookingData') || '{}');
+            const bookingRef = document.getElementById('booking-reference').textContent;
+            const otp = document.getElementById('ride-otp').textContent;
+            
+            // Create receipt content
+            const receiptContent = `
+ELITE RENTALS - BOOKING RECEIPT
+===============================
+
+Booking Reference: ${bookingRef}
+Ride OTP: ${otp}
+Date: ${new Date().toLocaleDateString()}
+
+CUSTOMER DETAILS
+================
+Name: ${bookingData.customerName || 'N/A'}
+Email: ${bookingData.customerEmail || 'N/A'}
+Mobile: ${bookingData.customerMobile || 'N/A'}
+
+BOOKING DETAILS
+===============
+Vehicle: ${bookingData.car || 'N/A'}
+Duration: ${bookingData.duration || 'N/A'}
+Pickup Date: ${bookingData.pickupDate ? new Date(bookingData.pickupDate).toLocaleString() : 'N/A'}
+Return Date: ${bookingData.returnDate ? new Date(bookingData.returnDate).toLocaleString() : 'N/A'}
+Pickup Location: ${bookingData.pickupLocationName || 'N/A'}
+Return Location: ${bookingData.returnLocation || 'N/A'}
+
+${bookingData.addons && bookingData.addons.length > 0 ? 
+`ADD-ONS
+=======
+${bookingData.addons.map(addon => `- ${addon.name}: +$${addon.price}/day`).join('\n')}
+` : ''}
+
+PAYMENT DETAILS
+===============
+Base Price: ${bookingData.basePrice || 'N/A'}
+${bookingData.promoDiscount > 0 ? `Promo Discount: -$${bookingData.promoDiscount}\n` : ''}Total Amount: ${bookingData.totalAmount || 'N/A'}
+Payment Method: ${bookingData.paymentMethod || 'N/A'}
+${bookingData.paymentData ? `Transaction ID: ${bookingData.paymentData.transactionId}
+Payment Status: ${bookingData.paymentData.status.toUpperCase()}` : ''}
+
+IMPORTANT INSTRUCTIONS
+======================
+1. Arrive at pickup location 15 minutes before scheduled time
+2. Bring valid driving license and ID proof
+3. Share the OTP (${otp}) with the driver at pickup
+4. Inspect the vehicle before accepting
+5. Contact support: +1 (800) ELITE-01
+
+Thank you for choosing Elite Rentals!
+Visit: eliterentals.com
+            `;
+            
+            // Create downloadable file
+            const blob = new Blob([receiptContent], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Elite_Rentals_Receipt_${bookingRef}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Live Tracking Function
+        function openLiveTracking() {
+            // Store current booking info for tracking page
+            const bookingInfo = {
+                vehicle: document.querySelector('.confirmation-detail:nth-child(2) .detail-value')?.textContent || 'Mercedes-Benz S-Class',
+                pickupLocation: 'Downtown Elite Hub',
+                pickupTime: new Date(Date.now() + 8 * 60000).toLocaleTimeString(), // 8 minutes from now
+                riderName: 'John Doe',
+                riderPhone: '+91 98765 43210',
+                riderRating: '4.9',
+                estimatedArrival: 8 // minutes
+            };
+            
+            localStorage.setItem('currentTracking', JSON.stringify(bookingInfo));
+            
+            // Add some excitement with a confirmation
+            const confirmTrack = confirm(
+                '🚀 Your rider John Doe is on the way with your ' + bookingInfo.vehicle + '!\n\n' +
+                '📍 Track live location and estimated arrival time?\n' +
+                '⏰ Estimated arrival: 8 minutes\n\n' +
+                'Click OK to open live tracking map!'
+            );
+            
+            if (confirmTrack) {
+                window.open('live_tracking.html', '_blank');
+            }
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Generate and display booking reference
+            document.getElementById('booking-reference').textContent = generateBookingReference();
+            
+            // Load booking data
+            loadBookingData();
+            
+            // Add animation delay to elements
+            const animatedElements = document.querySelectorAll('[style*="animation"]');
+            animatedElements.forEach((element, index) => {
+                element.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+
+        // Send confirmation email (simulated)
+        setTimeout(() => {
+            console.log('Confirmation email sent to customer');
+        }, 2000);
+    </script>
+</body>
+</html>

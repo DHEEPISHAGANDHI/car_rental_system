@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Dashboard - Elite Rentals</title>
+    <meta name="description" content="Vendor dashboard for managing car rentals and bookings">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #111;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #FFD700;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FFC107;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #000;
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+        }
+
+        /* Main Container */
+        .main-container {
+            margin-top: 80px;
+            padding: 2rem;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Dashboard Header */
+        .dashboard-header {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .dashboard-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .dashboard-subtitle {
+            color: #cccccc;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: #FFD700;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.1);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #FFD700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #cccccc;
+            font-size: 0.9rem;
+        }
+
+        /* Tabs */
+        .tabs-container {
+            margin-bottom: 2rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+        }
+
+        .tab {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cccccc;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            color: #000;
+            border-color: #FFD700;
+        }
+
+        .tab:hover:not(.active) {
+            background: rgba(255, 215, 0, 0.1);
+            border-color: rgba(255, 215, 0, 0.3);
+            color: #FFD700;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Booking Requests */
+        .booking-requests {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .booking-card {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .booking-card:hover {
+            border-color: #FFD700;
+        }
+
+        .booking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .booking-id {
+            font-size: 0.9rem;
+            color: #FFD700;
+            font-weight: 600;
+        }
+
+        .booking-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: rgba(255, 193, 7, 0.2);
+            color: #FFC107;
+            border: 1px solid #FFC107;
+        }
+
+        .status-approved {
+            background: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+            border: 1px solid #28a745;
+        }
+
+        .status-completed {
+            background: rgba(23, 162, 184, 0.2);
+            color: #17a2b8;
+            border: 1px solid #17a2b8;
+        }
+
+        .status-rejected {
+            background: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+            border: 1px solid #dc3545;
+        }
+
+        .status-warning {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+            border: 1px solid #ffc107;
+        }
+
+        .status-urgent {
+            background: rgba(220, 53, 69, 0.3);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .urgent-card {
+            border: 2px solid #ff4444;
+            box-shadow: 0 0 20px rgba(255, 68, 68, 0.3);
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 0 20px rgba(255, 68, 68, 0.3); }
+            to { box-shadow: 0 0 30px rgba(255, 68, 68, 0.5); }
+        }
+
+        .booking-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .detail-label {
+            font-size: 0.8rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .booking-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-approve {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+        }
+
+        .btn-reject {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+        }
+
+        .btn-inspect {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+        }
+
+        .btn-report {
+            background: linear-gradient(135deg, #fd7e14, #e55a00);
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Photo Inspection Modal */
+        .inspection-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            backdrop-filter: blur(10px);
+        }
+
+        .inspection-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1a1a1a;
+            border: 1px solid #FFD700;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            width: 1000px;
+        }
+
+        .inspection-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .inspection-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #FFD700;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(90deg);
+        }
+
+        .photo-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .photo-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+        }
+
+        .photo-section h3 {
+            color: #FFD700;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .photo-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .photo-item:hover {
+            border-color: #FFD700;
+            transform: scale(1.05);
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        /* Damage Report Form */
+        .damage-report {
+            background: rgba(220, 53, 69, 0.1);
+            border: 1px solid #dc3545;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .damage-report h3 {
+            color: #dc3545;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .damage-items {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .damage-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(220, 53, 69, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(220, 53, 69, 0.3);
+        }
+
+        .damage-checkbox {
+            width: 20px;
+            height: 20px;
+            accent-color: #dc3545;
+        }
+
+        .damage-description {
+            flex-grow: 1;
+        }
+
+        .damage-cost {
+            color: #FFD700;
+            font-weight: 600;
+        }
+
+        .total-charges {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid #FFD700;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #FFD700;
+        }
+
+        /* My Cars Section */
+        .cars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .car-card {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .car-card:hover {
+            transform: translateY(-5px);
+            border-color: #FFD700;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.1);
+        }
+
+        .car-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .car-info {
+            padding: 1.5rem;
+        }
+
+        .car-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #FFD700;
+            margin-bottom: 0.5rem;
+        }
+
+        .car-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .car-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #cccccc;
+        }
+
+        .car-earnings {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .earnings-label {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .earnings-value {
+            color: #28a745;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        /* Add Car Button */
+        .add-car-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #FFD700, #FFC107);
+            color: #000;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .add-car-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+
+            .dashboard-title {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .booking-details {
+                grid-template-columns: 1fr;
+            }
+
+            .photo-comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab {
+                text-align: center;
+            }
+
+            .booking-actions {
+                justify-content: center;
+            }
+
+            .header-container {
+                padding: 0 1rem;
+            }
+
+            .user-info {
+                gap: 0.5rem;
+            }
+
+            .logout-btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #FFD700;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Success/Error Messages */
+        .alert {
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            font-weight: 600;
+        }
+
+        .alert-success {
+            background: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+            border: 1px solid #28a745;
+        }
+
+        .alert-error {
+            background: rgba(220, 53, 69, 0.2);
+            color: #dc3545;
+            border: 1px solid #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">Elite Rentals</div>
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">V</div>
+                <span id="userName">Vendor</span>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">🏪 Vendor Dashboard</h1>
+            <p class="dashboard-subtitle">Manage your car rentals, bookings, and earn from your vehicles</p>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🚗</div>
+                <div class="stat-value" id="totalCars">5</div>
+                <div class="stat-label">Total Cars</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📋</div>
+                <div class="stat-value" id="activeBookings">12</div>
+                <div class="stat-label">Active Bookings</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-value" id="monthlyEarnings">$8,450</div>
+                <div class="stat-label">This Month</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-value" id="rating">4.8</div>
+                <div class="stat-label">Average Rating</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs-container">
+            <div class="tabs">
+                <div class="tab active" onclick="showTab('booking-requests')">📋 Booking Requests</div>
+                <div class="tab" onclick="showTab('inspection-returns')">🔍 Car Returns & Inspection</div>
+                <div class="tab" onclick="showTab('my-cars')">🚗 My Cars</div>
+                <div class="tab" onclick="showTab('earnings')">💰 Earnings</div>
+                <div class="tab" onclick="showTab('settings')">⚙️ Settings</div>
+            </div>
+
+            <!-- Booking Requests Tab -->
+            <div id="booking-requests" class="tab-content active">
+                <div class="booking-requests" id="bookingRequestsContainer">
+                    <!-- Booking requests will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Car Returns & Inspection Tab -->
+            <div id="inspection-returns" class="tab-content">
+                <div class="booking-requests" id="inspectionReturnsContainer">
+                    <!-- Return inspections will be loaded here -->
+                </div>
+            </div>
+
+            <!-- My Cars Tab -->
+            <div id="my-cars" class="tab-content">
+                <button class="add-car-btn" onclick="showAddCarModal()">
+                    ➕ Add New Car
+                </button>
+                <div class="cars-grid" id="carsContainer">
+                    <!-- Cars will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Earnings Tab -->
+            <div id="earnings" class="tab-content">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📈</div>
+                        <div class="stat-value">$2,340</div>
+                        <div class="stat-label">This Week</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💳</div>
+                        <div class="stat-value">$67,890</div>
+                        <div class="stat-label">Total Earnings</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-value">156</div>
+                        <div class="stat-label">Completed Bookings</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-value">92%</div>
+                        <div class="stat-label">Approval Rate</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settings" class="tab-content">
+                <div class="booking-card">
+                    <h3 style="color: #FFD700; margin-bottom: 1rem;">⚙️ Account Settings</h3>
+                    <div class="booking-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Business Name</div>
+                            <div class="detail-value">Elite Car Rentals Pvt Ltd</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Contact Number</div>
+                            <div class="detail-value">+91 98765 43210</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Email Address</div>
+                            <div class="detail-value">vendor@eliterentals.com</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Business License</div>
+                            <div class="detail-value">Verified ✓</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Photo Inspection Modal -->
+    <div id="inspectionModal" class="inspection-modal">
+        <div class="inspection-content">
+            <div class="inspection-header">
+                <h2 class="inspection-title">🔍 Car Return Inspection</h2>
+                <button class="close-modal" onclick="closeInspectionModal()">&times;</button>
+            </div>
+
+            <div class="photo-comparison">
+                <div class="photo-section">
+                    <h3>📸 Customer Photos (Before Return)</h3>
+                    <div class="photo-grid" id="customerPhotos">
+                        <!-- Customer photos will be loaded here -->
+                    </div>
+                </div>
+                <div class="photo-section">
+                    <h3>🔍 Your Inspection Photos</h3>
+                    <div class="photo-grid" id="vendorPhotos">
+                        <!-- Vendor photos will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="damage-report">
+                <h3>⚠️ Damage Assessment</h3>
+                <div class="damage-items" id="damageItems">
+                    <!-- Damage items will be loaded here -->
+                </div>
+                <div class="total-charges" id="totalCharges">
+                    Total Additional Charges: $0
+                </div>
+            </div>
+
+            <div class="booking-actions" style="justify-content: center; margin-top: 2rem;">
+                <button class="action-btn btn-approve" onclick="approveReturn()">
+                    ✅ Approve Return
+                </button>
+                <button class="action-btn btn-report" onclick="generateDamageReport()">
+                    📄 Generate Damage Report
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDashboard();
+            loadBookingRequests();
+            loadMyCars();
+            loadInspectionReturns();
+        });
+
+        function initializeDashboard() {
+            // Load user info from localStorage
+            const userName = localStorage.getItem('userName') || 'Vendor';
+            const userEmail = localStorage.getItem('userEmail') || 'vendor@example.com';
+            
+            document.getElementById('userName').textContent = userName;
+            document.getElementById('userAvatar').textContent = userName.charAt(0).toUpperCase();
+        }
+
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        function loadBookingRequests() {
+            const container = document.getElementById('bookingRequestsContainer');
+            
+            // Sample booking requests data
+            const bookingRequests = [
+                {
+                    id: 'BK001234',
+                    customerName: 'John Smith',
+                    carModel: 'Mercedes-Benz S-Class',
+                    startDate: '2025-10-01',
+                    endDate: '2025-10-05',
+                    totalAmount: '$1,250',
+                    bookingType: 'Self Drive',
+                    status: 'pending',
+                    customerPhone: '+1 234-567-8900',
+                    customerEmail: 'john@example.com'
+                },
+                {
+                    id: 'BK001235',
+                    customerName: 'Sarah Johnson',
+                    carModel: 'BMW X7',
+                    startDate: '2025-10-03',
+                    endDate: '2025-10-07',
+                    totalAmount: '$1,680',
+                    bookingType: 'Rider Assisted',
+                    status: 'approved',
+                    customerPhone: '+1 234-567-8901',
+                    customerEmail: 'sarah@example.com'
+                },
+                {
+                    id: 'BK001236',
+                    customerName: 'Michael Brown',
+                    carModel: 'Audi A8',
+                    startDate: '2025-10-02',
+                    endDate: '2025-10-04',
+                    totalAmount: '$840',
+                    bookingType: 'Self Drive',
+                    status: 'completed',
+                    customerPhone: '+1 234-567-8902',
+                    customerEmail: 'michael@example.com'
+                }
+            ];
+
+            container.innerHTML = bookingRequests.map(booking => `
+                <div class="booking-card">
+                    <div class="booking-header">
+                        <div class="booking-id">Booking ID: ${booking.id}</div>
+                        <div class="booking-status status-${booking.status}">${booking.status.toUpperCase()}</div>
+                    </div>
+                    <div class="booking-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Customer</div>
+                            <div class="detail-value">${booking.customerName}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Car Model</div>
+                            <div class="detail-value">${booking.carModel}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Booking Type</div>
+                            <div class="detail-value">${booking.bookingType}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Duration</div>
+                            <div class="detail-value">${booking.startDate} to ${booking.endDate}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Total Amount</div>
+                            <div class="detail-value">${booking.totalAmount}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Contact</div>
+                            <div class="detail-value">${booking.customerPhone}</div>
+                        </div>
+                    </div>
+                    <div class="booking-actions">
+                        ${booking.status === 'pending' ? `
+                            <button class="action-btn btn-approve" onclick="approveBooking('${booking.id}')">
+                                ✅ Approve
+                            </button>
+                            <button class="action-btn btn-reject" onclick="rejectBooking('${booking.id}')">
+                                ❌ Reject
+                            </button>
+                        ` : ''}
+                        ${booking.status === 'approved' || booking.status === 'completed' ? `
+                            <button class="action-btn btn-inspect" onclick="contactCustomer('${booking.customerPhone}')">
+                                📞 Contact Customer
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadInspectionReturns() {
+            const container = document.getElementById('inspectionReturnsContainer');
+            
+            // Sample return inspection data with comprehensive scenarios
+            const returnInspections = [
+                {
+                    id: 'RT001234',
+                    customerName: 'Emma Wilson',
+                    carModel: 'Range Rover Velar',
+                    returnDate: '2025-09-29',
+                    returnTime: '14:30',
+                    rentalPeriod: '7 days',
+                    status: 'inspection_required',
+                    hasCustomerPhotos: true,
+                    priority: 'high',
+                    mileage: '2,847 km',
+                    fuelLevel: '85%'
+                },
+                {
+                    id: 'RT001235',
+                    customerName: 'David Chen',
+                    carModel: 'Porsche Macan',
+                    returnDate: '2025-09-28',
+                    returnTime: '09:15',
+                    rentalPeriod: '3 days',
+                    status: 'inspection_completed',
+                    hasCustomerPhotos: true,
+                    damageFound: false,
+                    priority: 'normal',
+                    mileage: '1,245 km',
+                    fuelLevel: '92%'
+                },
+                {
+                    id: 'RT001236',
+                    customerName: 'Sarah Johnson',
+                    carModel: 'BMW X7',
+                    returnDate: '2025-09-29',
+                    returnTime: '11:00',
+                    rentalPeriod: '5 days',
+                    status: 'inspection_required',
+                    hasCustomerPhotos: true,
+                    priority: 'urgent',
+                    mileage: '3,156 km',
+                    fuelLevel: '78%',
+                    notes: 'Customer reported minor scratch on rear bumper'
+                },
+                {
+                    id: 'RT001237',
+                    customerName: 'Michael Rodriguez',
+                    carModel: 'Tesla Model S',
+                    returnDate: '2025-09-27',
+                    returnTime: '16:45',
+                    rentalPeriod: '10 days',
+                    status: 'damage_reported',
+                    hasCustomerPhotos: true,
+                    damageFound: true,
+                    priority: 'urgent',
+                    mileage: '4,567 km',
+                    fuelLevel: '89%',
+                    notes: 'Damage to front left wheel rim detected'
+                },
+                {
+                    id: 'RT001238',
+                    customerName: 'Lisa Thompson',
+                    carModel: 'Jaguar F-PACE',
+                    returnDate: '2025-09-26',
+                    returnTime: '13:20',
+                    rentalPeriod: '4 days',
+                    status: 'inspection_completed',
+                    hasCustomerPhotos: true,
+                    damageFound: false,
+                    priority: 'normal',
+                    mileage: '1,890 km',
+                    fuelLevel: '95%'
+                },
+                {
+                    id: 'RT001239',
+                    customerName: 'James Parker',
+                    carModel: 'Mercedes-Benz GLE',
+                    returnDate: '2025-09-29',
+                    returnTime: '08:30',
+                    rentalPeriod: '2 days',
+                    status: 'inspection_required',
+                    hasCustomerPhotos: false,
+                    priority: 'high',
+                    mileage: '890 km',
+                    fuelLevel: '67%',
+                    notes: 'Customer did not upload return photos - requires immediate inspection'
+                },
+                {
+                    id: 'RT001240',
+                    customerName: 'Amanda Foster',
+                    carModel: 'Audi Q8',
+                    returnDate: '2025-09-25',
+                    returnTime: '17:15',
+                    rentalPeriod: '14 days',
+                    status: 'dispute_pending',
+                    hasCustomerPhotos: true,
+                    damageFound: true,
+                    priority: 'urgent',
+                    mileage: '6,234 km',
+                    fuelLevel: '82%',
+                    notes: 'Customer disputes damage charges - awaiting insurance review'
+                },
+                {
+                    id: 'RT001241',
+                    customerName: 'Robert Kim',
+                    carModel: 'Range Rover Evoque',
+                    returnDate: '2025-09-24',
+                    returnTime: '12:45',
+                    rentalPeriod: '6 days',
+                    status: 'inspection_completed',
+                    hasCustomerPhotos: true,
+                    damageFound: false,
+                    priority: 'normal',
+                    mileage: '2,340 km',
+                    fuelLevel: '88%'
+                }
+            ];
+
+            container.innerHTML = returnInspections.map(inspection => {
+                const statusText = {
+                    'inspection_required': 'INSPECTION REQUIRED',
+                    'inspection_completed': 'COMPLETED',
+                    'damage_reported': 'DAMAGE REPORTED',
+                    'dispute_pending': 'DISPUTE PENDING'
+                };
+                
+                const statusClass = {
+                    'inspection_required': 'pending',
+                    'inspection_completed': 'completed',
+                    'damage_reported': 'warning',
+                    'dispute_pending': 'urgent'
+                };
+
+                const priorityIcon = {
+                    'normal': '🟢',
+                    'high': '🟡',
+                    'urgent': '🔴'
+                };
+
+                return `
+                <div class="booking-card ${inspection.priority === 'urgent' ? 'urgent-card' : ''}">
+                    <div class="booking-header">
+                        <div class="booking-id">
+                            ${priorityIcon[inspection.priority]} Return ID: ${inspection.id}
+                            ${inspection.priority === 'urgent' ? '<span style="color: #ff4444; font-size: 0.8em; margin-left: 10px;">URGENT</span>' : ''}
+                        </div>
+                        <div class="booking-status status-${statusClass[inspection.status]}">
+                            ${statusText[inspection.status]}
+                        </div>
+                    </div>
+                    <div class="booking-details">
+                        <div class="detail-item">
+                            <div class="detail-label">👤 Customer</div>
+                            <div class="detail-value">${inspection.customerName}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">🚗 Car Model</div>
+                            <div class="detail-value">${inspection.carModel}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">📅 Return Date & Time</div>
+                            <div class="detail-value">${inspection.returnDate} at ${inspection.returnTime}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">⏱️ Rental Period</div>
+                            <div class="detail-value">${inspection.rentalPeriod}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">🛣️ Total Mileage</div>
+                            <div class="detail-value">${inspection.mileage}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">⛽ Fuel Level</div>
+                            <div class="detail-value">${inspection.fuelLevel}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">📸 Photos Uploaded</div>
+                            <div class="detail-value">${inspection.hasCustomerPhotos ? '✅ Yes' : '❌ No'}</div>
+                        </div>
+                        ${inspection.damageFound ? `
+                            <div class="detail-item" style="background: rgba(255, 68, 68, 0.1); padding: 10px; border-radius: 6px; border-left: 3px solid #ff4444;">
+                                <div class="detail-label">⚠️ Damage Status</div>
+                                <div class="detail-value" style="color: #ff6b6b;">Damage Detected</div>
+                            </div>
+                        ` : ''}
+                        ${inspection.notes ? `
+                            <div class="detail-item" style="background: rgba(255, 215, 0, 0.1); padding: 10px; border-radius: 6px; border-left: 3px solid #FFD700;">
+                                <div class="detail-label">📝 Notes</div>
+                                <div class="detail-value" style="font-style: italic;">${inspection.notes}</div>
+                            </div>
+                        ` : ''}
+                    </div>
+                    <div class="booking-actions">
+                        ${inspection.status === 'inspection_required' ? `
+                            <button class="action-btn btn-inspect" onclick="openInspectionModal('${inspection.id}')">
+                                🔍 Start Inspection
+                            </button>
+                        ` : inspection.status === 'damage_reported' ? `
+                            <button class="action-btn btn-report" onclick="viewReport('${inspection.id}')">
+                                📄 View Damage Report
+                            </button>
+                            <button class="action-btn btn-contact" onclick="contactCustomer('${inspection.id}')">
+                                📞 Contact Customer
+                            </button>
+                        ` : inspection.status === 'dispute_pending' ? `
+                            <button class="action-btn btn-report" onclick="viewDispute('${inspection.id}')">
+                                ⚖️ View Dispute
+                            </button>
+                            <button class="action-btn btn-contact" onclick="contactInsurance('${inspection.id}')">
+                                🏢 Contact Insurance
+                            </button>
+                        ` : `
+                            <button class="action-btn btn-report" onclick="viewReport('${inspection.id}')">
+                                📄 View Report
+                            </button>
+                        `}
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        function loadMyCars() {
+            const container = document.getElementById('carsContainer');
+            
+            // Sample cars data
+            const myCars = [
+                {
+                    id: 'CAR001',
+                    name: 'Mercedes-Benz S-Class',
+                    image: 'https://images.pexels.com/photos/2920064/pexels-photo-2920064.jpeg?auto=compress&cs=tinysrgb&w=400',
+                    bookings: 45,
+                    earnings: '$12,450',
+                    rating: 4.8,
+                    status: 'Available'
+                },
+                {
+                    id: 'CAR002',
+                    name: 'BMW X7',
+                    image: 'https://images.pexels.com/photos/3354648/pexels-photo-3354648.jpeg?auto=compress&cs=tinysrgb&w=400',
+                    bookings: 32,
+                    earnings: '$10,240',
+                    rating: 4.9,
+                    status: 'Booked'
+                },
+                {
+                    id: 'CAR003',
+                    name: 'Audi A8',
+                    image: 'https://images.pexels.com/photos/1007410/pexels-photo-1007410.jpeg?auto=compress&cs=tinysrgb&w=400',
+                    bookings: 28,
+                    earnings: '$8,960',
+                    rating: 4.7,
+                    status: 'Available'
+                }
+            ];
+
+            container.innerHTML = myCars.map(car => `
+                <div class="car-card">
+                    <img src="${car.image}" alt="${car.name}" class="car-image">
+                    <div class="car-info">
+                        <div class="car-name">${car.name}</div>
+                        <div class="car-stats">
+                            <div class="car-stat">
+                                <span>📋</span>
+                                <span>${car.bookings} Bookings</span>
+                            </div>
+                            <div class="car-stat">
+                                <span>⭐</span>
+                                <span>${car.rating} Rating</span>
+                            </div>
+                            <div class="car-stat">
+                                <span>🚗</span>
+                                <span>${car.status}</span>
+                            </div>
+                        </div>
+                        <div class="car-earnings">
+                            <span class="earnings-label">Total Earnings:</span>
+                            <span class="earnings-value">${car.earnings}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function approveBooking(bookingId) {
+            if (confirm('Are you sure you want to approve this booking?')) {
+                // Here you would typically make an API call to approve the booking
+                showAlert('Booking approved successfully!', 'success');
+                loadBookingRequests(); // Reload the requests
+            }
+        }
+
+        function rejectBooking(bookingId) {
+            const reason = prompt('Please provide a reason for rejection:');
+            if (reason) {
+                // Here you would typically make an API call to reject the booking
+                showAlert('Booking rejected successfully!', 'success');
+                loadBookingRequests(); // Reload the requests
+            }
+        }
+
+        function contactCustomer(phone) {
+            const message = `Hello! This is regarding your car rental booking. Please call us at ${phone}`;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Contact Customer',
+                    text: message
+                });
+            } else {
+                // Fallback - copy to clipboard
+                navigator.clipboard.writeText(phone);
+                showAlert('Phone number copied to clipboard!', 'success');
+            }
+        }
+
+        function openInspectionModal(inspectionId) {
+            document.getElementById('inspectionModal').style.display = 'block';
+            loadInspectionPhotos(inspectionId);
+            loadDamageAssessment();
+        }
+
+        function closeInspectionModal() {
+            document.getElementById('inspectionModal').style.display = 'none';
+        }
+
+        function loadInspectionPhotos(inspectionId) {
+            // Sample customer photos
+            const customerPhotos = [
+                { url: 'https://images.pexels.com/photos/164634/pexels-photo-164634.jpeg?auto=compress&cs=tinysrgb&w=300', label: 'Front View' },
+                { url: 'https://images.pexels.com/photos/707046/pexels-photo-707046.jpeg?auto=compress&cs=tinysrgb&w=300', label: 'Rear View' },
+                { url: 'https://images.pexels.com/photos/1719648/pexels-photo-1719648.jpeg?auto=compress&cs=tinysrgb&w=300', label: 'Left Side' },
+                { url: 'https://images.pexels.com/photos/1719649/pexels-photo-1719649.jpeg?auto=compress&cs=tinysrgb&w=300', label: 'Right Side' }
+            ];
+
+            // Sample vendor inspection photos
+            const vendorPhotos = [
+                { url: 'https://images.pexels.com/photos/164634/pexels-photo-164634.jpeg?auto=compress&cs=tinysrgb&w=300', label: 'Front Inspection' },
+                { url: 'https://images.pexels.com/photos/707046/pexels-photo-707046.jpeg?auto=compress&cs=tinysrgb&w=300', label: 'Rear Inspection' },
+                { url: 'https://images.pexels.com/photos/1719648/pexels-photo-1719648.jpeg?auto=compress&cs=tinysrgb&w=300', label: 'Interior Check' },
+                { url: 'https://images.pexels.com/photos/1719649/pexels-photo-1719649.jpeg?auto=compress&cs=tinysrgb&w=300', label: 'Dashboard' }
+            ];
+
+            // Load customer photos
+            const customerContainer = document.getElementById('customerPhotos');
+            customerContainer.innerHTML = customerPhotos.map(photo => `
+                <div class="photo-item">
+                    <img src="${photo.url}" alt="${photo.label}">
+                    <div class="photo-label">${photo.label}</div>
+                </div>
+            `).join('');
+
+            // Load vendor photos
+            const vendorContainer = document.getElementById('vendorPhotos');
+            vendorContainer.innerHTML = vendorPhotos.map(photo => `
+                <div class="photo-item">
+                    <img src="${photo.url}" alt="${photo.label}">
+                    <div class="photo-label">${photo.label}</div>
+                </div>
+            `).join('');
+        }
+
+        function loadDamageAssessment() {
+            const damageItems = [
+                { description: 'Minor scratch on rear bumper', cost: 150 },
+                { description: 'Small dent on passenger door', cost: 200 },
+                { description: 'Interior stain on seat', cost: 75 },
+                { description: 'Missing floor mat', cost: 25 },
+                { description: 'Fuel not topped up (10 liters)', cost: 35 }
+            ];
+
+            const container = document.getElementById('damageItems');
+            container.innerHTML = damageItems.map((item, index) => `
+                <div class="damage-item">
+                    <input type="checkbox" class="damage-checkbox" id="damage-${index}" onchange="updateTotalCharges()">
+                    <div class="damage-description">${item.description}</div>
+                    <div class="damage-cost">$${item.cost}</div>
+                </div>
+            `).join('');
+
+            updateTotalCharges();
+        }
+
+        function updateTotalCharges() {
+            const checkboxes = document.querySelectorAll('.damage-checkbox');
+            let total = 0;
+            
+            checkboxes.forEach((checkbox, index) => {
+                if (checkbox.checked) {
+                    const costElement = checkbox.parentElement.querySelector('.damage-cost');
+                    const cost = parseInt(costElement.textContent.replace('$', ''));
+                    total += cost;
+                }
+            });
+
+            document.getElementById('totalCharges').textContent = `Total Additional Charges: $${total}`;
+        }
+
+        function approveReturn() {
+            const total = document.getElementById('totalCharges').textContent;
+            if (confirm(`Approve return with ${total}?`)) {
+                showAlert('Car return approved successfully!', 'success');
+                closeInspectionModal();
+                loadInspectionReturns();
+            }
+        }
+
+        function generateDamageReport() {
+            showAlert('Damage report generated and sent to customer!', 'success');
+            closeInspectionModal();
+            loadInspectionReturns();
+        }
+
+        function showAddCarModal() {
+            alert('Add Car functionality will be implemented here. This would open a form to add a new car to your fleet.');
+        }
+
+        function viewReport(inspectionId) {
+            alert(`Viewing detailed inspection report for ${inspectionId}.\n\nThis would show:\n• Complete photo gallery\n• Damage assessment details\n• Customer acknowledgment\n• Final settlement amount`);
+        }
+
+        function contactCustomer(inspectionId) {
+            // Get customer details for this inspection
+            const inspection = [
+                { id: 'RT001234', customerName: 'Emma Wilson', phone: '+1-555-0123' },
+                { id: 'RT001235', customerName: 'David Chen', phone: '+1-555-0124' },
+                { id: 'RT001236', customerName: 'Sarah Johnson', phone: '+1-555-0125' },
+                { id: 'RT001237', customerName: 'Michael Rodriguez', phone: '+1-555-0126' }
+            ].find(i => i.id === inspectionId);
+            
+            if (inspection) {
+                const message = `📞 Contacting ${inspection.customerName}\nPhone: ${inspection.phone}\n\nRegarding: Vehicle Return Inspection ${inspectionId}`;
+                alert(message);
+            } else {
+                alert('Customer contact information not available.');
+            }
+        }
+
+        function contactInsurance(inspectionId) {
+            alert(`🏢 Contacting Insurance Provider\n\nCase ID: ${inspectionId}\nInsurance Hotline: 1-800-CLAIMS\n\nThis would:\n• File damage claim\n• Submit inspection photos\n• Request adjuster assignment\n• Track claim status`);
+        }
+
+        function viewDispute(inspectionId) {
+            alert(`⚖️ Viewing Dispute Details for ${inspectionId}\n\nDispute Status: Under Review\nFiled Date: 2025-09-25\nCustomer Claim: Disputes damage charges\n\nNext Steps:\n• Insurance adjuster review\n• Third-party assessment\n• Legal mediation if needed`);
+        }
+
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.textContent = message;
+            
+            document.querySelector('.main-container').prepend(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                // Clear all user data from localStorage
+                localStorage.removeItem('userRole');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userName');
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('authToken');
+                
+                // Redirect to home page
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('inspectionModal');
+            if (event.target === modal) {
+                closeInspectionModal();
+            }
+        }
+    </script>
+</body>
+</html>
