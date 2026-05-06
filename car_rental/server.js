@@ -266,8 +266,10 @@ app.post('/auth/forgot-password', async (req, res) => {
         user.resetPasswordExpires = resetExpires;
         await user.save();
 
-        // Create reset URL pointing to our reset password page
-        const resetUrl = `http://localhost:5000/reset-password?token=${resetToken}&email=${email}`;
+        // Create reset URL using current domain (works on localhost and production)
+        const protocol = req.get('x-forwarded-proto') || req.protocol;
+        const host = req.get('host');
+        const resetUrl = `${protocol}://${host}/reset-password?token=${resetToken}&email=${email}`;
 
         // Send reset email
         const mailOptions = {

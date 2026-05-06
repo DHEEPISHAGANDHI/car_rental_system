@@ -2846,7 +2846,7 @@
             const terms_accepted = bookingTermsCheckbox.checked;
             
             // Send booking request to backend
-            fetch('http://localhost:5000/api/book', {
+            fetch('/api/book', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 

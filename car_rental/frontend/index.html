@@ -2785,7 +2785,7 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
     btn.textContent = 'Signing In...';
     btn.disabled = true;
 
-    fetch('http://localhost:5000/api/login', {
+    fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, role })
@@ -2906,7 +2906,7 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
     const terms_accepted = (role === 'customer' || role === 'rider' || role === 'vendor') ? termsCheckbox.checked : null;
 
     // Send signup request to backend
-    fetch('http://localhost:5000/api/signup', {
+    fetch('/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -2982,7 +2982,7 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
             messageBox.style.display = 'none';
 
             try {
-                const response = await fetch('http://localhost:5000/auth/forgot-password', {
+                const response = await fetch('/auth/forgot-password', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -3057,7 +3057,7 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
             btn.disabled = true;
 
             try {
-                const response = await fetch('http://localhost:5000/auth/reset-password', {
+                const response = await fetch('/auth/reset-password', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
